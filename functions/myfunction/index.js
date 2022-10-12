@@ -38,7 +38,7 @@ export default async function (event, context, logger) {
   try {
     // Insert the record using the SalesforceSDK DataApi and get the new Record Id from the result
     const { id: recordId } = await context.org.dataApi.create(account);
-    console.log('Temp');
+    console.log('Temp1');
     // Query Accounts using the SalesforceSDK DataApi to verify that your new Account was created.
     const soql = `SELECT Fields(STANDARD) FROM Account WHERE Id = '${recordId}'`;
     const queryResults = await context.org.dataApi.query(soql);
