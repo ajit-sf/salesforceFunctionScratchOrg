@@ -27,6 +27,8 @@ export default async function (event, context, logger) {
   );
 
   const keyword = event.data.keyword;
+
+  logger.info( `Data sent to function  ` + keyword);
   if (!keyword || typeof keyword !== "string") {
     throw new Error("Please specify a keyword to search accounts");
   }
