@@ -32,11 +32,11 @@ export default async function (event, context, logger) {
   
 
   const results = await context.org.dataApi.query(
-    `SELECT Id, Name, (SELECT Name, Email FROM Contacts) FROM Account WHERE Name LIKE '%${keyword}%'`
+    `SELECT Id, Name FROM Account WHERE Name LIKE '%${keyword}%'`
   );
 
   logger.info( `Data sent to function  ` + keyword);
-  
+
   logger.info(JSON.stringify(results));
   return results;
 
