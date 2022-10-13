@@ -20,24 +20,16 @@ import { readFileSync } from "fs";
 
 
 export default async function (event, context, logger) {
+  const data = event.data || {};
   logger.info(
-    `Invoking datapiqueryjs Function with payload ${JSON.stringify(
-      event.data || {}
-    )}`
+    `Invoking processlargedatajs Function with payload ${JSON.stringify(data)}`
   );
 
-  const keyword = event.data.keyword;
+  let index = aadhaarData.findIndex(ele => ele.Aadhaar === data.aadhaar);
 
-  logger.info( `Data sent to function  ` + keyword);
-  
-
-  const results = await context.org.dataApi.query(
-    `SELECT Id, Name FROM Account WHERE Name LIKE '%${keyword}%'`
-  );
-
-  logger.info( `Data sent to function  ` + keyword);
-
-  logger.info(JSON.stringify(results));
-  return results;
+  if(index > -1){
+    return {state : 'success'};
+  }
+  return {state : 'error'};
 
 }
