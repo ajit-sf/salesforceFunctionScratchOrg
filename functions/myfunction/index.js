@@ -25,11 +25,11 @@ export default async function (event, context, logger) {
     `Invoking processlargedatajs Function with payload ${JSON.stringify(data)}`
   );
 
-  let index = aadhaarData.findIndex(ele => ele.Aadhaar === data.aadhaar);
+  // let index = aadhaarData.findIndex(ele => ele.Aadhaar === data.aadhaar);
 
-  if(index > -1){
-    return {state : 'success'};
-  }
+  // if(index > -1){
+  //   return {state : 'success'};
+  // }
   return {state : 'error'};
 
 }

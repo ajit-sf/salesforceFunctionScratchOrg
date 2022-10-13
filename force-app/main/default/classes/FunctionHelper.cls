@@ -9,7 +9,7 @@ public class FunctionHelper {
 
     public class FlowInputVariable{
         @InvocableVariable
-        public String aadharName;
+        public String aadhaar;
     }
 
     public class FlowOutputVariable{
@@ -19,8 +19,24 @@ public class FunctionHelper {
     
     @InvocableMethod(label = 'Review Aadhaar')
     public static List<FlowOutputVariable> checkAadhaarDetails(List<FlowInputVariable> inputVariable){
-        System.debug(' input variable ' + inputVariable[0]);
-        return null;
+        
+        functions.Function fn = functions.Function.get('salesforceFunction.myfunction');
+        functions.FunctionInvocation invocation = fn.invoke(JSON.serialize(inputVariable));
+
+        // Check if there is any error during the invocation
+        if (invocation.getStatus() == functions.FunctionInvocationStatus.ERROR) {
+            throw new CalloutException(
+            (invocation.getError() != null
+                ? invocation.getError().getMessage()
+                : 'UNKNOWN')
+            );
+        }
+  
+        String response = invocation.getResponse();
+
+        FlowOutputVariable output = (FlowOutputVariable) JSON.deserialize(response, FlowOutputVariable.class);
+
+        return new List<FlowOutputVariable>{output};
     }
     
 }
