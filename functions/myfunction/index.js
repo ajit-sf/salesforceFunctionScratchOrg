@@ -1,3 +1,5 @@
+import { readFileSync } from "fs";
+
 /**
  * Describe Myfunction here.
  *
@@ -10,6 +12,24 @@
  * @param logger: logging handler used to capture application logs and trace specifically
  *                 to a given execution of a function.
  */
+
+
+ const aadhaarData = JSON.parse(
+  readFileSync(new URL("./data/aadhar.json", import.meta.url))
+);
+
+
 export default async function (event, context, logger) {
-  console.log('Logs');
+  const data = event.data || {};
+  logger.info(
+    `Invoking processlargedatajs Function with payload ${JSON.stringify(data)}`
+  );
+
+  let index = aadhaarData.findIndex(ele => ele.Aadhaar === data.aadhaar);
+
+  if(index > -1){
+    return {state : 'success'};
+  }
+  return {state : 'error'};
+
 }
