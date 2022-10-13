@@ -15,7 +15,7 @@ import { readFileSync } from "fs";
 
 
  const aadhaarData = JSON.parse(
-  readFileSync(new URL("./data/aadhar.json", import.meta.url))
+  readFileSync(new URL("./data/aadhaar.json", import.meta.url))
 );
 
 
