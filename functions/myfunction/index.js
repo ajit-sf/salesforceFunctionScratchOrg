@@ -29,13 +29,14 @@ export default async function (event, context, logger) {
   const keyword = event.data.keyword;
 
   logger.info( `Data sent to function  ` + keyword);
-  if (!keyword || typeof keyword !== "string") {
-    throw new Error("Please specify a keyword to search accounts");
-  }
+  
 
   const results = await context.org.dataApi.query(
     `SELECT Id, Name, (SELECT Name, Email FROM Contacts) FROM Account WHERE Name LIKE '%${keyword}%'`
   );
+
+  logger.info( `Data sent to function  ` + keyword);
+  
   logger.info(JSON.stringify(results));
   return results;
 
