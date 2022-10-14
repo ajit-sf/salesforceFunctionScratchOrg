@@ -34,7 +34,7 @@ export default async function (event, context, logger) {
   logger.info(`Received connection ${connection}`);
 
   // query database
-  const [rows, fields] = await connection.execute(`SELECT * FROM "Address Proofs" WHERE aadhaar = "${aadhaarNo}"`);
+  const [rows, fields] = await connection.execute(`SELECT * FROM ` + '`Address Proofs`' + ` WHERE aadhaar = "${aadhaarNo}"`);
 
   if(rows.length > 0){
     return {state : 'success'};
