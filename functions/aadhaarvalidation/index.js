@@ -25,14 +25,22 @@ export default async function (event, context, logger) {
 
   logger.info(`Client fetched successfully ${mysql}`);
 
+  // fetch payload
+  const aadhaarNo = event.data.aadhaar;
+
   // create the connection
   const connection = await mysql.createConnection({host:'sql6.freesqldatabase.com', user: 'sql6526424', database: 'sql6526424', password : 'lVzTKiTViU'});
 
   logger.info(`Received connection ${connection}`);
 
   // query database
-  const [rows, fields] = await connection.execute('SELECT * FROM `Address Proofs` WHERE `aadhaar` = "3427802449"');
+  const [rows, fields] = await connection.execute(`SELECT * FROM Address Proofs WHERE aadhaar = "${aadhaarNo}"`);
 
-  logger.info(`Rows and column received ${JSON.stringify(rows)} ${fields}`);
+  if(rows.length > 0){
+    return {state : 'success'};
+  }
+  else{
+    return {state : 'error'};
+  }
 
 }
