@@ -33,6 +33,6 @@ export default async function (event, context, logger) {
   // query database
   const [rows, fields] = await connection.execute('SELECT * FROM `Address Proofs` WHERE `aadhaar` = "3427802449"');
 
-  logger.info(`Rows and column received ${rows} ${fields}`);
+  logger.info(`Rows and column received ${JSON.stringify(rows)} ${fields}`);
 
 }
