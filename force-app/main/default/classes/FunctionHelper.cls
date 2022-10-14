@@ -21,7 +21,7 @@ public class FunctionHelper {
     public static List<FlowOutputVariable> checkAadhaarDetails(List<FlowInputVariable> inputVariable){
         
         functions.Function fn = functions.Function.get('salesforceFunction.myfunction');
-        functions.FunctionInvocation invocation = fn.invoke(JSON.serialize(inputVariable));
+        functions.FunctionInvocation invocation = fn.invoke(JSON.serialize(inputVariable[0]));
 
         // Check if there is any error during the invocation
         if (invocation.getStatus() == functions.FunctionInvocationStatus.ERROR) {
