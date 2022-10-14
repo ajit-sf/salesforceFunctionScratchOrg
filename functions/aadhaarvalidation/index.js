@@ -12,7 +12,7 @@
  */
 
  import { createRequire } from 'module';
- 
+
  const require = createRequire(import.meta.url);
  
 
@@ -31,7 +31,7 @@ export default async function (event, context, logger) {
   logger.info(`Received connection ${connection}`);
 
   // query database
-  const [rows, fields] = await connection.execute('SELECT * FROM `Address Proofs` WHERE `aadhaar` = `3427802449`');
+  const [rows, fields] = await connection.execute('SELECT * FROM `Address Proofs` WHERE `aadhaar` = "3427802449"');
 
   logger.info(`Rows and column received ${rows} ${fields}`);
 
