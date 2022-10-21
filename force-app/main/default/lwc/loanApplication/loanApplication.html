@@ -1,0 +1,11 @@
+<template>
+    <lightning-card title="Lightning Path" icon-name="standard:sales_path">
+        <lightning-progress-indicator current-step={currentValue} type="path" variant="base">
+            <lightning-progress-step label="Login" value="1" onclick={pathHandler}></lightning-progress-step>
+            <lightning-progress-step label="Form Fill" value="2" onclick={pathHandler}></lightning-progress-step>
+            <lightning-progress-step label="Upload Documents" value="3" onclick={pathHandler}></lightning-progress-step>
+            <lightning-progress-step label="Verify" value="4" onclick={pathHandler}></lightning-progress-step>
+            <lightning-progress-step label="Submit" value="5" onclick={pathHandler}></lightning-progress-step>
+        </lightning-progress-indicator>
+    </lightning-card>
+</template>
