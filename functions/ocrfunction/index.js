@@ -50,7 +50,7 @@ export default async function (event, context, logger) {
     })
   });
   let responseJSON = await response.json();
-  console.log('Response ' + responseJSON);
+  console.log('Response ' + JSON.stringify(responseJSON));
 
   return null;
 }
