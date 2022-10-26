@@ -13,7 +13,7 @@
 
 import { createRequire } from 'module';
 import { readFileSync } from 'fs';
-import fetch, { formData } from 'node-fetch';
+import fetch, { FormData } from 'node-fetch';
 
 const require = createRequire(import.meta.url);
 
