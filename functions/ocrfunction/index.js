@@ -49,8 +49,8 @@ export default async function (event, context, logger) {
       assertion : token
     })
   });
-  
-  console.log('Response ' + response);
+  let responseJSON = await response.json();
+  console.log('Response ' + responseJSON);
 
   return null;
 }
