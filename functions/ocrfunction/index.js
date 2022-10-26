@@ -27,18 +27,30 @@ export default async function (event, context, logger) {
 
   logger.info(`Invoking Ocrfunction with payload`);
 
-  let expTime = Math.floor( Date.now() / 1000) + 600;
-  const cert = fs.readFileSync('einstein_platform_check.pem');
-
+  //Generating payload
   let payload = {
     "sub": 'ajiteshpratap.singh@salesforce.com',
     "aud": "https://api.einstein.ai/v2/oauth2/token",
-    "exp": expTime, 
+    "exp": Math.floor( Date.now() / 1000) + 600, 
   };
   
-  const token = jwt.sign(payload, cert);
+  // Signing token
+  const token = jwt.sign(payload, fs.readFileSync('einstein_platform_check.pem'));
 
-  console.log('Token' + token);
+  console.log('token ' + token);
+
+  let response = await fetch('https://api.einstein.ai/v2/oauth2/token', {
+    method : 'POST',
+    headers : {
+      'Content-type' : 'application/json'
+    },
+    body : JSON.stringify({
+      grant_type : 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion : token
+    })
+  });
+  
+  console.log('Response ' + response);
 
   return null;
 }
