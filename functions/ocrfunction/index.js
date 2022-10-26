@@ -55,7 +55,8 @@ export default async function (event, context, logger) {
 
   // Fetching text values from images
   const form = new FormData();
-  form.append('sampleLocation', 'https://www.publicdomainpictures.net/pictures/240000/velka/emergency-evacuation-route-signpost.jpg');
+  // form.append('sampleLocation', 'https://www.publicdomainpictures.net/pictures/240000/velka/emergency-evacuation-route-signpost.jpg');
+  form.append('sampleLocation', 'https://agility-computing-1890-dev-ed.scratch.my.salesforce.com/sfc/p/#2D000000HhbL/a/2D0000004hY3/byhCZdEsKIH_ghnVmPfr4OT7dEZzYOiRvKbrrTGZUFc');
   form.append('modelId', 'OCRModel');
 
   let imageResponse = await fetch('https://api.einstein.ai/v2/vision/ocr', {
