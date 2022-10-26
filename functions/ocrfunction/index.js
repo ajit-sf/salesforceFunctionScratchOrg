@@ -43,7 +43,7 @@ export default async function (event, context, logger) {
     method : 'POST',
     headers : {
       'Content-type' : 'application/x-www-form-urlencoded',
-      grant_type : 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      'grant_type' : 'urn:ietf:params:oauth:grant-type:jwt-bearer',
     },
     body : JSON.stringify({
       assertion : token
