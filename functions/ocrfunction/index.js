@@ -23,7 +23,7 @@ export default async function (event, context, logger) {
   const dotenv = require('dotenv');
   const jwt = require('jsonwebtoken');
 
-  logger.info(`Invoking Ocrfunction with payload 123`);
+  logger.info(`Invoking Ocrfunction with payload`);
 
   
 
