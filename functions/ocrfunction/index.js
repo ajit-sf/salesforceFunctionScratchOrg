@@ -22,10 +22,23 @@ export default async function (event, context, logger) {
   // getting neccessary modules for JWT 
   const dotenv = require('dotenv');
   const jwt = require('jsonwebtoken');
+  const fs = require('fs'); 
+
 
   logger.info(`Invoking Ocrfunction with payload`);
 
+  let expTime = Math.floor( Date.now() / 1000) + 600;
+  const cert = fs.readFileSync('einstein_platform_check.pem');
+
+  let payload = {
+    "sub": 'ajiteshpratap.singh@salesforce.com',
+    "aud": "https://api.einstein.ai/v2/oauth2/token",
+    "exp": expTime, 
+  };
   
+  const token = jwt.sign(payload, cert);
+
+  console.log('Token' + token);
 
   return null;
 }
