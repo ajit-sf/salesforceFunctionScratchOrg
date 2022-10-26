@@ -13,6 +13,7 @@
 
 import { createRequire } from 'module';
 import { readFileSync } from 'fs';
+import fetch, {formData} from 'node-fetch';
 
 const require = createRequire(import.meta.url);
 
@@ -40,8 +41,7 @@ export default async function (event, context, logger) {
   // Signing token
   const token = jwt.sign(payload, key, { algorithm: 'RS256' });
 
-  console.log('token ' + token);
-
+  // Getting access token to hit the API
   let response = await fetch('https://api.einstein.ai/v2/oauth2/token', {
     method : 'POST',
     headers : {
