@@ -42,10 +42,10 @@ export default async function (event, context, logger) {
   let response = await fetch('https://api.einstein.ai/v2/oauth2/token', {
     method : 'POST',
     headers : {
-      'Content-type' : 'application/x-www-form-urlencoded'
+      'Content-type' : 'application/x-www-form-urlencoded',
+      grant_type : 'urn:ietf:params:oauth:grant-type:jwt-bearer',
     },
     body : JSON.stringify({
-      grant_type : 'urn:ietf:params:oauth:grant-type:jwt-bearer',
       assertion : token
     })
   });
