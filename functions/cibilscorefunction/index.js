@@ -10,8 +10,6 @@
  * @param logger: logging handler used to capture application logs and trace specifically
  *                 to a given execution of a function.
  */
-
- import { appendFile } from 'fs';
 import { createRequire } from 'module';
 
  const require = createRequire(import.meta.url);
@@ -28,7 +26,7 @@ export default async function (event, context, logger) {
   logger.info(`Received connection ${connection}`);
 
   // query database
-  const rows = await connection.execute(`SELECT score FROM ` + '`cibilScore`');
+  const rows = await connection.execute(`SELECT score FROM cibilScore`);
   console.log('query data '+rows);
 
   if(rows.length > 0){
