@@ -1,0 +1,117 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  :host {
+    --c-green:rgb(0, 112, 210);
+    --c-percentage : 50;
+    --c-speed : '1s';
+  }
+
+  .container{
+    background-color: white;
+    text-align:center;
+    padding-top: 3%;
+    padding-bottom: 3%;
+  }
+
+  .heading{
+    text-align: center;
+    padding-top: 5%;
+    padding-bottom: 2%;
+    font-size: 20px;
+    font-weight: 900;
+  }
+
+  .heading2{
+    text-align: center;
+    padding-top: 2%;
+    padding-bottom: 5%;
+    font-size: 20px;
+    font-weight: 900;
+    font-family: "SalesforceSans";
+  }
+  
+  .bar {
+    display: inline-block;
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bar:after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 80%;
+    width: 80%;
+    border-radius: 50%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  
+  svg circle {
+    position: absolute;
+    transform: rotate(-90deg);
+    transform-origin: center;
+    fill: none;
+    stroke:var(--c-green);
+    stroke-width: 40px;
+    stroke-dasharray: 630px;
+    animation: bar_1 0s ease forwards;
+  }
+
+  .addAnimation{
+    animation: bar_1 1s ease forwards !important;
+  }
+  
+  h1 {
+    position: absolute;
+    font-size: 25px;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+
+  img {
+    position: absolute;
+    font-size: 25px;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+
+  .iconVal {
+    position: absolute;
+    font-size: 25px;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+  
+  @keyframes bar_1 {
+    0% {
+      stroke-dashoffset: 630px;
+    }
+    100% {
+    }
+  }
