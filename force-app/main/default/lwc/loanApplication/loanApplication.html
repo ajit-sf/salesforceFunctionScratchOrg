@@ -1,3 +1,10 @@
+<!--
+  @description       : 
+  @author            : Indu, Ajitesh
+  @group             : 
+  @last modified on  : 10-30-2022
+  @last modified by  : Ajitesh
+-->
 <template>
     <lightning-card>
         <div class="slds-p-around--medium slds-m-bottom--x-small">
@@ -70,6 +77,7 @@
                             <lightning-input type="file" 
                                     name="panfile"
                                     accept={acceptedFormats}
+                                    record-id="00Q2D000007S523UAC"
                                     label="PAN Card" onchange={openPanfileUpload}></lightning-input>
                                 <template if:true={panFileData}>
                                     <p><lightning-icon size="x-small" style=" --lwc-colorTextIconDefault: #3989c6;" icon-name="utility:attach" alternative-text="attachment"></lightning-icon> {panFileData.filename}</p>
@@ -125,10 +133,20 @@
                 <div class="slds-border_bottom slds-m-top_large slds-m-bottom_medium"></div>
                 <lightning-layout multiple-rows="true">
                     <lightning-layout-item class="slds-p-around_xx-small" size="8">
-                    <lightning-input type="file" 
+                        <lightning-file-upload
+                            label="AADHAR Card"
+                            name="aadharfile"
+                            accept={acceptedFormats}
+                            record-id="00Q2D000007S523UAC"
+                            onuploadfinished={handleUploadFinished}
+                        >
+                        </lightning-file-upload>
+
+                    <!-- <lightning-input type="file" 
                                 name="aadharfile"
                                 accept={acceptedFormats}
-                                label="AADHAR Card" onchange={openAddharfileUpload}></lightning-input>
+                                record-id="00Q2D000007S523UAC"
+                                label="AADHAR Card" onchange={openAddharfileUpload}></lightning-input> -->
                             <template if:true={aadharFileData}>
                                 <p><lightning-icon size="x-small" style=" --lwc-colorTextIconDefault: #3989c6;" icon-name="utility:attach" alternative-text="attachment"></lightning-icon> {aadharFileData.filename}</p>
                             </template>

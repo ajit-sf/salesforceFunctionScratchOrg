@@ -26,6 +26,7 @@ export default async function (event, context, logger) {
   const jwt = require('jsonwebtoken');
   const fs = require('fs');
 
+  const downloadableUrl = event.data.downloadableUrl;
 
   logger.info(`Invoking Ocrfunction with payload`);
 
@@ -56,7 +57,7 @@ export default async function (event, context, logger) {
   // Fetching text values from images
   const form = new FormData();
   // form.append('sampleLocation', 'https://www.publicdomainpictures.net/pictures/240000/velka/emergency-evacuation-route-signpost.jpg');
-  form.append('sampleLocation', 'https://agility-computing-1890-dev-ed.scratch.file.force.com/sfc/dist/version/download/?oid=00D2D000000HhbL&ids=0682D000001V91mQAC&d=%2Fa%2F2D0000004hY3%2FbyhCZdEsKIH_ghnVmPfr4OT7dEZzYOiRvKbrrTGZUFc&operationContext=DELIVERY&viewId=05H2D00000064k0UAA&dpt=');
+  form.append('sampleLocation', downloadableUrl);
   form.append('modelId', 'OCRModel');
 
   let imageResponse = await fetch('https://api.einstein.ai/v2/vision/ocr', {

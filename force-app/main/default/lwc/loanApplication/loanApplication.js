@@ -1,5 +1,8 @@
 import { LightningElement, api, track } from 'lwc';
 
+import createPublicDistributionLink from '@salesforce/apex/LoanApplicationDataServices.createPublicDistributionLink';
+import fetchTextFromImages from '@salesforce/apex/LoanApplicationDataServices.fetchTextFromImages';
+
 export default class LoanApplication extends LightningElement {
     currentValue = '2';
     isFormFill = true;
@@ -58,10 +61,16 @@ export default class LoanApplication extends LightningElement {
         return ['.pdf', '.png'];
     }
 
-    handleUploadFinished(event) {
+    async handleUploadFinished(event) {
         // Get the list of uploaded files
-        const uploadedFiles = event.detail.files;
-        alert('No. of files uploaded : ' + uploadedFiles.length);
+        
+        let downloadableUrl = await createPublicDistributionLink({
+            fileName : uploadedFiles[0].name,
+            contentVersionId : uploadedFiles[0].contentVersionId,
+        });
+
+        await fetchTextFromImages({downloadableLink : downloadableUrl});
+        
     }
 
 
