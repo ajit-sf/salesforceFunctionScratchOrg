@@ -29,6 +29,7 @@ export default async function (event, context, logger) {
 
     const downloadableUrl = event.data.downloadableUrl;
     const type = event.data.type;
+    console.log('type ' + type);
 
     logger.info(`Invoking Ocrfunction with payload`);
 

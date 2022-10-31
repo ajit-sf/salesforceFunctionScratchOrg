@@ -57,6 +57,9 @@ public without sharing class LoanApplicationDataServices {
             functions.FunctionInvocation invocation = fn.invoke(JSON.serialize(wDL));
             // Check if there is any error during the invocation
             if (invocation.getStatus() == functions.FunctionInvocationStatus.ERROR) {
+                if(invocation.getError() != null)
+                    System.debug('Error ' + invocation.getError().getMessage());
+                
                 throw new CalloutException(
                 (invocation.getError() != null
                     ? invocation.getError().getMessage()
