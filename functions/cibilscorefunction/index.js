@@ -26,7 +26,14 @@ export default async function (event, context, logger) {
   logger.info(`Received connection ${connection}`);
 
   // query database
-  const rows = await connection.execute(`SELECT score FROM cibilScore`);
+  connection.connect(function(err) {
+    if (err) throw err;
+    connection.query("SELECT score FROM cibilScore", function (err, result, fields) {
+      if (err) throw err;
+      console.log(result);
+  });
+});
+  /*const rows = await connection.execute(`SELECT score FROM cibilScore`);
   console.log('query data '+rows);
 
   if(rows.length > 0){
@@ -34,5 +41,6 @@ export default async function (event, context, logger) {
   }
   else{
     return 'error';
-  }
+  }*/
+  return result;
 }
