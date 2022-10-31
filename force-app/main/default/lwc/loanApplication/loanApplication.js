@@ -61,17 +61,30 @@ export default class LoanApplication extends LightningElement {
         return ['.png', '.jpg', '.jpeg'];
     }
 
-    async handleUploadFinished(event) {
+    async handleUploadFinishedAadhaarFront(event) {
         // Get the list of uploaded files
         const uploadedFiles = event.detail.files;
-        
+
         let downloadableUrl = await createPublicDistributionLink({
             fileName : uploadedFiles[0].name,
             contentVersionId : uploadedFiles[0].contentVersionId,
         });
 
-        await fetchTextFromImages({downloadableLink : downloadableUrl});
-        
+        let aadhaarDataFront = await fetchTextFromImages({downloadableLink : downloadableUrl, type : 'aadhaarFront'});
+        console.log('aadhaarDataFront' + aadhaarDataFront);
+    }
+
+    async handleUploadFinishedAadhaarBack(event) {
+        // Get the list of uploaded files
+        const uploadedFiles = event.detail.files;
+
+        let downloadableUrl = await createPublicDistributionLink({
+            fileName : uploadedFiles[0].name,
+            contentVersionId : uploadedFiles[0].contentVersionId,
+        });
+
+        let aadhaarDataFront = await fetchTextFromImages({downloadableLink : downloadableUrl, type : 'aadhaarBack'});
+        console.log('aadhaarDataBack' + aadhaarDataFront);
     }
 
 

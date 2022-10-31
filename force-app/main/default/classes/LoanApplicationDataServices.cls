@@ -46,12 +46,12 @@ public without sharing class LoanApplicationDataServices {
     * @return string 
     **/
     @AuraEnabled
-    public static Object fetchTextFromImages(String downloadableLink){
+    public static Object fetchTextFromImages(String downloadableLink, String type){
         try {
             
             WrapDownloadLink wDL = new WrapDownloadLink();
             wDL.downloadableUrl = downloadableLink;
-            
+            wDL.type = type;
 
             functions.Function fn = functions.Function.get('salesforceFunction.ocrfunction');
             functions.FunctionInvocation invocation = fn.invoke(JSON.serialize(wDL));
