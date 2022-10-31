@@ -73,7 +73,7 @@ export default async function (event, context, logger) {
     let imageJSON = await imageResponse.json();
     console.log('imageJSON ' + JSON.stringify(imageJSON));
 
-    if (type === 'aadhaarDataFront') {
+    if (type === 'aadhaarFront') {
       // Name check regex for capturing names
       const nameReg = /^[A-Z](?:[a-z]|\b[,.'-]\b)+(?: [A-Z](?:[a-z]|\b[,.'-]\b)+)*$/;
       const aadhaarNumberRegFour = /^[0-9]{4}$/;
@@ -110,7 +110,7 @@ export default async function (event, context, logger) {
 
       return { nameVal: nameVal, aadhaarNum: aadhaarEntireNum };
     }
-    else if(type === 'aadhaarDataBack'){
+    else if(type === 'aadhaarBack'){
 
       let addressArray = [];
       let address = '';
