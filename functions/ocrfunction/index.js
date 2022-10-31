@@ -73,15 +73,25 @@ export default async function (event, context, logger) {
 
   // Name check regex for capturing names
   const nameReg = /^[A-Z](?:[a-z]|\b[,.'-]\b)+(?: [A-Z](?:[a-z]|\b[,.'-]\b)+)*$/;
+  const aadhaarNumberReg = /^[0-9]{4}$/;
+
+
   let nameVal;
+  let aadhaarVal = [];
   
   for(let i of imageJSON.probabilities){
     if(nameReg.test(i.label)){
       nameVal = i.label;
     }
+    if(aadhaarNumberReg.test(i.label)){
+      aadhaarVal.push(i);
+    }
   }
 
+  aadhaarVal.sort((a,b) => a.probability - b.probability || a.minX - b.minX);
+
   console.log('name' + nameVal);
+  console.log('aadhaarVal' + JSON.stringify(aadhaarVal));
 
   return null;
 }
