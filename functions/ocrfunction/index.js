@@ -106,13 +106,14 @@ export default async function (event, context, logger) {
       }
     }
     
-    console.log('name' + nameVal);
-    console.log('aadhaarVal' + aadhaarEntireNum);
+    return {nameVal : nameVal, aadhaarNum : aadhaarEntireNum};
+
   }
   catch(e){
     console.log('Error ' + e);
+    return null;
   }
   
 
-  return null;
+  
 }

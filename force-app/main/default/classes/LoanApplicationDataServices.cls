@@ -2,7 +2,7 @@
  * @description       : Create downloadable url to share with OCR for values
  * @author            : Ajitesh
  * @group             : 
- * @last modified on  : 10-30-2022
+ * @last modified on  : 10-31-2022
  * @last modified by  : Ajitesh
 **/
 public without sharing class LoanApplicationDataServices {
@@ -36,6 +36,7 @@ public without sharing class LoanApplicationDataServices {
 
     public class WrapDownloadLink{
         public String downloadableUrl;
+        public String type;
     }
 
     /**
@@ -45,15 +46,25 @@ public without sharing class LoanApplicationDataServices {
     * @return string 
     **/
     @AuraEnabled
-    public static void fetchTextFromImages(String downloadableLink){
+    public static Object fetchTextFromImages(String downloadableLink){
         try {
             
             WrapDownloadLink wDL = new WrapDownloadLink();
             wDL.downloadableUrl = downloadableLink;
+            
 
             functions.Function fn = functions.Function.get('salesforceFunction.ocrfunction');
             functions.FunctionInvocation invocation = fn.invoke(JSON.serialize(wDL));
+            // Check if there is any error during the invocation
+            if (invocation.getStatus() == functions.FunctionInvocationStatus.ERROR) {
+                throw new CalloutException(
+                (invocation.getError() != null
+                    ? invocation.getError().getMessage()
+                    : 'UNKNOWN')
+                );
+            }
 
+            return invocation.getResponse();
 
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
