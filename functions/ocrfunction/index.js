@@ -73,11 +73,13 @@ export default async function (event, context, logger) {
 
   // Name check regex for capturing names
   const nameReg = /^[A-Z](?:[a-z]|\b[,.'-]\b)+(?: [A-Z](?:[a-z]|\b[,.'-]\b)+)*$/;
-  const aadhaarNumberReg = /^[0-9]{4}$/;
+  const aadhaarNumberRegFour = /^[0-9]{4}$/;
+  const aadhaarNumberRegFull = /^\d{4}\s\d{4}\s\d{4}$/;
 
 
   let nameVal;
   let aadhaarVal = [];
+  let aadhaarEntireNum='';
   
   for(let i of imageJSON.probabilities){
     if(nameReg.test(i.label)){
@@ -86,12 +88,27 @@ export default async function (event, context, logger) {
     if(aadhaarNumberReg.test(i.label)){
       aadhaarVal.push(i);
     }
+
+    if(aadhaarNumberRegFull.test(i.label)){
+      aadhaarEntireNum = i.label; 
+    }
   }
 
-  aadhaarVal.sort((a,b) => a.probability - b.probability || a.minX - b.minX);
+  if(!aadhaarEntireNum){
+    aadhaarVal.sort((a,b) => a.probability - b.probability || a.minX - b.minX);
+    for(let i = aadhaarVal.length - 1; i>=0; i--){
+      aadhaarEntireNum += aadhaarVal[i].label;
 
+      if(aadhaarEntireNum.length() >= 12){
+        break;
+      }
+    }
+  }
+  
+
+  
   console.log('name' + nameVal);
-  console.log('aadhaarVal' + JSON.stringify(aadhaarVal));
+  console.log('aadhaarVal' + aadhaarEntireNum);
 
   return null;
 }
