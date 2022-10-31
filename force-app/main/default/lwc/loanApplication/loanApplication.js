@@ -58,11 +58,12 @@ export default class LoanApplication extends LightningElement {
     @api aadharRecordId;
 
     get acceptedFormats() {
-        return ['.pdf', '.png'];
+        return ['.png', '.jpg', '.jpeg'];
     }
 
     async handleUploadFinished(event) {
         // Get the list of uploaded files
+        const uploadedFiles = event.detail.files;
         
         let downloadableUrl = await createPublicDistributionLink({
             fileName : uploadedFiles[0].name,

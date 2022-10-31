@@ -42,7 +42,7 @@ export default async function (event, context, logger) {
   // Signing token
   const token = jwt.sign(payload, key, { algorithm: 'RS256' });
 
-  // Getting access token to hit the API
+  //Getting access token to hit the API
   let response = await fetch('https://api.einstein.ai/v2/oauth2/token', {
     method: 'POST',
     headers: {
@@ -54,10 +54,11 @@ export default async function (event, context, logger) {
   console.log('Response ' + JSON.stringify(responseJSON));
 
 
-  // Fetching text values from images
+  //Fetching text values from images
   const form = new FormData();
   // form.append('sampleLocation', 'https://www.publicdomainpictures.net/pictures/240000/velka/emergency-evacuation-route-signpost.jpg');
   form.append('sampleLocation', downloadableUrl);
+  form.append('task', 'contact');
   form.append('modelId', 'OCRModel');
 
   let imageResponse = await fetch('https://api.einstein.ai/v2/vision/ocr', {
@@ -69,6 +70,11 @@ export default async function (event, context, logger) {
   });
   let imageJSON = await imageResponse.json();
   console.log('imageJSON ' + JSON.stringify(imageJSON));
+
+  // const form = new FormData();
+  // form.append('url', downloadableUrl);
+  // form.append('language', 'eng');
+
 
   return null;
 }

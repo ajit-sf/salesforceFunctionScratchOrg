@@ -2,7 +2,7 @@
   @description       : 
   @author            : Indu, Ajitesh
   @group             : 
-  @last modified on  : 10-30-2022
+  @last modified on  : 10-31-2022
   @last modified by  : Ajitesh
 -->
 <template>
@@ -133,15 +133,27 @@
                 <div class="slds-border_bottom slds-m-top_large slds-m-bottom_medium"></div>
                 <lightning-layout multiple-rows="true">
                     <lightning-layout-item class="slds-p-around_xx-small" size="8">
+                        <lightning-layout multiple-rows="true">
+                        <lightning-layout-item class="slds-p-around_xx-small" size="6">
                         <lightning-file-upload
-                            label="AADHAR Card"
+                            label="AADHAR Card Front"
                             name="aadharfile"
                             accept={acceptedFormats}
                             record-id="00Q2D000007S523UAC"
                             onuploadfinished={handleUploadFinished}
                         >
                         </lightning-file-upload>
-
+                    </lightning-layout-item>
+                    <lightning-layout-item class="slds-p-around_xx-small" size="6">
+                        <lightning-file-upload
+                            label="AADHAR Card Back"
+                            name="aadharfile"
+                            accept={acceptedFormats}
+                            record-id="00Q2D000007S523UAC"
+                            onuploadfinished={handleUploadFinished}
+                        >
+                        </lightning-file-upload>
+                    </lightning-layout-item>
                     <!-- <lightning-input type="file" 
                                 name="aadharfile"
                                 accept={acceptedFormats}
@@ -160,7 +172,6 @@
                                 onuploadfinished={handleUploadFinished}></lightning-file-upload>
                         </lightning-layout-item>
                     </lightning-layout-->
-                    <lightning-layout multiple-rows="true">
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
                             <lightning-input type="text" label="AADHAR Number" required></lightning-input>
                         </lightning-layout-item>
