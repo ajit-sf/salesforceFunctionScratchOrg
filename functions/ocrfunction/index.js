@@ -71,10 +71,17 @@ export default async function (event, context, logger) {
   let imageJSON = await imageResponse.json();
   console.log('imageJSON ' + JSON.stringify(imageJSON));
 
-  // const form = new FormData();
-  // form.append('url', downloadableUrl);
-  // form.append('language', 'eng');
+  // Name check regex for capturing names
+  const nameReg = /^[A-Z](?:[a-z]|\b[,.'-]\b)+(?: [A-Z](?:[a-z]|\b[,.'-]\b)+)*$/;
+  let nameVal;
+  
+  for(let i of imageJSON.probabilities){
+    if(nameReg.test(i.label)){
+      nameVal = i.label;
+    }
+  }
 
+  console.log('name' + nameVal);
 
   return null;
 }
