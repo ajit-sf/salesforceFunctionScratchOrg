@@ -86,7 +86,7 @@ export default async function (event, context, logger) {
       if(nameReg.test(i.label)){
         nameVal = i.label;
       }
-      if(aadhaarNumberReg.test(i.label)){
+      if(aadhaarNumberRegFour.test(i.label)){
         aadhaarVal.push(i);
       }
   
