@@ -111,8 +111,24 @@ export default async function (event, context, logger) {
       return { nameVal: nameVal, aadhaarNum: aadhaarEntireNum };
     }
     else if(type === 'aadhaarDataBack'){
-      return null;
+
+      let addressArray = [];
+      let address = '';
+
+      for (let i of imageJSON.probabilities) {
+        if(i.attributes.tag === 'ADDRESS'){
+          addressArray.push(i);
+        }
+        
+      }
+      addressArray.sort((a,b) => a.minY - b.minY || a.minX - b.minX);
+
+      for(let i of addressArray){
+        address += i.label;
+      }
+      return {address : address};
     }
+
 
 
   }
