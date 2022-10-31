@@ -31,6 +31,7 @@ export default async function (event, context, logger) {
     connection.query("SELECT score FROM cibilScore", function (err, result, fields) {
       if (err) throw err;
       console.log(result);
+      return result[0].score;
   });
 });
   /*const rows = await connection.execute(`SELECT score FROM cibilScore`);
@@ -42,5 +43,4 @@ export default async function (event, context, logger) {
   else{
     return 'error';
   }*/
-  return result;
 }
