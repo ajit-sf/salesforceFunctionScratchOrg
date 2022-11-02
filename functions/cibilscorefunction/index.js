@@ -18,6 +18,8 @@ export default async function (event, context, logger) {
   // get the client
   const mysql = require('mysql2/promise');
 
+  var score;
+
   logger.info(`Client fetched successfully ${mysql}`);
 
   // create the connection
@@ -28,10 +30,15 @@ export default async function (event, context, logger) {
   // query database
   connection.connect(function(err) {
     if (err) throw err;
-    connection.query("SELECT score FROM cibilScore", function (err, result, fields) {
-      if (err) throw err;
+    connection.query("SELECT * FROM cibilScore", function (err, result, fields) {
+      if (err) 
+        throw err;
       console.log(result);
-      return result[0].score;
+      Object.keys(result).forEach(function(key) {
+        var row = result[key];
+        console.log(row.score);
+        score = row.score;
+      });
   });
 });
   /*const rows = await connection.execute(`SELECT score FROM cibilScore`);
@@ -43,4 +50,5 @@ export default async function (event, context, logger) {
   else{
     return 'error';
   }*/
+  return score;
 }

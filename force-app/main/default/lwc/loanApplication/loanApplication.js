@@ -2,14 +2,38 @@ import { LightningElement, api, track } from 'lwc';
 
 import createPublicDistributionLink from '@salesforce/apex/LoanApplicationDataServices.createPublicDistributionLink';
 import fetchTextFromImages from '@salesforce/apex/LoanApplicationDataServices.fetchTextFromImages';
+import insertLead from '@salesforce/apex/loanApplicationHelper.insertLead';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class LoanApplication extends LightningElement {
     currentValue = '2';
     isFormFill = true;
     isDocUploaded = false;
-    @track cibilScore = 75;
-
     
+    @track cibilScore = 75;
+    leadObject = {};
+    recordId;
+
+    connectedCallback(){
+        this.handleInit();
+    }
+    
+    handleInit(){
+        this.leadObject.FirstName = null;
+        this.leadObject.LastName = null;
+        this.leadObject.Email = null;
+        this.leadObject.Lead_Address__c = null;
+        this.leadObject.Phone = null;
+        this.leadObject.Occupation__c = null;
+        this.leadObject.fatherName__c = null;
+        this.leadObject.motherName__c = false;
+        this.leadObject.fatherOccupation__c = null;
+        this.leadObject.motherOccupation__c = null;
+        this.leadObject.fatherPhoneNo__c = null;
+        this.leadObject.motherPhoneNo__c = null;
+        this.leadObject.Company = null;
+    }
+
     pathHandler(event) {
         let targetValue = event.currentTarget.value;
         let selectedvalue = event.currentTarget.label;
@@ -35,7 +59,26 @@ export default class LoanApplication extends LightningElement {
             this.isDocUploaded = false;
         }
     }
-    handleClick(event){
+    handleSave(event){
+        console.log('Create - Lead ');
+        if(this.recordId == null ){
+            insertLead({
+                jsonOfLead: JSON.stringify(this.leadObject)
+            })
+            .then(data => {
+                console.log('record inserted '+data);
+                this.recordId = data;
+                let event = new ShowToastEvent({
+                    message: "Lead successfully created!",
+                    variant: "success",
+                    duration: 2000
+                });
+                this.dispatchEvent(event);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }
         console.log('Click button '+event.target.name+' current value '+this.currentValue);
         if(event.target.name == "saveNext" && this.currentValue == '2'){
             this.isFormFill = false;
@@ -52,6 +95,7 @@ export default class LoanApplication extends LightningElement {
             this.isDocUploaded = false;
             this.currentValue = '4';
         }
+        
     }
 
     @api panRecordId;
@@ -75,7 +119,7 @@ export default class LoanApplication extends LightningElement {
     }
 
 
-    @api recordId;
+    //@api recordId;
     panFileData
     aadharFileData
     openPanfileUpload(event) {
@@ -116,6 +160,50 @@ export default class LoanApplication extends LightningElement {
             variant:"success"
         })
         this.dispatchEvent(toastEvent)
+    }
+
+    handleInputChange(event) {
+        console.log(event.target.value+' Handle change value -- Name '+event.target.name);
+        let fieldName = event.target.name;
+        let value = event.target.value;
+        if(fieldName == 'name'){
+            this.leadObject.FirstName = value;
+        }
+        else if(fieldName == 'lastName'){
+            this.leadObject.LastName = value;
+        }
+        else if(fieldName == 'occupation'){
+            this.leadObject.Occupation__c = value;
+        }
+        else if(fieldName == 'phoneNo'){
+            this.leadObject.Phone = value;
+        }
+        else if(fieldName == 'email'){
+            this.leadObject.Email = value;
+        }
+        else if(fieldName == 'address'){
+            this.leadObject.Lead_Address__c = value;
+        }
+        else if(fieldName == 'fatherName'){
+            this.leadObject.fatherName__c = value;
+        }
+        else if(fieldName == 'motherName'){
+            this.leadObject.motherName__c = value;
+        }
+        else if(fieldName == 'fatherOccupation'){
+            this.leadObject.fatherOccupation__c = value;
+        }
+        else if(fieldName == 'motherOccupation'){
+            this.leadObject.motherOccupation__c = value;
+        }
+        else if(fieldName == 'fatherPhoneNo'){
+            this.leadObject.fatherPhoneNo__c = value;
+        }
+        else if(fieldName == 'motherPhoneNo'){
+            this.leadObject.motherPhoneNo__c = value;
+        }
+        this.leadObject.Company = 'xyz';
+        console.log('Handle change  '+JSON.stringify(this.leadObject));
     }
 /*
     @track ringColor = 'Blue';

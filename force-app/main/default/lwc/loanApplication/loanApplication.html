@@ -19,55 +19,55 @@
                 <template if:true={isFormFill}>
                     <lightning-layout class="slds-m-top_medium" multiple-rows="true">
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Name" required></lightning-input>
+                            <lightning-input type="text" label="Name" required name="name" value={leadObject.FirstName} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Last Name" required></lightning-input>
-                        </lightning-layout-item>
-                    </lightning-layout>
-                    <lightning-layout multiple-rows="true">
-                        <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Occupation"></lightning-input>
-                        </lightning-layout-item>
-                        <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="tel" label="Primary Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></lightning-input>
+                            <lightning-input type="text" label="Last Name" required name="lastName" value={leadObject.LastName} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                     </lightning-layout>
                     <lightning-layout multiple-rows="true">
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="email" label="Email Id" required></lightning-input>
+                            <lightning-input type="text" label="Occupation" name="occupation" value={leadObject.Occupation__c} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-textarea label="Address" required></lightning-textarea>
+                            <lightning-input type="tel" label="Primary Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required name="phoneNo" value={leadObject.Phone} onchange={handleInputChange}></lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout multiple-rows="true">
+                        <lightning-layout-item class="slds-p-around_xx-small" size="6">
+                            <lightning-input type="email" label="Email Id" required name="email" value={leadObject.Email} onchange={handleInputChange}></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-p-around_xx-small" size="6">
+                            <lightning-textarea label="Address" required name="address" value={leadObject.Lead_Address__c} onchange={handleInputChange}></lightning-textarea>
                         </lightning-layout-item>
                     </lightning-layout>
                     <h3 class="slds-section-title--divider">Family Details</h3>
                     <lightning-layout class="slds-m-top_medium" multiple-rows="true">
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Father's Full Name" required></lightning-input>
+                            <lightning-input type="text" label="Father's Full Name" required name="fatherName" value={leadObject.fatherName__c} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Mother's Full Name"></lightning-input>
-                        </lightning-layout-item>
-                    </lightning-layout>
-                    <lightning-layout multiple-rows="true">
-                        <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Father's Occupation"></lightning-input>
-                        </lightning-layout-item>
-                        <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Mother's Occupation"></lightning-input>
+                            <lightning-input type="text" label="Mother's Full Name" name="motherName" value={leadObject.motherName__c} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                     </lightning-layout>
                     <lightning-layout multiple-rows="true">
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="tel" label="Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></lightning-input>
+                            <lightning-input type="text" label="Father's Occupation" name="fatherOccupation" value={leadObject.fatherOccupation__c} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="tel" label="Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></lightning-input>
+                            <lightning-input type="text" label="Mother's Occupation" name="motherOccupation" value={leadObject.motherOccupation__c} onchange={handleInputChange}></lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout multiple-rows="true">
+                        <lightning-layout-item class="slds-p-around_xx-small" size="6">
+                            <lightning-input type="tel" label="Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="fatherPhoneNo" value={leadObject.fatherPhoneNo__c} onchange={handleInputChange}></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-p-around_xx-small" size="6">
+                            <lightning-input type="tel" label="Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="motherPhoneNo" value={leadObject.motherPhoneNo__c} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                     </lightning-layout>
                     <div class="slds-align_absolute-center slds-m-top_medium">
-                        <lightning-button variant="brand" label="Save & Next" name="saveNext" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button variant="brand" label="Save & Next" name="saveNext" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
                     </div>
                 </template>
                 <template if:true={isDocUploaded}>
