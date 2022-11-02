@@ -28,7 +28,7 @@ export default async function (event, context, logger) {
   logger.info(`Received connection ${connection}`);
 
   // query database
-  connection.connect(function(err) {
+  await connection.connect(function(err) {
     if (err) throw err;
     connection.query("SELECT * FROM cibilScore", function (err, result, fields) {
       if (err) 
