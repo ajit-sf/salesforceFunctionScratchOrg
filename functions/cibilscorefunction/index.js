@@ -34,8 +34,10 @@ export default async function (event, context, logger) {
       if (err) 
         throw err;
       console.log('helloooooooo result '+result);
+      logger.info(`helloooo result ${result}`);
       Object.keys(result).forEach(function(key) {
         var row = result[key];
+        logger.info(`helooooooo score  ${row.score}`);
         console.log('helooooooo score ' +row.score);
         score = row.score;
       });
