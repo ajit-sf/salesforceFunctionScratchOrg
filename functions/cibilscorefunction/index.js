@@ -33,10 +33,10 @@ export default async function (event, context, logger) {
     connection.query("SELECT * FROM cibilScore", function (err, result, fields) {
       if (err) 
         throw err;
-      console.log(result);
+      console.log('helloooooooo result '+result);
       Object.keys(result).forEach(function(key) {
         var row = result[key];
-        console.log(row.score);
+        console.log('helooooooo score ' +row.score);
         score = row.score;
       });
   });
