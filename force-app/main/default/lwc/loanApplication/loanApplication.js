@@ -158,7 +158,6 @@ export default class LoanApplication extends LightningElement {
         });
 
         let response = await fetchTextFromImages({downloadableLink : downloadableUrl, type : 'panCard'});
-        console.log('response' + response);
         let responseCopy = JSON.parse((JSON.parse(JSON.stringify(response))));
         this.leadObject.panNum = responseCopy.panNum;
         this.leadObject.panCardName = responseCopy.name;
