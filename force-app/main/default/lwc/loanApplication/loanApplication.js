@@ -70,6 +70,7 @@ export default class LoanApplication extends LightningElement {
     }
     handleSave(event){
         console.log('Create - Lead ');
+        this.isLoading = true;
         if(this.recordId == null ){
             insertLead({
                 jsonOfLead: JSON.stringify(this.leadObject)
@@ -83,9 +84,11 @@ export default class LoanApplication extends LightningElement {
                     duration: 2000
                 });
                 this.dispatchEvent(event);
+                this.isLoading = false;
             })
             .catch(error => {
                 console.log(error);
+                this.isLoading = false;
             });
         }
         console.log('Click button '+event.target.name+' current value '+this.currentValue);
