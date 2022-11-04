@@ -102,10 +102,10 @@
                         </lightning-layout-->
                         <lightning-layout multiple-rows="true">
                             <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                                <lightning-input type="text" label="PAN Number" required></lightning-input>
+                                <lightning-input type="text" label="PAN Number" value={leadObject.panNum} required></lightning-input>
                             </lightning-layout-item>
                             <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                                <lightning-input type="text" label="Full name as on PAN card" required></lightning-input>
+                                <lightning-input type="text" label="Full name as on PAN card" value={leadObject.panCardName} required></lightning-input>
                             </lightning-layout-item>
                         </lightning-layout>
                         <lightning-layout multiple-rows="true">

@@ -15,6 +15,8 @@ export default class LoanApplication extends LightningElement {
         aadhaarCardName : '',
         aadhaarNum : '',
         aadhaarAdd : '',
+        panNum : '',
+        panCardName : ''
     };
     recordId;
 
@@ -157,8 +159,9 @@ export default class LoanApplication extends LightningElement {
 
         let response = await fetchTextFromImages({downloadableLink : downloadableUrl, type : 'panCard'});
         console.log('response' + response);
-        // let responseCopy = JSON.parse((JSON.parse(JSON.stringify(response))));
-        // this.leadObject.aadhaarAdd = responseCopy.address;
+        let responseCopy = JSON.parse((JSON.parse(JSON.stringify(response))));
+        this.leadObject.panNum = responseCopy.panNum;
+        this.leadObject.panCardName = responseCopy.name;
         this.isLoading = false;
     }
 
