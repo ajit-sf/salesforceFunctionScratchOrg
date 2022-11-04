@@ -131,7 +131,7 @@ export default async function (event, context, logger) {
     }
     else{
       const panCardRegex = /([A-Z]){5}([0-9]){4}([A-Z]){1}$/;
-      const nameRegex = /^[A-Z \d\W]+$/;
+      const nameRegex = /^[A-Z \W]+$/;
       let panNumber = '';
       let nameArr = [];
       let nameVal = '';
