@@ -2,7 +2,7 @@
   @description       : 
   @author            : Indu, Ajitesh
   @group             : 
-  @last modified on  : 10-31-2022
+  @last modified on  : 11-04-2022
   @last modified by  : Ajitesh
 -->
 <template>
@@ -140,7 +140,7 @@
                             name="aadharfile"
                             accept={acceptedFormats}
                             record-id="00Q2D000007S523UAC"
-                            onuploadfinished={handleUploadFinished}
+                            onuploadfinished={handleUploadFinishedAadhaarFront}
                         >
                         </lightning-file-upload>
                     </lightning-layout-item>
@@ -150,7 +150,7 @@
                             name="aadharfile"
                             accept={acceptedFormats}
                             record-id="00Q2D000007S523UAC"
-                            onuploadfinished={handleUploadFinished}
+                            onuploadfinished={handleUploadFinishedAadhaarBack}
                         >
                         </lightning-file-upload>
                     </lightning-layout-item>

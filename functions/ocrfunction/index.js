@@ -103,7 +103,7 @@ export default async function (event, context, logger) {
         for (let i = aadhaarVal.length - 1; i >= 0; i--) {
           aadhaarEntireNum += aadhaarVal[i].label;
 
-          if (aadhaarEntireNum.length() >= 12) {
+          if (aadhaarEntireNum.length >= 12) {
             break;
           }
         }
