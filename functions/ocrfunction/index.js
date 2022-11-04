@@ -131,7 +131,7 @@ export default async function (event, context, logger) {
     }
     else{
       const panCardRegex = /([A-Z]){5}([0-9]){4}([A-Z]){1}$/;
-      const nameRegex = /[A-Z\s]+/;
+      const nameRegex = /^[A-Z \d\W]+$/;
       let panNumber = '';
       let nameArr = [];
       let nameVal = '';
@@ -146,7 +146,7 @@ export default async function (event, context, logger) {
 
       if(nameArr.length>0){
         nameArr.sort((a,b) => a.minY - b.minY);
-        nameVal = nameArr[0];
+        nameVal = nameArr[0].label;
       }
       return {panNum : panNumber, name : nameVal};
 
