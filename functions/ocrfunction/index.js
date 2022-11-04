@@ -139,7 +139,7 @@ export default async function (event, context, logger) {
         if(panCardRegex.test(i.label)){
           panNumber = i.label;
         }
-        if(nameRegex.test(i.label) && !((i.label.toLowerCase()).includes('index')) && !((i.label.toLowerCase()).includes('govt'))){
+        if(nameRegex.test(i.label) && !((i.label.toLowerCase()).includes('income')) && !((i.label.toLowerCase()).includes('govt'))){
           nameArr.push(i);
         }
       }
