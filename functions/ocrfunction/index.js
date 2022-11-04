@@ -129,7 +129,30 @@ export default async function (event, context, logger) {
       }
       return {address : address};
     }
+    else{
+      const panCardRegex = /([A-Z]){5}([0-9]){4}([A-Z]){1}$/;
+      const nameRegex = /[A-Z\s]+/;
+      let panNumber = '';
+      let nameArr = [];
+      let nameVal = '';
+      for (let i of imageJSON.probabilities) {
+        if(panCardRegex.test(i.label)){
+          panNumber = i.label;
+        }
+        if(nameRegex.test(i.label) && !((i.label.toLowerCase()).includes('index')) && !((i.label.toLowerCase()).includes('govt'))){
+          nameArr.push(i);
+        }
+      }
 
+      if(nameArr.length>0){
+        nameArr.sort((a,b) => a.minY - b.minY);
+        nameVal = nameArr[0];
+      }
+      return {panNum : panNumber, name : nameVal};
+
+
+
+    }
 
 
   }

@@ -11,8 +11,15 @@ export default class LoanApplication extends LightningElement {
     isDocUploaded = false;
     
     @track cibilScore = 75;
-    leadObject = {};
+    leadObject = {
+        aadhaarCardName : '',
+        aadhaarNum : '',
+        aadhaarAdd : '',
+    };
     recordId;
+
+    // Spinner loader
+    isLoading = false;
 
     connectedCallback(){
         this.handleInit();
@@ -106,6 +113,7 @@ export default class LoanApplication extends LightningElement {
     }
 
     async handleUploadFinishedAadhaarFront(event) {
+        this.isLoading = true;
         // Get the list of uploaded files
         const uploadedFiles = event.detail.files;
         
@@ -115,10 +123,14 @@ export default class LoanApplication extends LightningElement {
         });
 
         let response = await fetchTextFromImages({downloadableLink : downloadableUrl, type : 'aadhaarFront'});
-        console.log('response' + response);
+        let responseCopy = JSON.parse((JSON.parse(JSON.stringify(response))));
+        this.leadObject.aadhaarCardName = responseCopy.nameVal;
+        this.leadObject.aadhaarNum = responseCopy.aadhaarNum;
+        this.isLoading = false;
     }
 
     async handleUploadFinishedAadhaarBack(event) {
+        this.isLoading = true;
         // Get the list of uploaded files
         const uploadedFiles = event.detail.files;
         
@@ -128,7 +140,26 @@ export default class LoanApplication extends LightningElement {
         });
 
         let response = await fetchTextFromImages({downloadableLink : downloadableUrl, type : 'aadhaarBack'});
+        let responseCopy = JSON.parse((JSON.parse(JSON.stringify(response))));
+        this.leadObject.aadhaarAdd = responseCopy.address;
+        this.isLoading = false;
+    }
+
+    async handleUploadFinishedPanCard(event) {
+        this.isLoading = true;
+        // Get the list of uploaded files
+        const uploadedFiles = event.detail.files;
+        
+        let downloadableUrl = await createPublicDistributionLink({
+            fileName : uploadedFiles[0].name,
+            contentVersionId : uploadedFiles[0].contentVersionId,
+        });
+
+        let response = await fetchTextFromImages({downloadableLink : downloadableUrl, type : 'panCard'});
         console.log('response' + response);
+        // let responseCopy = JSON.parse((JSON.parse(JSON.stringify(response))));
+        // this.leadObject.aadhaarAdd = responseCopy.address;
+        this.isLoading = false;
     }
 
 

@@ -7,6 +7,11 @@
 -->
 <template>
     <lightning-card>
+
+        <!-- Spinner for loading -->
+        <lightning-spinner if:true={isLoading} alternative-text="Loading" variant="brand" size="medium"></lightning-spinner>
+        <!-- Spinner for loading -->
+
         <div class="slds-p-around--medium slds-m-bottom--x-small">
             <div class="slds-form-element">
                 <lightning-progress-indicator current-step={currentValue} type="path" variant="base">
@@ -74,11 +79,14 @@
                     <p class="slds-m-bottom_small slds-m-top_medium"> Upload your KYC and banking documents for auto fill and verification.</p>
                     <lightning-layout multiple-rows="true">
                         <lightning-layout-item class="slds-p-around_xx-small" size="8">
-                            <lightning-input type="file" 
-                                    name="panfile"
-                                    accept={acceptedFormats}
-                                    record-id="00Q2D000007S523UAC"
-                                    label="PAN Card" onchange={openPanfileUpload}></lightning-input>
+                            <lightning-file-upload
+                            label="PAN Card"
+                            name="panfile"
+                            accept={acceptedFormats}
+                            record-id="00Q2D000007S523UAC"
+                            onuploadfinished={handleUploadFinishedPanCard}
+                        >
+                        </lightning-file-upload>
                                 <template if:true={panFileData}>
                                     <p><lightning-icon size="x-small" style=" --lwc-colorTextIconDefault: #3989c6;" icon-name="utility:attach" alternative-text="attachment"></lightning-icon> {panFileData.filename}</p>
                                 </template>
@@ -173,18 +181,18 @@
                         </lightning-layout-item>
                     </lightning-layout-->
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="AADHAR Number" required></lightning-input>
+                            <lightning-input type="text" value={leadObject.aadhaarNum} label="AADHAR Number" required></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Full name as on AADHAR card" required></lightning-input>
+                            <lightning-input type="text" value={leadObject.aadhaarCardName} label="Full name as on AADHAR card" required></lightning-input>
                         </lightning-layout-item>
                     </lightning-layout>
                     <lightning-layout multiple-rows="true">
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Address (as per AADHAR card)" required></lightning-input>
+                            <lightning-input type="text" value={leadObject.aadhaarAdd} label="Address (as per AADHAR card)" required></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="tel" label="Phone Number (as per AADHAR card)" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></lightning-input>
+                            <lightning-input type="tel" label="Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></lightning-input>
                         </lightning-layout-item>
                     </lightning-layout>
                     <div class="slds-align_absolute-center slds-m-top_medium">
