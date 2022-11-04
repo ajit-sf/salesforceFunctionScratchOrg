@@ -99,7 +99,7 @@ export default async function (event, context, logger) {
       }
 
       if (!aadhaarEntireNum) {
-        aadhaarVal.sort((a, b) => a.probability - b.probability || a.minX - b.minX);
+        aadhaarVal.sort((a, b) => a.probability - b.probability || a.boundingBox.minX - b.boundingBox.minX);
         for (let i = aadhaarVal.length - 1; i >= 0; i--) {
           aadhaarEntireNum += aadhaarVal[i].label;
 
@@ -122,7 +122,7 @@ export default async function (event, context, logger) {
         }
         
       }
-      addressArray.sort((a,b) => a.minY - b.minY || a.minX - b.minX);
+      addressArray.sort((a,b) => a.boundingBox.minY - b.boundingBox.minY || a.boundingBox.minX - b.boundingBox.minX);
 
       for(let i of addressArray){
         address += i.label;
@@ -145,7 +145,7 @@ export default async function (event, context, logger) {
       }
 
       if(nameArr.length>0){
-        nameArr.sort((a,b) => a.minY - b.minY);
+        nameArr.sort((a,b) => a.boundingBox.minY - b.boundingBox.minY);
         nameVal = nameArr[0].label;
       }
       return {panNum : panNumber, name : nameVal};
