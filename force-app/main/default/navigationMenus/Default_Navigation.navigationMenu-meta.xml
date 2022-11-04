@@ -5,9 +5,17 @@
     <label>Default Navigation</label>
     <navigationMenuItem>
         <label>Topics</label>
-        <position>0</position>
+        <position>1</position>
         <publiclyAvailable>true</publiclyAvailable>
         <target>ShowMoreTopics</target>
         <type>NavigationalTopic</type>
+    </navigationMenuItem>
+    <navigationMenuItem>
+        <defaultListViewId>All</defaultListViewId>
+        <label>Lead</label>
+        <position>2</position>
+        <publiclyAvailable>true</publiclyAvailable>
+        <target>Lead</target>
+        <type>SalesforceObject</type>
     </navigationMenuItem>
 </NavigationMenu>
