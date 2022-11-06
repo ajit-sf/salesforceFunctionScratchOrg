@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>PrivateKey</label>
+    <protected>false</protected>
+    <values>
+        <field>Value__c</field>
+        <value xsi:type="xsd:string">-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAvwYXv0EaSnhSuR7UUw3WvsETBWbaILJY8Q0lnPUbEVW2/71R
+1czClSoWHIlwFfR6e/cgm/xizc6U8q1CG/znyMSd4hfrVhdMArSwRDq+pHKbCjfr
+7V1rO6qeYMwZqCwrcm6v/G7QqhrVsI4ssJqis5N4VRQZ0F50vQdAz3uvB4XmGSVY
+xHR9WhBj+OqAOIjyx03zLPRR1AoVcORRDS7wJY3Ik2G89hSDJMlulSzUpZAWMDO3
+5JWjUEBaSjI4+eDltlO8X61tmi6MqVFKufCG80OGKl+ti2rhGB043uE120PUtZRB
+baVMKZ3W/gFJZLxun6htKxuCzZlqXvfP5xLT4wIDAQABAoIBAAdH8ivGDXx9LZoE
+xM8NnfvTXCg+jV3lrmIxwBdFeGymubzxuGbP0TLiUclwq6cKlIiZGNMZQaLalu7R
+D84FS8hpRiNSChRT+v+3Z2iSXKXkAGjZTNLVVrsFe9fwr6GrXVSVR3v1tVpmf3Kl
+WKq6mi0CF/oWNA2vK//wgNXnvvooXX1OMnSUdAkhz4ue2GLM8+2T81If6hmojMUR
+bGTn36pwI37KWGkyJYabha/zDsCgLnDG2SOCMg0LiKRp6R+gar+AXfS8mRfRmSVF
+UD4JTcH1s51RVj5LzSHCjI4d73CRo3yZHasSWdME+3n5HIcD/5AEVJTqxKZAXZN+
+6uMMSaECgYEA76MvAWzCpjMeM+TWcM9PLM6fiz2294E03UDCeetLul0PaA5qaA85
+V9NzEb+0IWgeuQoZpaQ7N0SkLO2yh5SaX8qXFQ8bOk37F2ba2T0XF7JI4YWaUeGH
+wtqk9CGILOgMmLp4OG3Y4Tgs1kP5zUtQqxXbCuDY+F/NfXvdvJFyy0kCgYEAzBEm
+8TDdBlYafww/6/0SjO/hWZRQZDSi9Z0nOXs5cPxenUxplBPkHRkR39wosTkK+kIM
+wd5y25+i+RnUL37xbLf4w3yU4eJeZtK107to7jO2OpKi+Ba37engkBkfE1n/Rf/3
+hjaFnQTUkINy1afRKWdhGgPRpmeLLKUm8vQlmcsCgYB/m+NFG/iPbnsv4TU8P3kH
+AES/bi7HoBtZksm9CMp7xGCW5c5N+YVsumH1WqN+gqaRnMpJhaou5TOT5UQDpOOM
+DSLlCPVT2ADU1mXF9x0b9kmPJokl/zY/UhUzF8QfPbavgeTRD9XFIRfnRa15YBjl
+8i6BnXiM0t9nahWK+90oWQKBgQDHLaqj2fyxtZMRFITDsvTLSUvcIm5BEDtKnoRt
+j3+mbz1uLOoUFUIewJx4squpJzM2xwcqpxPWl777giFf5niAlCSjsdKjk05u8BV3
+P0IQ1bp0+zFEEvCdsBx2qX5yZfJKgac4gbjyZIeRMiwArFb0IapeOQIFeKUYA267
+zl9w9wKBgQCxtTTDr992caNblDr1GveTqmUPZQI7ecX1XbgJr9aoh09MfQAV4oO7
+56NG1WN8uYspvKAwD/q9Fu0wiqsBxcFNMauLNb8pH94WWWRvFyGRZfcqfJ8jiAWa
+SItc7n2DfGR6kJTiAxit/vV+/hGK4r1uUL5/AH9Qln7m7M+fbAIs5w==
+-----END RSA PRIVATE KEY-----</value>
+    </values>
+</CustomMetadata>

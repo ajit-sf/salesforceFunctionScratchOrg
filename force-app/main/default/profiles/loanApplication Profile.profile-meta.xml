@@ -165,11 +165,19 @@
         <field>Lead.motherPhoneNo__c</field>
         <readable>false</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>OCR_Authentication__mdt.Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>Lead-Lead Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead_Information_Check__c-Lead Information Check Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>OCR_Authentication__mdt-OCR Authentication Layout</layout>
     </layoutAssignments>
     <pageAccesses>
         <apexPage>AnswersHome</apexPage>
