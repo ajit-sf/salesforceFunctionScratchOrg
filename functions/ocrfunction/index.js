@@ -29,18 +29,20 @@ export default async function (event, context, logger) {
 
     const downloadableUrl = event.data.downloadableUrl;
     const type = event.data.type;
+    const username = event.data.username;
+    const privateKey = event.data.privateKey;
     console.log('type ' + type);
 
     logger.info(`Invoking Ocrfunction with payload`);
 
     //Generating payload
     let payload = {
-      "sub": 'ajiteshpratap.singh@salesforce.com',
+      "sub": username,
       "aud": "https://api.einstein.ai/v2/oauth2/token",
       "exp": (Math.floor(Date.now() / 1000) + 600),
     };
 
-    const key = readFileSync('einstein_platform_check.pem');
+    const key = privateKey;
 
     // Signing token
     const token = jwt.sign(payload, key, { algorithm: 'RS256' });
