@@ -3,12 +3,27 @@ import { LightningElement, api, track } from 'lwc';
 import createPublicDistributionLink from '@salesforce/apex/LoanApplicationDataServices.createPublicDistributionLink';
 import fetchTextFromImages from '@salesforce/apex/LoanApplicationDataServices.fetchTextFromImages';
 import insertLead from '@salesforce/apex/loanApplicationHelper.insertLead';
+import updateLead from '@salesforce/apex/loanApplicationHelper.updateLead';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import Fail from '@salesforce/resourceUrl/fail';
+import Success from '@salesforce/resourceUrl/success';
+import Validated from '@salesforce/resourceUrl/validated';
+import workInProgress from '@salesforce/resourceUrl/workInProgress';
 
 export default class LoanApplication extends LightningElement {
     currentValue = '2';
     isFormFill = true;
     isDocUploaded = false;
+    isVerify = false;
+    isSubmit = false;
+
+    isSuccess = false;
+    isError = false;
+    isValidating = true;
+    Success = Success;
+    Validated = Validated;
+    Fail = Fail;
+    workInProgress = workInProgress;
     
     @track cibilScore = 75;
     leadObject = {
@@ -41,9 +56,10 @@ export default class LoanApplication extends LightningElement {
         this.leadObject.fatherPhoneNo__c = null;
         this.leadObject.motherPhoneNo__c = null;
         this.leadObject.Company = null;
+        this.leadObject.Id = null;
     }
 
-    pathHandler(event) {
+   /* pathHandler(event) {
         let targetValue = event.currentTarget.value;
         let selectedvalue = event.currentTarget.label;
         this.currentValue = targetValue;
@@ -67,17 +83,34 @@ export default class LoanApplication extends LightningElement {
             this.isFormFill = false;
             this.isDocUploaded = false;
         }
+    }*/
+    isInputValid() {
+        let isValid = true;
+        const allValid = [...this.template.querySelectorAll('lightning-input')]
+            .reduce((validSoFar, inputCmp) => {
+                        inputCmp.reportValidity();
+                        return validSoFar && inputCmp.checkValidity();
+            }, true);
+        if (allValid) {
+            console.log('Successful');
+            isValid = true;
+        } else {
+            isValid = false;
+        }
+        return isValid;
     }
+
     handleSave(event){
-        console.log('Create - Lead ');
+        console.log('Create - Lead ' +this.isInputValid());
         this.isLoading = true;
-        if(this.recordId == null ){
+        if(this.recordId == null && this.isInputValid()){
             insertLead({
                 jsonOfLead: JSON.stringify(this.leadObject)
             })
             .then(data => {
                 console.log('record inserted '+data);
                 this.recordId = data;
+                this.leadObject.Id = data;
                 let event = new ShowToastEvent({
                     message: "Lead successfully created!",
                     variant: "success",
@@ -91,23 +124,102 @@ export default class LoanApplication extends LightningElement {
                 this.isLoading = false;
             });
         }
+        if(this.isInputValid() == false){
+            this.isLoading = false;
+            let event = new ShowToastEvent({
+                message: "Please fill in the required details",
+                variant: "error",
+                duration: 2000
+            });
+            this.dispatchEvent(event);
+        }
+        if(this.recordId != null && this.isInputValid() && event.target.name == "saveNext"){
+            console.log('Update lead');
+            updateLead({
+                jsonOfLead: JSON.stringify(this.leadObject)
+            })
+            .then(data => {
+                console.log('record Updated '+data);
+                this.recordId = data;
+                this.leadObject.Id = data;
+                let event = new ShowToastEvent({
+                    message: "Lead successfully Updated!",
+                    variant: "success",
+                    duration: 2000
+                });
+                this.dispatchEvent(event);
+                this.isLoading = false;
+            })
+            .catch(error => {
+                console.log(error);
+                this.isLoading = false;
+            });
+        }
         console.log('Click button '+event.target.name+' current value '+this.currentValue);
-        if(event.target.name == "saveNext" && this.currentValue == '2'){
+        if(event.target.name == "saveNext" && this.currentValue == '2' && this.isInputValid()){
+            this.isLoading = false;
             this.isFormFill = false;
             this.isDocUploaded = true;
+            this.isVerify = false;
+            this.isSubmit = false;
             this.currentValue = '3';
         }
         if(event.target.name == "back" && this.currentValue == '3'){
+            this.isLoading = false;
             this.isFormFill = true;
             this.isDocUploaded = false;
+            this.isVerify = false;
+            this.isSubmit = false;
             this.currentValue = '2';
         }
         if(event.target.name == "saveNextOnUpload" && this.currentValue == '3'){
+            console.log(this.isValidating+' Validating '+this.isError+' Success '+this.isSuccess);
+            window.setTimeout(() => { 
+                this.isValidating = false;
+                this.validateAadhar();}, 2000);
+            this.isLoading = false;
             this.isFormFill = false;
             this.isDocUploaded = false;
+            this.isVerify = true;
+            this.isSubmit = false;
             this.currentValue = '4';
         }
+        if(event.target.name == "saveNextOnSucess" && this.currentValue == '4'){
+            this.isLoading = false;
+            this.isFormFill = false;
+            this.isDocUploaded = false;
+            this.isVerify = false;
+            this.isSubmit = true;
+            this.currentValue = '5';
+        }
+        if(event.target.name == "backToUpload" && this.currentValue == '4'){
+            this.isValidating = true;
+            this.isSuccess = false;
+            this.isError = false;
+            this.isLoading = false;
+            this.isFormFill = false;
+            this.isDocUploaded = true;
+            this.isVerify = false;
+            this.isSubmit = false;
+            this.currentValue = '3';
+        }
         
+    }
+
+    validateAadhar(){
+        console.log('Aadhar Number '+this.leadObject.aadhaarNum+' Name '+this.leadObject.aadhaarCardName);
+        let name = this.leadObject.FirstName.concat(" ", this.leadObject.LastName);
+        let aadharName = this.leadObject.aadhaarCardName;
+        console.log(name+' First Name '+this.leadObject.FirstName+' Last Name '+this.leadObject.LastName);
+        if(name.toUpperCase() == aadharName.toUpperCase()){
+            console.log('Matched');
+            this.isSuccess = true;
+            this.isError = false;
+        }else{
+            console.log('Name mismatched');
+            this.isSuccess = false;
+            this.isError = true;
+        }
     }
 
     @api panRecordId;

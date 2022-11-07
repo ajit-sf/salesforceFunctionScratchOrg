@@ -118,7 +118,7 @@
                         </lightning-layout>
                     </lightning-layout-item>
                     <lightning-layout-item class="slds-p-around_xx-small" size="4">
-                        <div class="slds-box" style="width:80%; height: 206px; margin-left:64px">
+                        <div class="slds-box" style="width:90%; height: 250px; margin-left:37px">
                             <c-progress-ring ring-color ="Blue" percentage-type="Static" title=" Credit Score" show-both-text-and-percentage=true text-inside-ring="Score" title-placement="Header"></c-progress-ring>
                             <!--p class="slds-align_absolute-center">Excellent Credit Score</p>
                             <ightning-progress-ring class="progress-ring" value={cibilScore} variant="active-step" size="large"> </lightning-progress-ring>
@@ -201,6 +201,27 @@
                     </div>
                 </lightning-layout-item>
                 </lightning-layout>
+                </template>
+                <template if:true={isVerify}>
+                    <template if:true={isValidating}>
+                        <img style="width:300px;" class="slds-align_absolute-center slds-m-top_medium" src={workInProgress}><br/>
+                    </template>
+                    <template if:true={isSuccess}>
+                        <img style="width:390px;" class="slds-align_absolute-center" src={Validated}><br/>
+                        <div class="slds-align_absolute-center slds-m-top_medium">
+                            <lightning-button variant="brand" label="Submit" name="saveNextOnSucess" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
+                        </div>
+                    </template>
+                    <template if:true={isError}>
+                        <p class="slds-align_absolute-center slds-m-bottom_small slds-m-top_medium" style="font:bold; font-size:28px"> Name MisMatched - Please enter Name exactly as given in AADHAAR Card</p>
+                        <img style="width:450px;" class="slds-align_absolute-center slds-m-top_large"  src={Fail}><br/>
+                        <div class="slds-align_absolute-center slds-m-top_medium">
+                            <lightning-button variant="Neutral" label="Back" name="backToUpload" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
+                        </div>
+                    </template>
+                </template>
+                <template if:true={isSubmit}>
+                    <img style="width:550px;" class="slds-align_absolute-center slds-m-top_medium" src={Success}><br/>
                 </template>
             </div>  
         </div>
