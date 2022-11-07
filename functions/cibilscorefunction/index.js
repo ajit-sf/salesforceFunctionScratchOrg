@@ -45,7 +45,7 @@ export default async function (event, context, logger) {
 });
 return score;
 */
-  const [rows, fields] = await connection.execute(`SELECT * FROM ` + '`cibilScore`');
+  const [rows, fields] = await connection.execute(`SELECT * FROM cibilScore`);
   console.log('query data '+rows);
 
   if(rows.length > 0){
