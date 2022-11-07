@@ -47,8 +47,6 @@ return score;
 */
   const [rows, fields] = await connection.execute(`SELECT * FROM ` + '`cibilScore`');
   console.log('query data '+rows);
-  logger.info(`rowsassssss ${rows}`);
-  logger.info(`score ${rows[0].score}`);
 
   if(rows.length > 0){
     return rows[0].score;
