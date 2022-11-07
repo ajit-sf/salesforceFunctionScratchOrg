@@ -45,13 +45,14 @@ export default async function (event, context, logger) {
 });
 return score;
 */
-  const rows = await connection.execute(`SELECT score FROM cibilScore`);
+  const [rows, fields] = await connection.execute(`SELECT score FROM cibilScore`);
   console.log('query data '+rows);
+  logger.info(`Received connection ${connection}`);
 
   if(rows.length > 0){
     return rows[0].score;
   }
   else{
-    return 'error';
+    return 'Failed';
   }
 }
