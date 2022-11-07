@@ -49,6 +49,8 @@ return score;
   //`SELECT * FROM cibilScore`
   console.log('query data '+rows);
 
+  logger.info(`Received connection ${rows}`);
+
   if(rows.length > 0){
     return rows[0].score;
   }
