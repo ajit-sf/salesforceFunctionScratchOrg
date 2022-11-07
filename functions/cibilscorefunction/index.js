@@ -23,12 +23,12 @@ export default async function (event, context, logger) {
   logger.info(`Client fetched successfully ${mysql}`);
 
   // create the connection
-  const connection = await mysql.createConnection({host:'sql12.freesqldatabase.com', user: 'sql12529671', database: 'sql12529671', password : 'nP3DxbcQJX'});
+  const connection = await mysql.createConnection({host:'sql6.freesqldatabase.com', user: 'sql6526424', database: 'sql6526424', password : 'lVzTKiTViU'});
 
   logger.info(`Received connection ${connection}`);
 
   // query database
-  await connection.connect(function(err) {
+  /*await connection.connect(function(err) {
     if (err) throw err;
     connection.query("SELECT * FROM cibilScore", function (err, result, fields) {
       if (err) 
@@ -43,14 +43,15 @@ export default async function (event, context, logger) {
       });
   });
 });
-  /*const rows = await connection.execute(`SELECT score FROM cibilScore`);
+return score;
+*/
+  const rows = await connection.execute(`SELECT score FROM cibilScore`);
   console.log('query data '+rows);
 
   if(rows.length > 0){
-    return rows;
+    return rows[0].score;
   }
   else{
     return 'error';
-  }*/
-  return score;
+  }
 }
