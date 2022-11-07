@@ -11,17 +11,15 @@ public class CibilScoreHelper {
             functions.FunctionInvocation invocation = fn.invoke('');
     
             // Check if there is any error during the invocation
-            /*if (invocation.getStatus() == functions.FunctionInvocationStatus.ERROR) {
+            if (invocation.getStatus() == functions.FunctionInvocationStatus.ERROR) {
                 throw new CalloutException(
                 (invocation.getError() != null
                     ? invocation.getError().getMessage()
                     : 'UNKNOWN')
                 );
             }
-      */
             String response = invocation.getResponse();
         	System.debug('Response '+response);
-    
             //FlowOutputVariable output = (FlowOutputVariable) JSON.deserialize(response, FlowOutputVariable.class);
     
             //return new List<FlowOutputVariable>{output};
