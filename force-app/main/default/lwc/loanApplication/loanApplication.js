@@ -48,8 +48,8 @@ export default class LoanApplication extends LightningElement {
     handlecibilScore(){
         checkCibilScore({})
             .then(data => {
-                console.log('record Updated '+data);
-                this.cibilScore = data;
+                console.log('record Updated '+data/1000);
+                this.cibilScore = data/1000;
             })
             .catch(error => {
                 console.log(error);

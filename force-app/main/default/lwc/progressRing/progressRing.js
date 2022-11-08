@@ -51,8 +51,8 @@ export default class ProgressRing extends LightningElement {
     }
 
     renderedCallback(){
-        colorStyle = '';
-        circleStyle ='';
+        let colorStyle = '';
+        let circleStyle ='';
         if(this.remainingRingColour == null)
             this.remainingRingColour = '#8080807a';
         this.template.querySelector('svg circle').style.stroke = this.ringColor;

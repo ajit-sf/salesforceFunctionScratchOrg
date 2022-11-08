@@ -34,7 +34,7 @@ export default async function (event, context, logger) {
   logger.info(`Received connection ${rows}`);
 
   if(rows.length > 0){
-    return rows[0].score;
+    return rows[1].score;
   }
   else{
     return 'Failed';
