@@ -29,6 +29,7 @@ export default class ProgressRing extends LightningElement {
             else{
                 this.percentageVal = this.percentage;
             }
+            console.log('Percentage val '+this.percentageVal+' percentage '+this.percentage);
             
         }
         else if(this.percentageType == 'Relational'){
