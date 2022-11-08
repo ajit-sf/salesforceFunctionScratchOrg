@@ -10,6 +10,8 @@ import Success from '@salesforce/resourceUrl/success';
 import Validated from '@salesforce/resourceUrl/validated';
 import workInProgress from '@salesforce/resourceUrl/workInProgress';
 
+import checkCibilScore from '@salesforce/apex/CibilScoreHelper.checkCibilScore';
+
 export default class LoanApplication extends LightningElement {
     currentValue = '2';
     isFormFill = true;
@@ -25,7 +27,7 @@ export default class LoanApplication extends LightningElement {
     Fail = Fail;
     workInProgress = workInProgress;
     
-    @track cibilScore = 75;
+    @track cibilScore;
     leadObject = {
         aadhaarCardName : '',
         aadhaarNum : '',
@@ -40,6 +42,18 @@ export default class LoanApplication extends LightningElement {
 
     connectedCallback(){
         this.handleInit();
+        this.handlecibilScore();
+    }
+
+    handlecibilScore(){
+        checkCibilScore({})
+            .then(data => {
+                console.log('record Updated '+data);
+                this.cibilScore = data;
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
     
     handleInit(){
