@@ -26,25 +26,7 @@ export default async function (event, context, logger) {
   const connection = await mysql.createConnection({host:'sql6.freesqldatabase.com', user: 'sql6526424', database: 'sql6526424', password : 'lVzTKiTViU'});
 
   logger.info(`Received connection ${connection}`);
-
-  // query database
-  /*await connection.connect(function(err) {
-    if (err) throw err;
-    connection.query("SELECT * FROM cibilScore", function (err, result, fields) {
-      if (err) 
-        throw err;
-      console.log('helloooooooo result '+result);
-      logger.info(`helloooo result ${result}`);
-      Object.keys(result).forEach(function(key) {
-        var row = result[key];
-        logger.info(`helooooooo score  ${row.score}`);
-        console.log('helooooooo score ' +row.score);
-        score = row.score;
-      });
-  });
-});
-return score;
-*/
+  
   const [rows, fields] = await connection.execute(`SELECT * FROM ` + '`cibilScore`');
   //`SELECT * FROM cibilScore`
   console.log('query data '+rows);
