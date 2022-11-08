@@ -19,11 +19,11 @@ export default class ProgressRing extends LightningElement {
     connectedCallback(){
         if(this.percentageType == 'Static'){
             if(this.percentage>100){
-                this.percentageVal = this.percentage+'%';
-                this.percentage = 100;
+                this.percentageVal = this.percentage;
+                this.percentage = this.percentageVal/1000;
             }
             else{
-                this.percentageVal = this.percentage+'%';
+                this.percentageVal = this.percentage;
             }
             
         }
