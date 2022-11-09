@@ -12,6 +12,7 @@
  */
 
 import { createRequire } from 'module';
+import { readFileSync } from 'fs';
 import fetch, { FormData } from 'node-fetch';
 
 const require = createRequire(import.meta.url);
@@ -57,28 +58,11 @@ export default async function (event, context, logger) {
     let responseJSON = await response.json();
     console.log('Response ' + JSON.stringify(responseJSON));
 
+
     //Fetching text values from images
     const form = new FormData();
-
-    if(type === 'test'){
-      const contentId = event.data.contentId;
-      console.log('contentId' + contentId);
-      const resultsV1 = await context.org.dataApi.query(
-        `SELECT Id FROM ContentVersion WHERE Id='${contentId}'`
-      );
-      const account= '0018N000009WhFcQAK';
-      const results = await context.org.dataApi.query(
-        `SELECT Id FROM Account WHERE Id='${account}'`
-      );
-      console.log(' Data' + JSON.stringify(results));
-      console.log(' Data' + JSON.stringify(resultsV1));
-      return;
-      form.append('sampleLocation', downloadableUrl);  
-    }
-    else{
-      form.append('sampleLocation', downloadableUrl);
-    }
-    
+    // form.append('sampleLocation', 'https://www.publicdomainpictures.net/pictures/240000/velka/emergency-evacuation-route-signpost.jpg');
+    form.append('sampleLocation', downloadableUrl);
     form.append('task', 'contact');
     form.append('modelId', 'OCRModel');
 
@@ -91,8 +75,6 @@ export default async function (event, context, logger) {
     });
     let imageJSON = await imageResponse.json();
     console.log('imageJSON ' + JSON.stringify(imageJSON));
-
-   
 
     if (type === 'aadhaarFront') {
       // Name check regex for capturing names
