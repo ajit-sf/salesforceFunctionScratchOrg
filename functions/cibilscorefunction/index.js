@@ -23,34 +23,20 @@ export default async function (event, context, logger) {
   logger.info(`Client fetched successfully ${mysql}`);
 
   // create the connection
-  const connection = await mysql.createConnection({host:'sql12.freesqldatabase.com', user: 'sql12529671', database: 'sql12529671', password : 'nP3DxbcQJX'});
+  const connection = await mysql.createConnection({host:'sql6.freesqldatabase.com', user: 'sql6526424', database: 'sql6526424', password : 'lVzTKiTViU'});
 
   logger.info(`Received connection ${connection}`);
-
-  // query database
-  await connection.connect(function(err) {
-    if (err) throw err;
-    connection.query("SELECT * FROM cibilScore", function (err, result, fields) {
-      if (err) 
-        throw err;
-      console.log('helloooooooo result '+result);
-      logger.info(`helloooo result ${result}`);
-      Object.keys(result).forEach(function(key) {
-        var row = result[key];
-        logger.info(`helooooooo score  ${row.score}`);
-        console.log('helooooooo score ' +row.score);
-        score = row.score;
-      });
-  });
-});
-  /*const rows = await connection.execute(`SELECT score FROM cibilScore`);
+  
+  const [rows, fields] = await connection.execute(`SELECT * FROM ` + '`cibilScore`');
+  //`SELECT * FROM cibilScore`
   console.log('query data '+rows);
 
+  logger.info(`Received connection ${rows}`);
+
   if(rows.length > 0){
-    return rows;
+    return rows[1].score;
   }
   else{
-    return 'error';
-  }*/
-  return score;
+    return 'Failed';
+  }
 }
