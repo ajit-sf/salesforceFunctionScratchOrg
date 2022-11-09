@@ -111,7 +111,7 @@ public without sharing class LoanApplicationDataServices {
                     wDL.username = authenticationVal.Value__c;
                 }
             }
-
+            ContentVersion cv = [SELECT Id FROM ContentVersion WHERE Id=:contentVersionId];
             functions.Function fn = functions.Function.get('salesforceFunction.ocrfunction');
             functions.FunctionInvocation invocation = fn.invoke(JSON.serialize(wDL));
             // Check if there is any error during the invocation

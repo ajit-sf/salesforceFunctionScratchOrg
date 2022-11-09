@@ -66,8 +66,9 @@ export default async function (event, context, logger) {
       // const results = await context.org.dataApi.query(
       //   `SELECT Id, VersionData FROM ContentVersion WHERE Id='${contentId}'`
       // );
+      const account= '0018N000009WhFcQAK';
       const results = await context.org.dataApi.query(
-        `SELECT Id FROM Account LIMIT 10`
+        `SELECT Id FROM Account WHERE Id='${account}'`
       );
       console.log(' Data' + JSON.stringify(results));
       return;
