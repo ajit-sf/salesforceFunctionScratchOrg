@@ -13,22 +13,22 @@
   .container{
     background-color: white;
     text-align:center;
-    padding-top: 3%;
-    padding-bottom: 3%;
+    /*padding-top: 3%;
+    padding-bottom: 3%;*/
   }
 
   .heading{
     text-align: center;
-    padding-top: 5%;
-    padding-bottom: 2%;
-    font-size: 20px;
+    /*padding-top: 5%;
+    padding-bottom: 2%;*/
+    font-size: 17px;
     font-weight: 900;
   }
 
   .heading2{
     text-align: center;
-    padding-top: 2%;
-    padding-bottom: 5%;
+    /*padding-top: 2%;
+    padding-bottom: 5%;*/
     font-size: 20px;
     font-weight: 900;
     font-family: "SalesforceSans";
@@ -52,8 +52,8 @@
     height: 80%;
     width: 80%;
     border-radius: 50%;
-    padding-top: 3%;
-    padding-bottom: 3%;
+    /*padding-top: 3%;
+    padding-bottom: 3%;*/
     background-color: rgba(255, 255, 255, 1);
   }
 

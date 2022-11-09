@@ -15,4 +15,13 @@ public class loanApplicationHelper {
         system.debug('Lead records '+leadRecord.Id);
         return leadRecord.Id;
     }
+    @AuraEnabled
+    public static Id updateLead(String jsonOfLead) 
+	{        
+        Lead leadRecord = (Lead) JSON.deserialize(jsonOfLead, Lead.class);
+        System.debug(jsonOfLead+' Lead '+leadRecord);
+        update leadRecord;
+        system.debug('Lead records '+leadRecord.Id);
+        return leadRecord.Id;
+    }
 }

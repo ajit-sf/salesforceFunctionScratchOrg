@@ -22,8 +22,8 @@
     <redirectToCustomDomain>false</redirectToCustomDomain>
     <referrerPolicyOriginWhenCrossOrigin>true</referrerPolicyOriginWhenCrossOrigin>
     <selfRegPage>CommunitiesSelfReg</selfRegPage>
-    <siteAdmin>test-nz8zvdrn5nzw@example.com</siteAdmin>
-    <siteGuestRecordDefaultOwner>test-nz8zvdrn5nzw@example.com</siteGuestRecordDefaultOwner>
+    <siteAdmin>indu.sharma@functionscratch.com</siteAdmin>
+    <siteGuestRecordDefaultOwner>indu.sharma@functionscratch.com</siteGuestRecordDefaultOwner>
     <siteType>ChatterNetwork</siteType>
     <urlPathPrefix>loanApplication</urlPathPrefix>
 </CustomSite>

@@ -1,6 +1,8 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api, wire, track } from 'lwc';
 
 export default class ProgressRing extends LightningElement {
+
+    @track circlestyle;
 
     @api ringColor;
     @api percentage = 60;
@@ -16,13 +18,18 @@ export default class ProgressRing extends LightningElement {
 
     connectedCallback(){
         if(this.percentageType == 'Static'){
-            if(this.percentage>100){
-                this.percentageVal = this.percentage+'%';
-                this.percentage = 100;
+            if(Number(this.percentage) > 100){
+                this.percentageVal = this.percentage;
+                this.percentage = (this.percentage/1000)*100;
+            }
+            else if(Number(this.percentage) < 1){
+                this.percentageVal = this.percentage*1000;
+                this.percentage = this.percentage*100;
             }
             else{
-                this.percentageVal = this.percentage+'%';
+                this.percentageVal = this.percentage;
             }
+            console.log('Percentage val '+this.percentageVal+' percentage '+this.percentage);
             
         }
         else if(this.percentageType == 'Relational'){
@@ -49,17 +56,22 @@ export default class ProgressRing extends LightningElement {
     }
 
     renderedCallback(){
+        let colorStyle = '';
+        let circleStyle ='';
         if(this.remainingRingColour == null)
             this.remainingRingColour = '#8080807a';
         this.template.querySelector('svg circle').style.stroke = this.ringColor;
+        colorStyle ='stroke: '+this.ringColor;
         this.template.querySelector('.bar').style.backgroundColor = this.remainingRingColour;
         var circle = this.template.querySelector('circle');
         var radius = circle.r.baseVal.value;
         var circumference = radius * 2 * Math.PI;
-        
         const offset = circumference - this.percentage / 100 * circumference;
         circle.style.strokeDashoffset = offset;
-        console.log('Radius '+radius+' circumference '+circumference +' offset '+offset);
+        circleStyle = 'stroke-dashoffset: '+offset;
+
+        this.circlestyle = colorStyle+';'+circleStyle;
+        console.log(this.circlestyle+' Radius '+radius+' circumference '+circumference +' offset '+offset);
         if(this.titlePlacement == 'Header'){
             this.template.querySelector(".heading2").style.display = "none";
             this.template.querySelector(".heading").style.display = "block";

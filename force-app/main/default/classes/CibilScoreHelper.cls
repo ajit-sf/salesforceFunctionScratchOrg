@@ -6,7 +6,8 @@
  * @last modified by  : Indu
 **/
 public class CibilScoreHelper {
-    public static void checkAadhaarDetails(){
+     @AuraEnabled
+    public static string checkCibilScore(){
             functions.Function fn = functions.Function.get('salesforceFunction.cibilscorefunction');
             functions.FunctionInvocation invocation = fn.invoke('');
     
@@ -20,8 +21,6 @@ public class CibilScoreHelper {
             }
             String response = invocation.getResponse();
         	System.debug('Response '+response);
-            //FlowOutputVariable output = (FlowOutputVariable) JSON.deserialize(response, FlowOutputVariable.class);
-    
-            //return new List<FlowOutputVariable>{output};
+        return response;
     }
 }

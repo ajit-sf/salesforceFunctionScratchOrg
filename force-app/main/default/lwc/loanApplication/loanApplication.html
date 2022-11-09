@@ -24,7 +24,7 @@
                 <template if:true={isFormFill}>
                     <lightning-layout class="slds-m-top_medium" multiple-rows="true">
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Name" required name="name" value={leadObject.FirstName} onchange={handleInputChange}></lightning-input>
+                            <lightning-input type="text" label="First Name" required name="name" value={leadObject.FirstName} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
                             <lightning-input type="text" label="Last Name" required name="lastName" value={leadObject.LastName} onchange={handleInputChange}></lightning-input>
@@ -35,21 +35,21 @@
                             <lightning-input type="text" label="Occupation" name="occupation" value={leadObject.Occupation__c} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="tel" label="Primary Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required name="phoneNo" value={leadObject.Phone} onchange={handleInputChange}></lightning-input>
+                            <lightning-input type="tel" label="Primary Phone Number" name="phoneNo" value={leadObject.Phone} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                     </lightning-layout>
                     <lightning-layout multiple-rows="true">
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="email" label="Email Id" required name="email" value={leadObject.Email} onchange={handleInputChange}></lightning-input>
+                            <lightning-input type="email" label="Email Id" name="email" value={leadObject.Email} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-textarea label="Address" required name="address" value={leadObject.Lead_Address__c} onchange={handleInputChange}></lightning-textarea>
+                            <lightning-textarea label="Address" name="address" value={leadObject.Lead_Address__c} onchange={handleInputChange}></lightning-textarea>
                         </lightning-layout-item>
                     </lightning-layout>
                     <h3 class="slds-section-title--divider">Family Details</h3>
                     <lightning-layout class="slds-m-top_medium" multiple-rows="true">
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Father's Full Name" required name="fatherName" value={leadObject.fatherName__c} onchange={handleInputChange}></lightning-input>
+                            <lightning-input type="text" label="Father's Full Name" name="fatherName" value={leadObject.fatherName__c} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
                             <lightning-input type="text" label="Mother's Full Name" name="motherName" value={leadObject.motherName__c} onchange={handleInputChange}></lightning-input>
@@ -102,24 +102,24 @@
                         </lightning-layout-->
                         <lightning-layout multiple-rows="true">
                             <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                                <lightning-input type="text" label="PAN Number" value={leadObject.panNum} required></lightning-input>
+                                <lightning-input type="text" label="PAN Number" value={leadObject.panNum}></lightning-input>
                             </lightning-layout-item>
                             <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                                <lightning-input type="text" label="Full name as on PAN card" value={leadObject.panCardName} required></lightning-input>
+                                <lightning-input type="text" label="Full name as on PAN card" value={leadObject.panCardName}></lightning-input>
                             </lightning-layout-item>
                         </lightning-layout>
                         <lightning-layout multiple-rows="true">
                             <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                                <lightning-input type="text" label="Primary Bank Account (name and number)" required></lightning-input>
+                                <lightning-input type="text" label="Primary Bank Account (name and number)"></lightning-input>
                             </lightning-layout-item>
                             <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                                <lightning-input type="text" label="Primary Bank Account Type" required></lightning-input>
+                                <lightning-input type="text" label="Primary Bank Account Type"></lightning-input>
                             </lightning-layout-item>
                         </lightning-layout>
                     </lightning-layout-item>
                     <lightning-layout-item class="slds-p-around_xx-small" size="4">
-                        <div class="slds-box" style="width:80%; height: 206px; margin-left:64px">
-                            <c-progress-ring ring-color ="Blue" percentage-type="Static" title=" Credit Score" show-both-text-and-percentage=true text-inside-ring="Score" title-placement="Header"></c-progress-ring>
+                        <div class="slds-box" style="width:90%; height: 250px; margin-left:37px">
+                            <c-progress-ring percentage ={cibilScore} ring-color ="blue" percentage-type="Static" title=" Credit Score" show-both-text-and-percentage=true text-inside-ring="Score" title-placement="Header"></c-progress-ring>
                             <!--p class="slds-align_absolute-center">Excellent Credit Score</p>
                             <ightning-progress-ring class="progress-ring" value={cibilScore} variant="active-step" size="large"> </lightning-progress-ring>
                             <div class="container">
@@ -181,26 +181,47 @@
                         </lightning-layout-item>
                     </lightning-layout-->
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" value={leadObject.aadhaarNum} label="AADHAR Number" required></lightning-input>
+                            <lightning-input type="text" value={leadObject.aadhaarNum} label="AADHAR Number"></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" value={leadObject.aadhaarCardName} label="Full name as on AADHAR card" required></lightning-input>
+                            <lightning-input type="text" value={leadObject.aadhaarCardName} label="Full name as on AADHAR card"></lightning-input>
                         </lightning-layout-item>
                     </lightning-layout>
                     <lightning-layout multiple-rows="true">
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" value={leadObject.aadhaarAdd} label="Address (as per AADHAR card)" required></lightning-input>
+                            <lightning-input type="text" value={leadObject.aadhaarAdd} label="Address (as per AADHAR card)"></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="tel" label="Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></lightning-input>
+                            <lightning-input type="tel" label="Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></lightning-input>
                         </lightning-layout-item>
                     </lightning-layout>
                     <div class="slds-align_absolute-center slds-m-top_medium">
-                        <lightning-button variant="Neutral" label="Back" name="back" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
-                        <lightning-button variant="brand" label="Save & Next" name="saveNextOnUpload" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button variant="Neutral" label="Back" name="back" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button variant="brand" label="Save & Next" name="saveNextOnUpload" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
                     </div>
                 </lightning-layout-item>
                 </lightning-layout>
+                </template>
+                <template if:true={isVerify}>
+                    <template if:true={isValidating}>
+                        <img style="width:300px;" class="slds-align_absolute-center slds-m-top_medium" src={workInProgress}><br/>
+                    </template>
+                    <template if:true={isSuccess}>
+                        <img style="width:390px;" class="slds-align_absolute-center" src={Validated}><br/>
+                        <div class="slds-align_absolute-center slds-m-top_medium">
+                            <lightning-button variant="brand" label="Submit" name="saveNextOnSucess" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
+                        </div>
+                    </template>
+                    <template if:true={isError}>
+                        <p class="slds-align_absolute-center slds-m-bottom_small slds-m-top_medium" style="font:bold; font-size:28px"> Name MisMatched - Please enter Name exactly as given in AADHAAR Card</p>
+                        <img style="width:450px;" class="slds-align_absolute-center slds-m-top_large"  src={Fail}><br/>
+                        <div class="slds-align_absolute-center slds-m-top_medium">
+                            <lightning-button variant="Neutral" label="Back" name="backToUpload" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
+                        </div>
+                    </template>
+                </template>
+                <template if:true={isSubmit}>
+                    <img style="width:550px;" class="slds-align_absolute-center slds-m-top_medium" src={Success}><br/>
                 </template>
             </div>  
         </div>
