@@ -2,6 +2,8 @@ import { LightningElement, api, track } from 'lwc';
 
 import createPublicDistributionLink from '@salesforce/apex/LoanApplicationDataServices.createPublicDistributionLink';
 import fetchTextFromImages from '@salesforce/apex/LoanApplicationDataServices.fetchTextFromImages';
+import fetchTextFromImagesV1 from '@salesforce/apex/LoanApplicationDataServices.fetchTextFromImagesV1';
+
 import insertLead from '@salesforce/apex/loanApplicationHelper.insertLead';
 import updateLead from '@salesforce/apex/loanApplicationHelper.updateLead';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
@@ -281,13 +283,15 @@ export default class LoanApplication extends LightningElement {
         // Get the list of uploaded files
         const uploadedFiles = event.detail.files;
         
-        let downloadableUrl = await createPublicDistributionLink({
-            fileName : uploadedFiles[0].name,
-            contentVersionId : uploadedFiles[0].contentVersionId,
-        });
+        // let downloadableUrl = await createPublicDistributionLink({
+        //     fileName : uploadedFiles[0].name,
+        //     contentVersionId : uploadedFiles[0].contentVersionId,
+        // });
 
-        let response = await fetchTextFromImages({downloadableLink : downloadableUrl, type : 'panCard'});
+        // let response = await fetchTextFromImages({downloadableLink : downloadableUrl, type : 'panCard'});
+        let response = await fetchTextFromImagesV1({contentVersionId : uploadedFiles[0].contentVersionId, type : 'panCard'});
         let responseCopy = JSON.parse((JSON.parse(JSON.stringify(response))));
+        console.log(response + "response pan card test");
         this.leadObject.panNum = responseCopy.panNum;
         this.leadObject.panCardName = responseCopy.name;
         this.isLoading = false;
