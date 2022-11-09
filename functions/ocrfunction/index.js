@@ -62,6 +62,7 @@ export default async function (event, context, logger) {
 
     if(type === 'test'){
       const contentId = event.data.contentId;
+      console.log('contentId' + contentId);
       const results = await context.org.dataApi.query(
         `SELECT Id, VersionData FROM ContentVersion WHERE Id='${contentId}'`
       );
