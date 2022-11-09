@@ -2,7 +2,7 @@
   @description       : 
   @author            : Indu, Ajitesh
   @group             : 
-  @last modified on  : 11-04-2022
+  @last modified on  : 11-09-2022
   @last modified by  : Ajitesh
 -->
 <template>
@@ -213,7 +213,7 @@
                         </div>
                     </template>
                     <template if:true={isError}>
-                        <p class="slds-align_absolute-center slds-m-bottom_small slds-m-top_medium" style="font:bold; font-size:28px"> Name MisMatched - Please enter Name exactly as given in AADHAAR Card</p>
+                        <p class="slds-align_absolute-center slds-m-bottom_small slds-m-top_medium" style="font:bold; font-size:28px"> Name mismatched - Please enter name exactly as given in Aadhaar Card</p>
                         <img style="width:450px;" class="slds-align_absolute-center slds-m-top_large"  src={Fail}><br/>
                         <div class="slds-align_absolute-center slds-m-top_medium">
                             <lightning-button variant="Neutral" label="Back" name="backToUpload" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
