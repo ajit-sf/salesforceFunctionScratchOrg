@@ -280,20 +280,25 @@ export default class LoanApplication extends LightningElement {
 
     async handleUploadFinishedPanCard(event) {
         this.isLoading = true;
-        // Get the list of uploaded files
-        const uploadedFiles = event.detail.files;
-        
-        // let downloadableUrl = await createPublicDistributionLink({
-        //     fileName : uploadedFiles[0].name,
-        //     contentVersionId : uploadedFiles[0].contentVersionId,
-        // });
+        try{
+            // Get the list of uploaded files
+            const uploadedFiles = event.detail.files;
+            
+            // let downloadableUrl = await createPublicDistributionLink({
+            //     fileName : uploadedFiles[0].name,
+            //     contentVersionId : uploadedFiles[0].contentVersionId,
+            // });
 
-        // let response = await fetchTextFromImages({downloadableLink : downloadableUrl, type : 'panCard'});
-        let response = await fetchTextFromImagesV1({contentVersionId : uploadedFiles[0].contentVersionId, type : 'panCard'});
-        let responseCopy = JSON.parse((JSON.parse(JSON.stringify(response))));
-        console.log(response + "response pan card test");
-        this.leadObject.panNum = responseCopy.panNum;
-        this.leadObject.panCardName = responseCopy.name;
+            // let response = await fetchTextFromImages({downloadableLink : downloadableUrl, type : 'panCard'});
+            let response = await fetchTextFromImagesV1({contentVersionId : uploadedFiles[0].contentVersionId, type : 'panCard'});
+            let responseCopy = JSON.parse((JSON.parse(JSON.stringify(response))));
+            console.log(response + "response pan card test");
+            this.leadObject.panNum = responseCopy.panNum;
+            this.leadObject.panCardName = responseCopy.name;
+        }
+        catch(e){
+            console.log('Error ' + e);
+        }
         this.isLoading = false;
     }
 

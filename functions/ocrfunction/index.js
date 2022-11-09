@@ -63,14 +63,15 @@ export default async function (event, context, logger) {
     if(type === 'test'){
       const contentId = event.data.contentId;
       console.log('contentId' + contentId);
-      // const results = await context.org.dataApi.query(
-      //   `SELECT Id, VersionData FROM ContentVersion WHERE Id='${contentId}'`
-      // );
+      const resultsV1 = await context.org.dataApi.query(
+        `SELECT Id FROM ContentVersion WHERE Id='${contentId}'`
+      );
       const account= '0018N000009WhFcQAK';
       const results = await context.org.dataApi.query(
         `SELECT Id FROM Account WHERE Id='${account}'`
       );
       console.log(' Data' + JSON.stringify(results));
+      console.log(' Data' + JSON.stringify(resultsV1));
       return;
       form.append('sampleLocation', downloadableUrl);  
     }
