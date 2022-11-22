@@ -10,8 +10,6 @@
  * @param logger: logging handler used to capture application logs and trace specifically
  *                 to a given execution of a function.
  */
-
- import { appendFile } from 'fs';
 import { createRequire } from 'module';
 
  const require = createRequire(import.meta.url);
@@ -20,21 +18,25 @@ export default async function (event, context, logger) {
   // get the client
   const mysql = require('mysql2/promise');
 
+  var score;
+
   logger.info(`Client fetched successfully ${mysql}`);
 
   // create the connection
-  const connection = await mysql.createConnection({host:'sql12.freesqldatabase.com', user: 'sql12529671', database: 'sql12529671', password : 'nP3DxbcQJX'});
+  const connection = await mysql.createConnection({host:'sql6.freesqldatabase.com', user: 'sql6526424', database: 'sql6526424', password : 'lVzTKiTViU'});
 
   logger.info(`Received connection ${connection}`);
-
-  // query database
-  const rows = await connection.execute(`SELECT score FROM ` + '`cibilScore`');
+  
+  const [rows, fields] = await connection.execute(`SELECT * FROM ` + '`cibilScore`');
+  //`SELECT * FROM cibilScore`
   console.log('query data '+rows);
 
+  logger.info(`Received connection ${rows}`);
+
   if(rows.length > 0){
-    return rows;
+    return rows[1].score;
   }
   else{
-    return 'error';
+    return 'Failed';
   }
 }
