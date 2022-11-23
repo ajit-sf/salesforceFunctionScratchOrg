@@ -1,0 +1,10 @@
+<design:component label="Previewer for Salesforce Files">
+    <design:attribute name="cardTitle" label="Title" description="Sets the title of the card/component displayed" default="Card Title" required="true"/>
+	<design:attribute name="fileName" label="File Name" description="Enter the name of the file you want to show (Optional)" default=""/>
+    <design:attribute name="contentDocumentId" label="Content Document Id" description="Specify the ID of the Content Document (starts 069) that you want to show on all records that use this page. (Optional)" default=""/>
+    <design:attribute name="lookupFieldAPIName" label="Lookup Field" description="The path to the record that you want to show the related file(s) of. e.g. To get files linked to the Account of the Contact listed on a Case, you would enter: Contact.Account.Id, or for the Account of the Opportunity record you would enter Account.Id. If blank the current record is used. (Optional)" default=""/>
+    <design:attribute name="recordLimit" label="Record Limit" description="How many records do you want to return? Recommend 1 for File Preview. Image Carousel is limited to 5 (Optional)" default="5"/>
+    <design:attribute name="fileExtensionsCSV" label="File Extension List" description="A comma separated list of file extensions to filter results by. Can be used for file or image carousel, but is recommend for image carousel. e.g. jpg,png or pdf (Optional)" default=""/>
+    <design:attribute name="disableAutoScroll" default="true" label="Disable Auto Scroll" description="Controls whether the image carousel scrolls automatically" />
+    <design:attribute name="showFilePreviewer" label="Show File Preview" description="Shows the File Previewer instead of the image carousel" default="false"/>
+</design:component>
