@@ -1,0 +1,12 @@
+<template>
+    <div class="slds-p-around--medium slds-m-bottom--x-small">
+        <div class="slds-form-element">
+            <lightning-progress-indicator current-step={progressIndicator} type="path" variant="base">
+                <!--lightning-progress-step label="Login" value="1" onclick={pathHandler}></lightning-progress-step-->
+                <lightning-progress-step label="Form Fill" value="0" ></lightning-progress-step>
+                <lightning-progress-step label="Preview & Verify" value="1"></lightning-progress-step>
+                <lightning-progress-step label="Submit" value="2"></lightning-progress-step>
+            </lightning-progress-indicator>
+        </div>
+    </div>
+</template>
