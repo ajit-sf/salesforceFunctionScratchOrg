@@ -26,7 +26,6 @@ export default async function (event, context, logger) {
 
     const username = event.data.username;
     const privateKey = event.data.privateKey;
-    console.log('type ' + type);
 
     logger.info(`Invoking Ocrfunction with payload`);
 

@@ -1,5 +1,5 @@
 /**
- * @description       : 
+ * @description       : Generate downloadable URL
  * @author            : Ajitesh
  * @group             : 
  * @last modified on  : 11-24-2022
@@ -9,80 +9,22 @@ public class OCRHelper {
     
     public class FlowInputVariable{
         @InvocableVariable
-        public List<ContentDocumentLink> filesLink;
-        @InvocableVariable
-        public List<String> panCardName;
-        @InvocableVariable
-        public List<String> aadhaarCardNameHelper;
-        @InvocableVariable
-        public List<String> aadhaarCardNameHelper2;
+        public List<ContentDocumentLink> filesLink;        
     }
 
-    public class SalesforceFunctionInputVariable{
-        public String aadhaarCardFrontUrl;
-        public String aadhaarCardBackUrl;
-        public String panCardUrl;
-        public String username;
-        public String privateKey;
-    }
-
-    public class SalesforceFunctionOutputVariable{
-        @InvocableVariable public String aadhaarName;
-        @InvocableVariable public String aadhaarNum;
-        @InvocableVariable public String address;
-        @InvocableVariable public String panNum;
-        @InvocableVariable public String panName;
-    }
+    
 
 
     @InvocableMethod(label = 'OCR Helper')
-    public static List<SalesforceFunctionOutputVariable> ocrHelper(List<FlowInputVariable> inputVariable){
-        String panCardName =  inputVariable[0].panCardName[0];
-        String aadhaarCardNameHelper = inputVariable[0].aadhaarCardNameHelper[0];
-        String aadhaarCardNameHelper2 = inputVariable[0].aadhaarCardNameHelper2[0];
+    public static List<List<ContentDistribution>> ocrHelper(List<FlowInputVariable> inputVariable){
         
-        List<ContentDistribution> conDistUrlList = downloadableUrl(inputVariable[0].filesLink);
+        List<List<ContentDistribution>> temp = new List<List<ContentDistribution>>();
+        temp.add(downloadableUrl(inputVariable[0].filesLink));
+        return temp;
 
-        SalesforceFunctionInputVariable sfunVar = new SalesforceFunctionInputVariable();
+       
 
-        for(ContentDistribution conD : conDistUrlList){
-            if(conD.Name == panCardName){
-                sfunVar.panCardUrl = conD.ContentDownloadUrl;
-            }
-
-            else if(conD.Name == aadhaarCardNameHelper){
-                sfunVar.aadhaarCardFrontUrl = conD.ContentDownloadUrl;
-            }
-
-            else if(conD.Name == aadhaarCardNameHelper){
-                sfunVar.aadhaarCardBackUrl = conD.ContentDownloadUrl;
-            }
-        }
-
-        for(OCR_Authentication__mdt authenticationVal : [SELECT DeveloperName, Value__c FROM OCR_Authentication__mdt]){
-            if(authenticationVal.DeveloperName == 'PrivateKey'){
-                sfunVar.privateKey = authenticationVal.Value__c;
-            }
-            if(authenticationVal.DeveloperName == 'Username'){
-                sfunVar.username = authenticationVal.Value__c;
-            }
-        }
-
-        functions.Function fn = functions.Function.get('salesforceFunction.ocrfunction');
-        functions.FunctionInvocation invocation = fn.invoke(JSON.serialize(sfunVar));
-
-        if (invocation.getStatus() == functions.FunctionInvocationStatus.ERROR) {
-            if(invocation.getError() != null)
-                System.debug('Error ' + invocation.getError().getMessage());
-            
-            throw new CalloutException(
-            (invocation.getError() != null
-                ? invocation.getError().getMessage()
-                : 'UNKNOWN')
-            );
-        }
-
-        return (List<SalesforceFunctionOutputVariable>)(JSON.deserializeStrict(invocation.getResponse(),  List<SalesforceFunctionOutputVariable>.class));
+        
     }
 
     public static List<ContentDistribution> downloadableUrl(List<ContentDocumentLink> filesLink){

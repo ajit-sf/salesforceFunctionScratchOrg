@@ -1,11 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>OCR_Helper_Apex</name>
+        <label>OCR Helper Apex</label>
+        <locationX>176</locationX>
+        <locationY>1694</locationY>
+        <actionName>OCRHelper</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>OCR_Helper_Function_call</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>filesLink</name>
+            <value>
+                <elementReference>CreateLinkedDocumentsList</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>ContentDistributionList</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>OCR_Helper_Function_call</name>
+        <label>OCR Helper Function call</label>
+        <locationX>176</locationX>
+        <locationY>1814</locationY>
+        <actionName>OCRHelperFunctionCall</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Preview_and_Verify</targetReference>
+        </connector>
+        <flowTransactionModel>NewTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>aadhaarCardNameHelper</name>
+            <value>
+                <elementReference>aadhaarNameHelper</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>aadhaarCardNameHelper2</name>
+            <value>
+                <elementReference>aadhaarCardNameHelper2</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>inputParams</name>
+            <value>
+                <elementReference>ContentDistributionList</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>panCardName</name>
+            <value>
+                <elementReference>panCardNameHelper</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>AadhaarCardName</assignToReference>
+            <name>aadhaarName</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>AadhaarCardNumber</assignToReference>
+            <name>aadhaarNum</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>AadhaarAddress</assignToReference>
+            <name>address</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>PanName</assignToReference>
+            <name>panName</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>PanNum</assignToReference>
+            <name>panNum</name>
+        </outputParameters>
+    </actionCalls>
     <apiVersion>56.0</apiVersion>
+    <assignments>
+        <name>assignAadhaarCardNameHelper</name>
+        <label>assignAadhaarCardNameHelper</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <assignmentItems>
+            <assignToReference>aadhaarNameHelper</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Aadhaar Card Front</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>assignAadhaarCardNameHelper2</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assignAadhaarCardNameHelper2</name>
+        <label>assignAadhaarCardNameHelper2</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>aadhaarCardNameHelper2</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Aadhaar Card Back</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>assignPanCardNameHelper</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assignPanCardNameHelper</name>
+        <label>assignPanCardNameHelper</label>
+        <locationX>176</locationX>
+        <locationY>398</locationY>
+        <assignmentItems>
+            <assignToReference>panCardNameHelper</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Pan Card</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Form_Fill</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <name>Set_variable_blank</name>
         <label>Set variable blank</label>
         <locationX>264</locationX>
-        <locationY>878</locationY>
+        <locationY>1238</locationY>
         <assignmentItems>
             <assignToReference>NewContentDocumentLinks</assignToReference>
             <operator>Assign</operator>
@@ -18,7 +144,7 @@
         <name>Update_Linked_Record_Id</name>
         <label>Update Linked Record Id</label>
         <locationX>264</locationX>
-        <locationY>638</locationY>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>NewContentDocumentLinks.LinkedEntityId</assignToReference>
             <operator>Assign</operator>
@@ -41,7 +167,7 @@
         <name>Updated_Linked_Documents</name>
         <label>Updated Linked Documents</label>
         <locationX>264</locationX>
-        <locationY>758</locationY>
+        <locationY>1118</locationY>
         <assignmentItems>
             <assignToReference>CreateLinkedDocumentsList</assignToReference>
             <operator>Add</operator>
@@ -93,13 +219,52 @@
             <stringValue>Personal Loan</stringValue>
         </value>
     </choices>
+    <formulas>
+        <name>amountInLakh</name>
+        <dataType>Number</dataType>
+        <expression>{!Amount.value}*100000</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>EMI</name>
+        <dataType>Number</dataType>
+        <expression>{!amountInLakh}*{!RateOfInterest}*((1 + {!RateOfInterest} )^{!Tenure.value})/ (((1 + {!RateOfInterest} )^{!Tenure.value}) -1 )</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>FullName</name>
+        <dataType>String</dataType>
+        <expression>{!First_Name}&amp;&apos; &apos;&amp;{!Last_Name}</expression>
+    </formulas>
+    <formulas>
+        <name>IsAllTrue</name>
+        <dataType>Boolean</dataType>
+        <expression>IF({!IsAadharVerified} &amp;&amp; {!IsPANVerified}, true, false)</expression>
+    </formulas>
+    <formulas>
+        <name>rateCal</name>
+        <dataType>Number</dataType>
+        <expression>((1 + {!RateOfInterest} )^{!Tenure.value})</expression>
+        <scale>6</scale>
+    </formulas>
+    <formulas>
+        <name>RateOfInterest</name>
+        <dataType>Number</dataType>
+        <expression>VALUE({!ROI_Per_Annum})/12</expression>
+        <scale>6</scale>
+    </formulas>
+    <formulas>
+        <name>TextInsideRing</name>
+        <dataType>String</dataType>
+        <expression>{!Score} &amp; TEXT({!cibilScore})</expression>
+    </formulas>
     <interviewLabel>SF OCR {!$Flow.CurrentDateTime}</interviewLabel>
     <label>SF OCR</label>
     <loops>
         <name>Loop_content_Document_List_records</name>
         <label>Loop content Document List records</label>
         <locationX>176</locationX>
-        <locationY>518</locationY>
+        <locationY>878</locationY>
         <collectionReference>Get_Content_Document_Linked</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -132,7 +297,7 @@
         <name>Create_Lead</name>
         <label>Create Lead</label>
         <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationY>638</locationY>
         <connector>
             <targetReference>Get_Content_Document_Linked</targetReference>
         </connector>
@@ -215,7 +380,7 @@
         <name>Create_List_of_Content_Document_link_records</name>
         <label>Create List of Content Document link records</label>
         <locationX>176</locationX>
-        <locationY>1094</locationY>
+        <locationY>1454</locationY>
         <connector>
             <targetReference>Delete_dummy_linked_records</targetReference>
         </connector>
@@ -225,9 +390,9 @@
         <name>Delete_dummy_linked_records</name>
         <label>Delete dummy linked records</label>
         <locationX>176</locationX>
-        <locationY>1214</locationY>
+        <locationY>1574</locationY>
         <connector>
-            <targetReference>Preview_and_Verify</targetReference>
+            <targetReference>OCR_Helper_Apex</targetReference>
         </connector>
         <inputReference>Get_Content_Document_Linked</inputReference>
     </recordDeletes>
@@ -235,7 +400,7 @@
         <name>Get_Content_Document_Linked</name>
         <label>Get Content Document Linked</label>
         <locationX>176</locationX>
-        <locationY>398</locationY>
+        <locationY>758</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_content_Document_List_records</targetReference>
@@ -256,10 +421,10 @@
         <name>Form_Fill</name>
         <label>Form Fill</label>
         <locationX>176</locationX>
-        <locationY>158</locationY>
-        <allowBack>true</allowBack>
+        <locationY>518</locationY>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>Create_Lead</targetReference>
         </connector>
@@ -270,7 +435,7 @@
             <inputParameters>
                 <name>progressIndicator</name>
                 <value>
-                    <stringValue>0</stringValue>
+                    <stringValue>1</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -278,10 +443,11 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
-            <name>Form_Fill_Section1</name>
+            <name>Personal_Details</name>
+            <fieldText>Personal Details</fieldText>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Form_Fill_Section1_Column1</name>
+                <name>Personal_Details_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>First_Name</name>
@@ -306,13 +472,6 @@
                     <fieldType>DropdownBox</fieldType>
                     <isRequired>false</isRequired>
                 </fields>
-                <fields>
-                    <name>DOB</name>
-                    <dataType>Date</dataType>
-                    <fieldText>DOB</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>false</isRequired>
-                </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
@@ -322,7 +481,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Form_Fill_Section1_Column2</name>
+                <name>Personal_Details_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Last_Name</name>
@@ -346,6 +505,30 @@
                     <storeOutputAutomatically>true</storeOutputAutomatically>
                 </fields>
                 <fields>
+                    <name>DOB</name>
+                    <dataType>Date</dataType>
+                    <fieldText>DOB</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <isRequired>false</isRequired>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Loan_Details</name>
+            <fieldText>Loan Details</fieldText>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Loan_Details_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
                     <name>Type_of_Loan</name>
                     <choiceReferences>Home_Loan</choiceReferences>
                     <choiceReferences>Personal_Loan</choiceReferences>
@@ -363,13 +546,8 @@
                 </inputParameters>
                 <isRequired>false</isRequired>
             </fields>
-            <isRequired>false</isRequired>
-        </fields>
-        <fields>
-            <name>Form_Fill_Section2</name>
-            <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Form_Fill_Section2_Column1</name>
+                <name>Loan_Details_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Amount</name>
@@ -378,13 +556,80 @@
                     <inputParameters>
                         <name>label</name>
                         <value>
-                            <stringValue>Amount</stringValue>
+                            <stringValue>Amount?(Move the slider to set Amount in lakh)</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>max</name>
+                        <value>
+                            <numberValue>10.0</numberValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>step</name>
+                        <value>
+                            <numberValue>1.0</numberValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>amountValue</elementReference>
                         </value>
                     </inputParameters>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
                     <storeOutputAutomatically>true</storeOutputAutomatically>
                 </fields>
+                <fields>
+                    <name>Tenure</name>
+                    <extensionName>flowruntime:slider</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Tenure? (Move the slider to set tenure in months)</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>max</name>
+                        <value>
+                            <numberValue>60.0</numberValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>step</name>
+                        <value>
+                            <numberValue>5.0</numberValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>tenureValue</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Documents</name>
+            <fieldText>Documents</fieldText>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Documents_Column1</name>
+                <fieldType>Region</fieldType>
                 <fields>
                     <name>PAN_Card_Number</name>
                     <dataType>String</dataType>
@@ -401,22 +646,8 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Form_Fill_Section2_Column2</name>
+                <name>Documents_Column2</name>
                 <fieldType>Region</fieldType>
-                <fields>
-                    <name>Tenure</name>
-                    <extensionName>flowruntime:slider</extensionName>
-                    <fieldType>ComponentInstance</fieldType>
-                    <inputParameters>
-                        <name>label</name>
-                        <value>
-                            <stringValue>Tenure</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-                    <isRequired>true</isRequired>
-                    <storeOutputAutomatically>true</storeOutputAutomatically>
-                </fields>
                 <fields>
                     <name>AADHAR_Card_Number</name>
                     <dataType>String</dataType>
@@ -435,10 +666,10 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>Form_Fill_Section3</name>
+            <name>Form_Fill_Section4</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Form_Fill_Section3_Column1</name>
+                <name>Form_Fill_Section4_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>PANCard</name>
@@ -456,6 +687,376 @@
                             <elementReference>DummyLeadRecordId</elementReference>
                         </value>
                     </inputParameters>
+                    <inputParameters>
+                        <name>fileNames</name>
+                        <value>
+                            <elementReference>panCardNameHelper</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <outputParameters>
+                        <assignToReference>panCardNameHelper</assignToReference>
+                        <name>fileNames</name>
+                    </outputParameters>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Form_Fill_Section4_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>AadharCardFront</name>
+                    <extensionName>forceContent:fileUpload</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>AADHAR Card Front</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>recordId</name>
+                        <value>
+                            <elementReference>DummyLeadRecordId</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>fileNames</name>
+                        <value>
+                            <elementReference>aadhaarNameHelper</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>multiple</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <outputParameters>
+                        <assignToReference>aadhaarNameHelper</assignToReference>
+                        <name>fileNames</name>
+                    </outputParameters>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>3</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Form_Fill_Section4_Column3</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>AadharCardBack</name>
+                    <extensionName>forceContent:fileUpload</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Aadhaar Card Back</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>fileNames</name>
+                        <value>
+                            <elementReference>aadhaarCardNameHelper2</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>recordId</name>
+                        <value>
+                            <elementReference>DummyLeadRecordId</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <outputParameters>
+                        <assignToReference>aadhaarCardNameHelper2</assignToReference>
+                        <name>fileNames</name>
+                    </outputParameters>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>3</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Apply</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Preview_and_Verify</name>
+        <label>Preview and Verify</label>
+        <locationX>176</locationX>
+        <locationY>1934</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Submit</targetReference>
+        </connector>
+        <fields>
+            <name>progressBar1</name>
+            <extensionName>c:progressBar</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>progressIndicator</name>
+                <value>
+                    <stringValue>2</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Personal_Details_Entered</name>
+            <fieldText>Personal Details Entered</fieldText>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Personal_Details_Entered_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Full_Name</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>fieldType</name>
+                        <value>
+                            <stringValue>text</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Full Name</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>FullName</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isInputTypeText</name>
+                        <value>
+                            <booleanValue>true</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>genderRadio</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>true</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Gender</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>Gender</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>Address</name>
+                    <fieldText>Address</fieldText>
+                    <fieldType>LargeTextArea</fieldType>
+                    <isRequired>false</isRequired>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>4</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Personal_Details_Entered_Column2</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>2</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Personal_Details_Entered_Column3</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Loan</name>
+            <fieldText>Loan Request Details</fieldText>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Loan_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>LoanRequest</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>fieldType</name>
+                        <value>
+                            <stringValue>text</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Loan Request Type</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>Type_of_Loan</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isInputTypeText</name>
+                        <value>
+                            <booleanValue>true</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>LoanTenure</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>fieldType</name>
+                        <value>
+                            <stringValue>number</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Tenure (in months)</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>Tenure.value</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isInputTypeText</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>EMI_s</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>fieldType</name>
+                        <value>
+                            <stringValue>number</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>EMI&apos;s</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>EMI</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isInputTypeText</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>formatter</name>
+                        <value>
+                            <stringValue>currency</stringValue>
+                        </value>
+                    </inputParameters>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
                     <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -469,22 +1070,90 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Form_Fill_Section3_Column2</name>
+                <name>Loan_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>AadharCard</name>
-                    <extensionName>forceContent:fileUpload</extensionName>
+                    <name>Loan_Amount</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
                     <fieldType>ComponentInstance</fieldType>
                     <inputParameters>
-                        <name>label</name>
+                        <name>value</name>
                         <value>
-                            <stringValue>AADHAR Card</stringValue>
+                            <elementReference>amountInLakh</elementReference>
                         </value>
                     </inputParameters>
                     <inputParameters>
-                        <name>recordId</name>
+                        <name>fieldType</name>
                         <value>
-                            <elementReference>DummyLeadRecordId</elementReference>
+                            <stringValue>number</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>formatter</name>
+                        <value>
+                            <stringValue>currency</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isInputTypeText</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Loan Amount</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>ROI_s</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>fieldType</name>
+                        <value>
+                            <stringValue>number</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>formatter</name>
+                        <value>
+                            <stringValue>percent</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isInputTypeText</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>ROI % (Per Annum)</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>ROI_Per_Annum</elementReference>
                         </value>
                     </inputParameters>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -501,34 +1170,183 @@
             </fields>
             <isRequired>false</isRequired>
         </fields>
-        <nextOrFinishButtonLabel>Apply</nextOrFinishButtonLabel>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
-        <name>Preview_and_Verify</name>
-        <label>Preview and Verify</label>
-        <locationX>176</locationX>
-        <locationY>1334</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Submit</targetReference>
-        </connector>
         <fields>
-            <name>progressBar1</name>
-            <extensionName>c:progressBar</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>progressIndicator</name>
-                <value>
-                    <stringValue>1</stringValue>
-                </value>
-            </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <name>Preview_and_Verify_Section3</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Preview_and_Verify_Section3_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>AadharVerification</name>
+                    <extensionName>flowruntime:image</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>imageName</name>
+                        <value>
+                            <stringValue>AadharVerification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>horizontalAlignment</name>
+                        <value>
+                            <stringValue>center</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageAlt</name>
+                        <value>
+                            <stringValue>Aadhar Verification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageWidth</name>
+                        <value>
+                            <stringValue>50%</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                    <visibilityRule>
+                        <conditionLogic>and</conditionLogic>
+                        <conditions>
+                            <leftValueReference>IsAadharVerified</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>true</booleanValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>4</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Preview_and_Verify_Section3_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>PanVerification</name>
+                    <extensionName>flowruntime:image</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>imageName</name>
+                        <value>
+                            <stringValue>PanVerification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>horizontalAlignment</name>
+                        <value>
+                            <stringValue>center</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageAlt</name>
+                        <value>
+                            <stringValue>Pan Verification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageWidth</name>
+                        <value>
+                            <stringValue>50%</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                    <visibilityRule>
+                        <conditionLogic>and</conditionLogic>
+                        <conditions>
+                            <leftValueReference>IsPANVerified</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>true</booleanValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>4</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Preview_and_Verify_Section3_Column3</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>ProgressRing</name>
+                    <extensionName>c:progressRing</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>ringColor</name>
+                        <value>
+                            <stringValue>blue</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>showBothTextAndPercentage</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>textInsideRing</name>
+                        <value>
+                            <elementReference>cibilScore</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>source</name>
+                        <value>
+                            <elementReference>cibilScore</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>title</name>
+                        <value>
+                            <stringValue>CIBIL Score</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>target</name>
+                        <value>
+                            <stringValue>1000</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>percentageType</name>
+                        <value>
+                            <stringValue>Relational</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>titlePlacement</name>
+                        <value>
+                            <stringValue>Footer</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>4</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -537,10 +1355,10 @@
         <name>Submit</name>
         <label>Submit</label>
         <locationX>176</locationX>
-        <locationY>1454</locationY>
-        <allowBack>true</allowBack>
+        <locationY>2054</locationY>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
             <name>progressBar2</name>
             <extensionName>c:progressBar</extensionName>
@@ -548,7 +1366,7 @@
             <inputParameters>
                 <name>progressIndicator</name>
                 <value>
-                    <stringValue>2</stringValue>
+                    <stringValue>3</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -562,10 +1380,72 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Form_Fill</targetReference>
+            <targetReference>assignAadhaarCardNameHelper</targetReference>
         </connector>
     </start>
     <status>Draft</status>
+    <variables>
+        <name>AadhaarAddress</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>AadhaarCardName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>aadhaarCardNameHelper2</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>AadhaarCardNumber</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>aadhaarNameHelper</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>amountValue</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <name>cibilScore</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>765.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <name>ContentDistributionList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ContentDistribution</objectType>
+    </variables>
     <variables>
         <name>CreateLinkedDocumentsList</name>
         <dataType>SObject</dataType>
@@ -585,11 +1465,94 @@
         </value>
     </variables>
     <variables>
+        <name>IsAadharVerified</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>true</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>IsPANVerified</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>true</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>LoanOfficer</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>NewContentDocumentLinks</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
         <objectType>ContentDocumentLink</objectType>
+    </variables>
+    <variables>
+        <name>panCardNameHelper</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>PanName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>PanNum</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>ROI_Per_Annum</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>11.5</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>Score</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Score - </stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>tenureValue</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <name>VerifierOfficer</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>
