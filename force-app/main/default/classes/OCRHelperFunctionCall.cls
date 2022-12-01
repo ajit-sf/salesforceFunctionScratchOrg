@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Ajitesh
  * @group             : 
- * @last modified on  : 11-24-2022
+ * @last modified on  : 12-01-2022
  * @last modified by  : Ajitesh
 **/
 public with sharing class OCRHelperFunctionCall {
@@ -43,16 +43,21 @@ public with sharing class OCRHelperFunctionCall {
         String aadhaarCardNameHelper = inputVariable[0].aadhaarCardNameHelper[0];
         String aadhaarCardNameHelper2 = inputVariable[0].aadhaarCardNameHelper2[0];
 
+        System.debug('Pan card Name ' + panCardName);
+        System.debug('Pan card Name ' + panCardName.split('.'));
+        System.debug('aadhaarCardNameHelper Name ' + aadhaarCardNameHelper);
+        System.debug('aadhaarCardNameHelper2 ' + panCardName);
+        
         for(ContentDistribution conD : conDistUrlList){
-            if(conD.Name == panCardName){
+            if(conD.Name ==panCardName.split('\\.')[0]){
                 sfunVar.panCardUrl = conD.ContentDownloadUrl;
             }
 
-            else if(conD.Name == aadhaarCardNameHelper){
+            else if(conD.Name == aadhaarCardNameHelper.split('\\.')[0]){
                 sfunVar.aadhaarCardFrontUrl = conD.ContentDownloadUrl;
             }
 
-            else if(conD.Name == aadhaarCardNameHelper){
+            else if(conD.Name == aadhaarCardNameHelper2.split('\\.')[0]){
                 sfunVar.aadhaarCardBackUrl = conD.ContentDownloadUrl;
             }
         }
@@ -65,6 +70,8 @@ public with sharing class OCRHelperFunctionCall {
                 sfunVar.username = authenticationVal.Value__c;
             }
         }
+
+        System.debug(sfunVar);
 
         functions.Function fn = functions.Function.get('salesforceFunction.ocrfunction');
         functions.FunctionInvocation invocation = fn.invoke(JSON.serialize(sfunVar));
