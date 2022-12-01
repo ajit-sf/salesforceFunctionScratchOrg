@@ -85,7 +85,7 @@ const imageProcessing = async (downloadableUrl, access_token, type) => {
     body: form
   });
   let imageJSON = await imageResponse.json();
-  console.log(JSON.stringify(imageJSON.probabilities) + "Hello 123");
+  console.log(JSON.stringify(imageJSON.probabilities) + "Hello 1235");
   if(type === 'aadhaarFront'){
     return aadhaarCardFront(imageJSON);
   }
