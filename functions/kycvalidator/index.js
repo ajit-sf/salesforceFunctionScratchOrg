@@ -11,9 +11,9 @@
  *                 to a given execution of a function.
  */
 
- import { Client } from "pg";
+//  import { Client } from "pg";
 
- const ClientH = Client;
+//  const ClientH = Client;
 
 export default async function (event, context, logger) {
   const username = event.data.creds.user;
@@ -22,16 +22,22 @@ export default async function (event, context, logger) {
   const database = event.data.creds.database;
   const port = event.data.creds.port;
 
-  // const client = new ClientH('postgres://mfpibdyonqmjlh:256381ccec702257f70e5d73cfe279a1a82bf8a0d4c68647ab5ba9cd51914511@ec2-54-173-77-184.compute-1.amazonaws.com:5432/d2ip5p67bmcspn');
-  const client = new ClientH({
-    host : host,
-    database : database,
-    user : username,
-    password : password,
-    port : port
-  });
-  await client.connect();
-  let res = await client.query("SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator");
-  console.log(res);
+  // // const client = new ClientH('postgres://mfpibdyonqmjlh:256381ccec702257f70e5d73cfe279a1a82bf8a0d4c68647ab5ba9cd51914511@ec2-54-173-77-184.compute-1.amazonaws.com:5432/d2ip5p67bmcspn');
+  // const client = new ClientH({
+  //   host : host,
+  //   database : database,
+  //   user : username,
+  //   password : password,
+  //   port : port
+  // });
+  // await client.connect();
+  // let res = await client.query("SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator");
+  // console.log(res);
+
+  console.log(' Username V1 ' + username);
+  console.log(' host V1 ' + host);
+  console.log(' password V1 ' + password);
+  console.log(' database V1 ' + database);
+  console.log(' port V1 ' + port);
 
 }
