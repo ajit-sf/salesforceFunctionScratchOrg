@@ -21,13 +21,14 @@ export default async function (event, context, logger) {
   const password = event.data.creds.password;
   const database = event.data.creds.database;
   const port = event.data.creds.port;
-  
+
   const client = new ClientH({
     user: username,
     host: host,
     database: database,
     password: password,
-    port: port
+    port: port,
+    ssl: true
     });
     await client.connect();
 
