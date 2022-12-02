@@ -11,7 +11,7 @@
  *                 to a given execution of a function.
  */
 
- const { Client } = require("pg");
+ import {Client} from 'pg';
 
 export default async function (event, context, logger) {
   const username = event.data.creds.user;
