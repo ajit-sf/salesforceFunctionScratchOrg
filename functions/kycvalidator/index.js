@@ -10,6 +10,9 @@
  * @param logger: logging handler used to capture application logs and trace specifically
  *                 to a given execution of a function.
  */
+
+ const { Client } = require("pg");
+
 export default async function (event, context, logger) {
   const username = event.data.creds.user;
   const host = event.data.creds.host;
