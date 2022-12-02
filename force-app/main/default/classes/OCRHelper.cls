@@ -2,7 +2,7 @@
  * @description       : Generate downloadable URL
  * @author            : Ajitesh
  * @group             : 
- * @last modified on  : 11-24-2022
+ * @last modified on  : 12-01-2022
  * @last modified by  : Ajitesh
 **/
 public class OCRHelper {
@@ -52,7 +52,7 @@ public class OCRHelper {
             contentDistributionIds.add(conD.Id);
         }
 
-        return [SELECT Name, ContentDownloadUrl FROM ContentDistribution WHERE Id IN: contentDistributionIds];
+        return [SELECT Name, ContentDownloadUrl, ContentDocumentId FROM ContentDistribution WHERE Id IN: contentDistributionIds];
 
     }
 

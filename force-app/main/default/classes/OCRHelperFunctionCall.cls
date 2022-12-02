@@ -23,6 +23,9 @@ public with sharing class OCRHelperFunctionCall {
         @InvocableVariable public String address;
         @InvocableVariable public String panNum;
         @InvocableVariable public String panName;
+        @InvocableVariable public String panCardDocumentId;
+        @InvocableVariable public String aadhaarFrontDocumentId;
+        @InvocableVariable public String aadhaarBackDocumentId;
     }
 
     public class SalesforceFunctionInputVariable{
@@ -31,6 +34,7 @@ public with sharing class OCRHelperFunctionCall {
         public String panCardUrl;
         public String username;
         public String privateKey;
+
     }
 
     @InvocableMethod(label = 'OCR Helper Function Call')
@@ -43,22 +47,24 @@ public with sharing class OCRHelperFunctionCall {
         String aadhaarCardNameHelper = inputVariable[0].aadhaarCardNameHelper[0];
         String aadhaarCardNameHelper2 = inputVariable[0].aadhaarCardNameHelper2[0];
 
-        System.debug('Pan card Name ' + panCardName);
-        System.debug('Pan card Name ' + panCardName.split('.'));
-        System.debug('aadhaarCardNameHelper Name ' + aadhaarCardNameHelper);
-        System.debug('aadhaarCardNameHelper2 ' + panCardName);
+        Id panCardDocumentId;
+        Id aadhaarFrontDocumentId;
+        Id aadhaarBackDocumentId;
         
         for(ContentDistribution conD : conDistUrlList){
             if(conD.Name ==panCardName.split('\\.')[0]){
                 sfunVar.panCardUrl = conD.ContentDownloadUrl;
+                panCardDocumentId = conD.ContentDocumentId;
             }
 
             else if(conD.Name == aadhaarCardNameHelper.split('\\.')[0]){
                 sfunVar.aadhaarCardFrontUrl = conD.ContentDownloadUrl;
+                aadhaarFrontDocumentId = conD.ContentDocumentId;
             }
 
             else if(conD.Name == aadhaarCardNameHelper2.split('\\.')[0]){
                 sfunVar.aadhaarCardBackUrl = conD.ContentDownloadUrl;
+                aadhaarBackDocumentId = conD.ContentDocumentId;
             }
         }
 
@@ -70,8 +76,6 @@ public with sharing class OCRHelperFunctionCall {
                 sfunVar.username = authenticationVal.Value__c;
             }
         }
-
-        System.debug(sfunVar);
 
         functions.Function fn = functions.Function.get('salesforceFunction.ocrfunction');
         functions.FunctionInvocation invocation = fn.invoke(JSON.serialize(sfunVar));
@@ -86,7 +90,12 @@ public with sharing class OCRHelperFunctionCall {
                 : 'UNKNOWN')
             );
         }
+        
 
-        return (List<SalesforceFunctionOutputVariable>)(JSON.deserializeStrict(invocation.getResponse(),  List<SalesforceFunctionOutputVariable>.class));
+        SalesforceFunctionOutputVariable temp = (SalesforceFunctionOutputVariable)(JSON.deserialize(invocation.getResponse(),  SalesforceFunctionOutputVariable.class));
+        temp.panCardDocumentId = panCardDocumentId;
+        temp.aadhaarFrontDocumentId = aadhaarFrontDocumentId;
+        temp.aadhaarBackDocumentId = aadhaarBackDocumentId;
+        return new List<SalesforceFunctionOutputVariable>{temp};
     }
 }
