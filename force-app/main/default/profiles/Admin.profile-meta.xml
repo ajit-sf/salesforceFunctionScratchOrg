@@ -150,6 +150,31 @@
     </classAccesses>
     <custom>false</custom>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>KYC_Validator_Postgress_cred__mdt.Database__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>KYC_Validator_Postgress_cred__mdt.Host__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>KYC_Validator_Postgress_cred__mdt.Password__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>KYC_Validator_Postgress_cred__mdt.Port__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>KYC_Validator_Postgress_cred__mdt.User__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Aadhaar_Address__c</field>
         <readable>true</readable>
@@ -359,6 +384,9 @@
         <field>OCR_Authentication__mdt.Value__c</field>
         <readable>false</readable>
     </fieldPermissions>
+    <layoutAssignments>
+        <layout>KYC_Validator_Postgress_cred__mdt-KYC Validator Postgress cred Layout</layout>
+    </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-Lead Layout</layout>
     </layoutAssignments>

@@ -34,7 +34,7 @@ public with sharing class KYCValidatorFunctionCall {
     }
 
     @InvocableMethod(label = 'OCR Helper Function Call')
-    public KYCValidatorFunctionCall(List<FlowInputVariable> flowInput) {
+    public static void KYCValidatorFunctionCall(List<FlowInputVariable> flowInput) {
         KYC_Validator_Postgress_cred__mdt kycValidatorRec = [SELECT Database__c, Host__c, Password__c, Port__c, User__c FROM KYC_Validator_Postgress_cred__mdt LIMIT 1];
 
         PostgressCreds creds = new PostgressCreds();
@@ -49,7 +49,7 @@ public with sharing class KYCValidatorFunctionCall {
         funcinputs.panCardNo = flowInput[0].panCardNo;
         funcinputs.creds = creds;
 
-        
+
 
     }
 }

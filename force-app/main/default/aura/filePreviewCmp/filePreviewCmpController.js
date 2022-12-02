@@ -19,7 +19,7 @@
             var state = response.getState();
             if (state === 'SUCCESS') {
                 console.log(response.getReturnValue())
-                component.set('v.files',response.getReturnValue())
+                component.set('v.files',response.getReturnValue()[0])
             } else {
                 console.error('State:' + state);
             }

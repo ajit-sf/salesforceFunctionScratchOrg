@@ -5,7 +5,7 @@
   @last modified on  : 11-22-2022
   @last modified by  : Ajitesh
 -->
-<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName" access="global" controller="FilePreviewCmpController">
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName,lightning:availableForFlowScreens" access="global" controller="FilePreviewCmpController">
     <aura:attribute name="recordId" type="String"/>
     <aura:attribute name="sObjectName" type="String"/>
     <aura:attribute name="contentDocumentId" type="String" default=""/>
@@ -21,9 +21,7 @@
     
     <lightning:card title="{!v.cardTitle}">
         <div class="slds-align_absolute-center">
-            <aura:renderIf isTrue="{!v.showFilePreviewer}">
-                
-                <p class="slds-p-horizontal_small">
+            <p class="slds-p-horizontal_small">
                     <aura:iteration items="{!v.files}" var="file">
                         <lightning:fileCard fileId="{!file.contentDocLink.ContentDocumentId}" description="{!file.contentDocLink.ContentDocument.Title}"/>
                     </aura:iteration>
@@ -31,8 +29,11 @@
                         <h1>No Files found for this record</h1>
                     </aura:if>
                 </p>
+
+                           <!-- <aura:renderIf isTrue="{!v.showFilePreviewer}">
                 
-                <aura:set attribute="else">
+                
+<aura:set attribute="else">
                     <lightning:carousel disableAutoScroll="{!v.disableAutoScroll}">
                         <aura:iteration items="{!v.files}" var="file">
                             <lightning:carouselImage
@@ -48,7 +49,7 @@
                         </aura:if>
                     </lightning:carousel>
                 </aura:set>
-            </aura:renderIf>
+            </aura:renderIf>-->
         </div>
     </lightning:card>
     

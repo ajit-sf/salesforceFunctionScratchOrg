@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>postgresscreds</label>
+    <protected>false</protected>
+    <values>
+        <field>Database__c</field>
+        <value xsi:type="xsd:string">d2ip5p67bmcspn</value>
+    </values>
+    <values>
+        <field>Host__c</field>
+        <value xsi:type="xsd:string">ec2-54-173-77-184.compute-1.amazonaws.com</value>
+    </values>
+    <values>
+        <field>Password__c</field>
+        <value xsi:type="xsd:string">256381ccec702257f70e5d73cfe279a1a82bf8a0d4c68647ab5ba9cd51914511</value>
+    </values>
+    <values>
+        <field>Port__c</field>
+        <value xsi:type="xsd:string">5432</value>
+    </values>
+    <values>
+        <field>User__c</field>
+        <value xsi:type="xsd:string">mfpibdyonqmjlh</value>
+    </values>
+</CustomMetadata>
