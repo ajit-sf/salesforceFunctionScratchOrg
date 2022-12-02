@@ -11,7 +11,7 @@
  *                 to a given execution of a function.
  */
 
- import {Client} from 'pg';
+ import pg from 'pg';
 
 export default async function (event, context, logger) {
   const username = event.data.creds.user;
@@ -19,7 +19,7 @@ export default async function (event, context, logger) {
   const password = event.data.creds.password;
   const database = event.data.creds.database;
   const port = event.data.creds.port;
-  
+  const {Client} = pg;
   const client = new Client({
     user: username,
     host: host,
