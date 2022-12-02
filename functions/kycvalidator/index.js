@@ -11,9 +11,9 @@
  *                 to a given execution of a function.
  */
 
- import { Client } from "pg";
+//  import { Client } from "pg";
 
- const ClientH = Client;
+//  const ClientH = Client;
 
 export default async function (event, context, logger) {
   const username = event.data.creds.user;
@@ -22,16 +22,20 @@ export default async function (event, context, logger) {
   const database = event.data.creds.database;
   const port = event.data.creds.port;
 
-  const client = new ClientH({
-    user: username,
-    host: host,
-    database: database,
-    password: password,
-    port: port,
-    ssl: true
-    });
-    await client.connect();
+  // const client = new ClientH({
+  //   user: username,
+  //   host: host,
+  //   database: database,
+  //   password: password,
+  //   port: port,
+  //   ssl: true
+  //   });
+    // await client.connect();
 
-    console.log(client + 'client info');
+    console.log(username + 'username');
+    console.log(host + 'host');
+    console.log(password + 'password');
+    console.log(database + 'database');
+    console.log(port + 'port');
 
 }
