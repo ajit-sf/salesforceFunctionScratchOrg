@@ -24,8 +24,10 @@ export default async function (event, context, logger) {
   const firstName = event.data.firstName;
   const lastName = event.data.lastName;
 
-  let isAddharVerfied = false;;
+  let isAddharVerfied = false;
   let isPanVerfied = false;
+
+
   
   const {Client} = require('pg');
   const client = new Client({
@@ -47,6 +49,8 @@ export default async function (event, context, logger) {
 
   let matchingProbability = stringSimilarity.compareTwoStrings(aadhaarName, firstName + ' ' + lastName);
 
-  return {isAddharVerfied, isPanVerfied, matchingProbability};
+  console.log({isAddharVerfied : isAddharVerfied, isPanVerfied : isPanVerfied, matchingProbability : matchingProbability} + 'Hello');
+
+  return {isAddharVerfied : isAddharVerfied, isPanVerfied : isPanVerfied, matchingProbability : matchingProbability};
 
 }

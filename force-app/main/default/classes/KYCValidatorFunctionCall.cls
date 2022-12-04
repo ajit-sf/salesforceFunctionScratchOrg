@@ -39,7 +39,7 @@ public with sharing class KYCValidatorFunctionCall {
         @InvocableVariable public Double matchingProbability;
     }
 
-    @InvocableMethod(label = 'OCR Helper Function Call')
+    @InvocableMethod(label = 'KYC Validation Function Call')
     public static List<SalesforceFunctionOutputVariable> KYCValidatorFunctionCall(List<FlowInputVariable> flowInput) {
         KYC_Validator_Postgress_cred__mdt kycValidatorRec = [SELECT Creds_URL__c FROM KYC_Validator_Postgress_cred__mdt LIMIT 1];
 
@@ -67,7 +67,10 @@ public with sharing class KYCValidatorFunctionCall {
             );
         }
 
+        
+
         SalesforceFunctionOutputVariable temp = (SalesforceFunctionOutputVariable)(JSON.deserialize(invocation.getResponse(),  SalesforceFunctionOutputVariable.class));
+        System.debug(temp);
         return new List<SalesforceFunctionOutputVariable>{temp};
     }
 }
