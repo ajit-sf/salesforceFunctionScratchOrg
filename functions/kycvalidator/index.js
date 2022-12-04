@@ -39,7 +39,7 @@ export default async function (event, context, logger) {
 
   await client.connect();
   let res = await client.query(`SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator where aadhaar_card_no='${aadhaarCardNo}' AND pan_card_no='${panCardNo}'`);
-  
+  console.log('Database ' + JSON.stringify(res));
   if(res.rowCount > 0){
     isAddharVerfied = true;
     isPanVerfied = true;
@@ -49,7 +49,7 @@ export default async function (event, context, logger) {
 
   let matchingProbability = stringSimilarity.compareTwoStrings(aadhaarName, firstName + ' ' + lastName);
 
-  console.log({isAddharVerfied : isAddharVerfied, isPanVerfied : isPanVerfied, matchingProbability : matchingProbability} + 'Hello');
+  console.log(JSON.stringify({isAddharVerfied : isAddharVerfied, isPanVerfied : isPanVerfied, matchingProbability : matchingProbability}) + 'Hello 123');
 
   return {isAddharVerfied : isAddharVerfied, isPanVerfied : isPanVerfied, matchingProbability : matchingProbability};
 
