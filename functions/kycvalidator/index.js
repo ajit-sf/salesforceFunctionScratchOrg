@@ -18,7 +18,7 @@
 export default async function (event, context, logger) {
   const databaseUri = event.data.creds.databaseUri;
   const aadhaarCardNo = event.data.aadhaarNo;
-  const panCardNo = event.data.aadhaarNo;
+  const panCardNo = event.data.panCardNo;
 
   const aadhaarName = event.data.aadhaarName;
   const firstName = event.data.firstName;
@@ -48,6 +48,7 @@ export default async function (event, context, logger) {
 
   const stringSimilarity = require("string-similarity");
 
+  console.log(aadhaarName , firstName, lastName, 'Helo 12');
   let matchingProbability = stringSimilarity.compareTwoStrings(aadhaarName, firstName + ' ' + lastName);
 
   console.log(JSON.stringify({isAddharVerfied : isAddharVerfied, isPanVerfied : isPanVerfied, matchingProbability : matchingProbability}) + 'Hello 123');
