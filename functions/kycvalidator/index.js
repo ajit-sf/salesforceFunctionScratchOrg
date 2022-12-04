@@ -17,8 +17,15 @@
 
 export default async function (event, context, logger) {
   const databaseUri = event.data.creds.databaseUri;
+  const aadhaarCardNo = event.data.aadhaarNo;
+  const panCardNo = event.data.aadhaarNo;
 
+  const aadhaarName = event.data.aadhaarName;
+  const firstName = event.data.firstName;
+  const lastName = event.data.lastName;
 
+  let isAddharVerfied = false;;
+  let isPanVerfied = false;
   
   const {Client} = require('pg');
   const client = new Client({
@@ -28,16 +35,18 @@ export default async function (event, context, logger) {
     }
   });
 
-  console.log(client + 'client 123');
   await client.connect();
-  console.log(client + 'client 123');
-  let res = await client.query("SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator");
-  console.log(JSON.stringify(res) + 'res 123');
+  let res = await client.query(`SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator where aadhaar_card_no='${aadhaarCardNo}' AND pan_card_no='${panCardNo}'`);
+  
+  if(res.rowCount > 0){
+    isAddharVerfied = true;
+    isPanVerfied = true;
+  }
 
-  console.log(' Username V1 ' + username);
-  console.log(' host V1 ' + host);
-  console.log(' password V1 ' + password);
-  console.log(' database V1 ' + database);
-  console.log(' port V$alesforce1231 ' + port);
+  const stringSimilarity = require("string-similarity");
+
+  let matchingProbability = stringSimilarity.compareTwoStrings(aadhaarName, firstName + ' ' + lastName);
+
+  return {isAddharVerfied, isPanVerfied, matchingProbability};
 
 }
