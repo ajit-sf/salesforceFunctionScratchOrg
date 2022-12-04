@@ -16,16 +16,13 @@
  const require = createRequire(import.meta.url);
 
 export default async function (event, context, logger) {
-  const username = event.data.creds.user;
-  const host = event.data.creds.host;
-  const password = event.data.creds.password;
-  const database = event.data.creds.database;
-  const port = event.data.creds.port;
+  const databaseUri = event.data.creds.databaseUri;
+
 
   
   const {Client} = require('pg');
   const client = new Client({
-    connectionString: 'postgres://mfpibdyonqmjlh:256381ccec702257f70e5d73cfe279a1a82bf8a0d4c68647ab5ba9cd51914511@ec2-54-173-77-184.compute-1.amazonaws.com:5432/d2ip5p67bmcspn',
+    connectionString: databaseUri,
     ssl: {
       rejectUnauthorized: false
     }
@@ -35,7 +32,7 @@ export default async function (event, context, logger) {
   await client.connect();
   console.log(client + 'client 123');
   let res = await client.query("SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator");
-  console.log(res + 'res 123');
+  console.log(JSON.stringify(res) + 'res 123');
 
   console.log(' Username V1 ' + username);
   console.log(' host V1 ' + host);
