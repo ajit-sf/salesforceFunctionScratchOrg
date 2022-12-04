@@ -38,6 +38,7 @@ export default async function (event, context, logger) {
   });
 
   await client.connect();
+  console.log(`SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator where aadhaar_card_no='${aadhaarCardNo}' AND pan_card_no='${panCardNo}'`);
   let res = await client.query(`SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator where aadhaar_card_no='${aadhaarCardNo}' AND pan_card_no='${panCardNo}'`);
   console.log('Database ' + JSON.stringify(res));
   if(res.rowCount > 0){
