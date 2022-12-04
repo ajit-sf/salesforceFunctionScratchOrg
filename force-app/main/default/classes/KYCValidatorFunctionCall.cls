@@ -34,8 +34,8 @@ public with sharing class KYCValidatorFunctionCall {
     }
 
     public class SalesforceFunctionOutputVariable{
-        @InvocableVariable public Boolean isAadhaarValidated;
-        @InvocableVariable public Boolean isPanValidated;
+        @InvocableVariable public Boolean isAddharVerfied;
+        @InvocableVariable public Boolean isPanVerfied;
         @InvocableVariable public Double matchingProbability;
     }
 

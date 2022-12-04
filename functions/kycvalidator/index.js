@@ -26,6 +26,7 @@ export default async function (event, context, logger) {
 
   let isAddharVerfied = false;
   let isPanVerfied = false;
+  let cibilScore = 0;
 
 
   
@@ -38,22 +39,19 @@ export default async function (event, context, logger) {
   });
 
   await client.connect();
-  console.log(`SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator where aadhaar_card_no='${aadhaarCardNo}' AND pan_card_no='${panCardNo}'`);
+  
   let res = await client.query(`SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator where aadhaar_card_no='${aadhaarCardNo}' AND pan_card_no='${panCardNo}'`);
-  console.log('Database ' + JSON.stringify(res));
+  
   if(res.rowCount > 0){
     isAddharVerfied = true;
     isPanVerfied = true;
+    cibilScore = res.rows[0].cibil_score;
   }
 
   const stringSimilarity = require("string-similarity");
 
-  console.log(aadhaarName , firstName, lastName, 'Helo 12');
-  console.log(JSON.stringify(stringSimilarity) + 'Helo 123');
   let matchingProbability = stringSimilarity.compareTwoStrings(aadhaarName, (firstName + ' ' + lastName));
 
-  console.log(JSON.stringify({isAddharVerfied : isAddharVerfied, isPanVerfied : isPanVerfied, matchingProbability : matchingProbability}) + 'Hello 123');
-
-  return {isAddharVerfied : isAddharVerfied, isPanVerfied : isPanVerfied, matchingProbability : matchingProbability};
+  return {isAddharVerfied : isAddharVerfied, isPanVerfied : isPanVerfied, matchingProbability : matchingProbability, cibilScore : cibilScore};
 
 }
