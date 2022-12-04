@@ -49,7 +49,8 @@ export default async function (event, context, logger) {
   const stringSimilarity = require("string-similarity");
 
   console.log(aadhaarName , firstName, lastName, 'Helo 12');
-  let matchingProbability = stringSimilarity.compareTwoStrings(aadhaarName, firstName + ' ' + lastName);
+  console.log(JSON.stringify(stringSimilarity) + 'Helo 123');
+  let matchingProbability = stringSimilarity.compareTwoStrings(aadhaarName, (firstName + ' ' + lastName));
 
   console.log(JSON.stringify({isAddharVerfied : isAddharVerfied, isPanVerfied : isPanVerfied, matchingProbability : matchingProbability}) + 'Hello 123');
 
