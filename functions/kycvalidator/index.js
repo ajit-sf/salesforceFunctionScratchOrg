@@ -26,9 +26,11 @@ export default async function (event, context, logger) {
   const {Client} = require('pg');
   const client = new Client({
     connectionString: 'postgres://mfpibdyonqmjlh:256381ccec702257f70e5d73cfe279a1a82bf8a0d4c68647ab5ba9cd51914511@ec2-54-173-77-184.compute-1.amazonaws.com:5432/d2ip5p67bmcspn',
-  ssl: {
-    rejectUnauthorized: false
+    ssl: {
+      rejectUnauthorized: false
+    }
   });
+
   console.log(client + 'client 123');
   await client.connect();
   console.log(client + 'client 123');
@@ -39,6 +41,6 @@ export default async function (event, context, logger) {
   console.log(' host V1 ' + host);
   console.log(' password V1 ' + password);
   console.log(' database V1 ' + database);
-  console.log(' port V1 ' + port);
+  console.log(' port V$alesforce1231 ' + port);
 
 }
