@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+	<apiVersion>54.0</apiVersion>
+	<isExposed>true</isExposed>
+	<targets>
+		<target>lightning__FlowScreen</target>
+	</targets>
+	<targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="label" type="String" description="Enter the Label" label="Label"/>
+			<property name="fieldType" type="String" description="Enter the Field Type" label="Field Type"/>
+			<property name="value" type="String" description="Enter the value" label="Value"/>
+			<property name="isRadio" type="String" description="Radio Button" label="Is Radio"/>
+			<property name="formatter" type="String" description="Enter the type of formatter for Number field" label="Formatter"/>
+			<property name="isInputTypeText" type="String" description="is Input Type Text Button" label="Is Input Type Text"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

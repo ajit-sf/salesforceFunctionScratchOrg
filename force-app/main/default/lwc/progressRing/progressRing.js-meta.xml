@@ -6,23 +6,20 @@
         <target>lightning__RecordPage</target>
         <target>lightning__AppPage</target>
         <target>lightning__HomePage</target>
+		<target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__HomePage,lightning__AppPage">
+        <targetConfig targets="lightning__FlowScreen, lightning__HomePage,lightning__AppPage">
             <property name="title" type="String" label="Title" placeholder="Enter The Title of Progress Ring"/>
             <property name="ringColor" type="String" label="Ring Colour" placeholder="Enter colour name or Hex Code or rgb value" description="Enter colour name or Hex Code or rgb value Ex: rgb(51, 153, 255) or #3399ff or Blue."/>
             <property name="remainingRingColour" type="String" label="Remaining Ring Colour" placeholder="Enter colour name or Hex Code or rgb value" description="Enter colour name or Hex Code or rgb value for the left over portion of the ring. Ex: rgb(51, 153, 255) or #3399ff or Blue." default="#8080807a"/>
-            <property name="percentageType" type="String" default="Static" datasource="Static,Field Value,Relational" label="Percentage Type" description="Select the source of the percentage value."/>
+            <property name="percentageType" type="String" default="Static" label="Percentage Type" description="Select the source of the percentage value."/>
             <property name="percentage" type="Integer" label="Percentage" description="Fill only if Percentge Type is Static."/>
             <property name="source" type="string" label="Actual" description="Fill only if Percentage Type is Relational. Ex: 1 in 1/4"/>
             <property name="target" type="string" label="Total" description="Fill only if Percentage Type is Relational. Ex: 4 in 1/4"/>
-            <property name="titlePlacement" type="String" default="Header" datasource="Header,Footer" label="Title Placement"/>
+            <property name="titlePlacement" type="String" default="Header" label="Title Placement"/>
             <property name="textInsideRing" type="String" label="Text Inside Ring" description="Entered text will be displayed inside the ring instead of percentage."/>
             <property name="showBothTextAndPercentage" type="Boolean" label="Show Both Text and Percentage" description="Select if you want to show both text and percentage inside the ring. Ex: Apex(60%)"/>
-            <supportedFormFactors>
-                <supportedFormFactor type="Large"/>
-                <supportedFormFactor type="Small"/>
-            </supportedFormFactors>
         </targetConfig>
         </targetConfigs>
 </LightningComponentBundle>

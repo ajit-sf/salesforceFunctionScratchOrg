@@ -1,0 +1,34 @@
+<template>
+     <template if:false={isRadio}>
+         <label class="slds-radio__label">
+            <span class="slds-form-element__label"><b>{label}</b></span>
+        </label>
+        <template if:true={isInputTypeText}>
+            <lightning-input variant="label-hidden" type={fieldType} value={value} read-only></lightning-input>
+        </template>
+        <template if:false={isInputTypeText}>
+            <lightning-input variant="label-hidden" type={fieldType} value={value} formatter={formatter} read-only></lightning-input>
+        </template>
+     </template>
+
+    <template if:true={isRadio}>
+        <label class="slds-radio__label">
+            <span class="slds-form-element__label"><b>{label}</b></span>
+        </label>
+        <div style="margin-left:3%;">
+            <template for:each={options} for:item="item">
+                <fieldset key={item.value} style="display: block; float: left;">
+                    <div class="slds-form-element__control">
+                        <span class="slds-radio">
+                            <input name="radiogroup" id={item.value} type="radio" value={item.value} checked={item.selected} disabled/>
+                            <label class="slds-radio__label" for={item.value}>
+                                <span class="slds-radio_faux"></span>
+                                <span class="slds-form-element__label">{item.label}</span>
+                            </label>
+                        </span>
+                    </div>
+                </fieldset>
+            </template><br/><br/>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,41 @@
+<!--
+  @description       : 
+  @author            : Ajitesh
+  @group             : 
+  @last modified on  : 12-01-2022
+  @last modified by  : Ajitesh
+-->
+<template>
+    
+    <template if:true={isAadhaar}>
+        <lightning-layout horizontal-align="center" >
+            <lightning-layout-item  flexibility="auto" padding="around-small">
+                <lightning-pill variant="plain" label={aadhaarName}></lightning-pill>
+            </lightning-layout-item  >
+            <lightning-layout-item  flexibility="auto" padding="around-small">
+                <lightning-pill variant="plain" label={aadhaarNum}></lightning-pill>
+            </lightning-layout-item  >
+        </lightning-layout>
+    </template>
+
+    <template if:true={isPAN}>
+        <lightning-layout horizontal-align="center" >
+            <lightning-layout-item  flexibility="auto" padding="around-small">
+                <lightning-pill variant="plain" label={panCardName} ></lightning-pill>
+            </lightning-layout-item>
+            <lightning-layout-item  flexibility="auto" padding="around-small"> 
+                <lightning-pill variant="plain" label={panCardNum} ></lightning-pill>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+
+    <template if:true={isAadhaarBack}>
+        <lightning-layout horizontal-align="center" >
+            <lightning-layout-item  flexibility="auto" padding="around-small">
+                <lightning-pill variant="plain" label={aadhaarAddress}></lightning-pill>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+
+
+</template>
