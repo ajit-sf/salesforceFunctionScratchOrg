@@ -36,6 +36,7 @@ public with sharing class KYCValidatorFunctionCall {
     public class SalesforceFunctionOutputVariable{
         @InvocableVariable public Boolean isAddharVerfied;
         @InvocableVariable public Boolean isPanVerfied;
+        @InvocableVariable public Double cibilScore;
         @InvocableVariable public Double matchingProbability;
     }
 
@@ -47,8 +48,8 @@ public with sharing class KYCValidatorFunctionCall {
         creds.databaseUri = kycValidatorRec.Creds_URL__c;
         
         SalesforcefunctionInput funcinputs = new SalesforcefunctionInput();
-        funcinputs.aadhaarNo = flowInput[0].aadhaarNo;
-        funcinputs.panCardNo = flowInput[0].panCardNo;
+        funcinputs.aadhaarNo = flowInput[0].aadhaarNo.replaceAll( '\\s+', '');
+        funcinputs.panCardNo = flowInput[0].panCardNo.replaceAll( '\\s+', '');
         funcinputs.aadhaarName = flowInput[0].aadhaarName;
         funcinputs.firstName = flowInput[0].firstName;
         funcinputs.lastName = flowInput[0].lastName;
