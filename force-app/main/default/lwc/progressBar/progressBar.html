@@ -1,0 +1,70 @@
+<template>
+<div class="slds-p-around--medium slds-m-bottom--x-small">
+    <div class="slds-form-element">
+        <!--lightning-progress-indicator current-step={progressIndicator} type="path" variant="base">
+            <lightning-progress-step label="Form Fill" value="1"></lightning-progress-step>
+            <lightning-progress-step label="Preview & Verify" value="2"></lightning-progress-step>
+            <lightning-progress-step label="Submit" value="3"></lightning-progress-step>
+        </lightning-progress-indicator>
+        <lightning-progress-indicator current-step={progressIndicator} type="path" variant="base">
+            <lightning-progress-step label="Login" value="1" onclick={pathHandler}></lightning-progress-step>
+            <lightning-progress-step label="Form Fill" value="0" ></lightning-progress-step>
+            <lightning-progress-step label="Preview & Verify" value="1"></lightning-progress-step>
+            <lightning-progress-step label="Submit" value="2"></lightning-progress-step>
+        </lightning-progress-indicator-->
+        <!-- ##### Path ##### -->
+        <div class="slds-path slds-var-m-top_small slds-var-m-bottom_small">
+            <div class="slds-grid slds-path__track">
+                <div class="slds-grid slds-path__scroller-container">
+                    <div class="slds-path__scroller">
+                        <div class="slds-path__scroller_inner">
+                            <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                                <template for:each={stepsArray} for:item="step">
+                                    <!-- if Complete -->
+                                    <template if:true={step.showComplete}>
+                                        <li key={step.label} class="slds-path__item slds-is-complete" role="presentation">
+                                            <a aria-selected="false" class="slds-path__link" role="option">
+                                                <span class="slds-path__stage">
+                                                    <lightning-icon icon-name="utility:check" variant="inverse" size="xx-small" class="slds-icon slds-icon_x-small"></lightning-icon>
+                                                    <span class="slds-assistive-text">{step.label}</span>
+                                                </span>
+                                                <span class="slds-path__title">{step.label}</span>
+                                            </a>
+                                        </li>
+                                    </template>
+                                    <!-- if Current -->
+                                    <template if:true={step.showCurrent}>
+                                        <li key={step.label} class="slds-path__item slds-is-current slds-is-active" role="presentation">
+                                            <a aria-selected="true" class="slds-path__link" role="option">
+                                                <span class="slds-path__stage">
+                                                    <lightning-icon icon-name="utility:check" variant="inverse" size="xx-small" class="slds-icon slds-icon_x-small"></lightning-icon>
+                                                    <span class="slds-assistive-text">{step.label}</span>
+                                                </span>
+                                                <span class="slds-path__title">{step.label}</span>
+                                            </a>
+                                        </li>
+                                    </template>
+                                    <!-- if Upcoming -->
+                                    <template if:true={step.showUpcoming}>
+                                        <li key={step.label} class="slds-path__item slds-is-incomplete" role="presentation">
+                                            <a aria-selected="false" class="slds-path__link" role="option">
+                                                <span class="slds-path__stage">
+                                                    <lightning-icon icon-name="utility:check" variant="inverse" size="xx-small" class="slds-icon slds-icon_x-small"></lightning-icon>
+                                                    <span class="slds-assistive-text">{step.label}</span>
+                                                </span>
+                                                <span class="slds-path__title">{step.label}</span>
+                                            </a>
+                                        </li>
+                                    </template>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- ##### END: Path ##### -->
+
+    </div>
+</div>
+</template>

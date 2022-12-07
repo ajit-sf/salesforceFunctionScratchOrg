@@ -1,0 +1,56 @@
+<!--
+  @description       : 
+  @author            : Ajitesh
+  @group             : 
+  @last modified on  : 11-22-2022
+  @last modified by  : Ajitesh
+-->
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName,lightning:availableForFlowScreens" access="global" controller="FilePreviewCmpController">
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="sObjectName" type="String"/>
+    <aura:attribute name="contentDocumentId" type="String" default=""/>
+    <aura:attribute name="disableAutoScroll" type="boolean" default="true" />
+    <aura:attribute name="showFilePreviewer" type="boolean" default="true"/>
+    <aura:attribute name="lookupFieldAPIName" type="String" default=""/>
+    <aura:attribute name="cardTitle" type="String" default=""/>
+    <aura:attribute name="fileName" type="String" default=""/>
+    <aura:attribute name="fileExtensionsCSV" type="String" default=""/>
+    <aura:attribute name="recordLimit" type="Integer" default="10"/>
+    <aura:attribute name="files" type="string[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:card title="{!v.cardTitle}">
+        <div class="slds-align_absolute-center">
+            <p class="slds-p-horizontal_small">
+                    <aura:iteration items="{!v.files}" var="file">
+                        <lightning:fileCard fileId="{!file.contentDocLink.ContentDocumentId}" description="{!file.contentDocLink.ContentDocument.Title}"/>
+                    </aura:iteration>
+                    <aura:if isTrue="{!empty(v.files)}">
+                        <h1>No Files found for this record</h1>
+                    </aura:if>
+                </p>
+
+                           <!-- <aura:renderIf isTrue="{!v.showFilePreviewer}">
+                
+                
+<aura:set attribute="else">
+                    <lightning:carousel disableAutoScroll="{!v.disableAutoScroll}">
+                        <aura:iteration items="{!v.files}" var="file">
+                            <lightning:carouselImage
+                                                     src="{!file.imageSRC}"
+                                                     header="{!file.contentDocLink.ContentDocument.Title}"
+                                                     description="{!file.contentDocLink.ContentDocument.Description}"
+                                                     alternativeText="{!file.contentDocLink.ContentDocument.Title}"
+                                                     href="{!file.downloadURL}">
+                            </lightning:carouselImage>
+                        </aura:iteration>
+                        <aura:if isTrue="{!empty(v.files)}">
+                            <h1>No Files found for this record</h1>
+                        </aura:if>
+                    </lightning:carousel>
+                </aura:set>
+            </aura:renderIf>-->
+        </div>
+    </lightning:card>
+    
+</aura:component>

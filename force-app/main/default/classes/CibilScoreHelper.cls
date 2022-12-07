@@ -8,7 +8,7 @@
 public class CibilScoreHelper {
      @AuraEnabled
     public static string checkCibilScore(){
-            functions.Function fn = functions.Function.get('salesforceFunction.cibilscorefunction');
+            /*functions.Function fn = functions.Function.get('salesforceFunction.cibilscorefunction');
             functions.FunctionInvocation invocation = fn.invoke('');
     
             // Check if there is any error during the invocation
@@ -20,7 +20,8 @@ public class CibilScoreHelper {
                 );
             }
             String response = invocation.getResponse();
-        	System.debug('Response '+response);
+        	System.debug('Response '+response);*/
+            String response = '768';
         return response;
     }
 }
