@@ -40,10 +40,15 @@ export default async function (event, context, logger) {
 
   await client.connect();
   
-  let res = await client.query(`SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator where aadhaar_card_no='${aadhaarCardNo}' AND pan_card_no='${panCardNo}'`);
+  let res = await client.query(`SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator where aadhaar_card_no='${aadhaarCardNo}'`);
   
   if(res.rowCount > 0){
     isAddharVerfied = true;
+  }
+
+  res = await client.query(`SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator where pan_card_no='${panCardNo}'`);
+
+  if(res.rowCount > 0){
     isPanVerfied = true;
     cibilScore = res.rows[0].cibil_score;
   }
