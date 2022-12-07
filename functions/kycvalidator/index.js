@@ -11,27 +11,47 @@
  *                 to a given execution of a function.
  */
 
- import { Client } from "pg";
+ import { createRequire } from 'module';
 
- const ClientH = Client;
+ const require = createRequire(import.meta.url);
 
 export default async function (event, context, logger) {
-  const username = event.data.creds.user;
-  const host = event.data.creds.host;
-  const password = event.data.creds.password;
-  const database = event.data.creds.database;
-  const port = event.data.creds.port;
+  const databaseUri = event.data.creds.databaseUri;
+  const aadhaarCardNo = event.data.aadhaarNo;
+  const panCardNo = event.data.panCardNo;
 
-  // const client = new ClientH('postgres://mfpibdyonqmjlh:256381ccec702257f70e5d73cfe279a1a82bf8a0d4c68647ab5ba9cd51914511@ec2-54-173-77-184.compute-1.amazonaws.com:5432/d2ip5p67bmcspn');
-  const client = new ClientH({
-    host : host,
-    database : database,
-    user : username,
-    password : password,
-    port : port
+  const aadhaarName = event.data.aadhaarName;
+  const firstName = event.data.firstName;
+  const lastName = event.data.lastName;
+
+  let isAddharVerfied = false;
+  let isPanVerfied = false;
+  let cibilScore = 0;
+
+
+  
+  const {Client} = require('pg');
+  const client = new Client({
+    connectionString: databaseUri,
+    ssl: {
+      rejectUnauthorized: false
+    }
   });
+
   await client.connect();
-  let res = await client.query("SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator");
-  console.log(res);
+  
+  let res = await client.query(`SELECT aadhaar_card_no, pan_card_no, cibil_score FROM kyc_validator where aadhaar_card_no='${aadhaarCardNo}' AND pan_card_no='${panCardNo}'`);
+  
+  if(res.rowCount > 0){
+    isAddharVerfied = true;
+    isPanVerfied = true;
+    cibilScore = res.rows[0].cibil_score;
+  }
+
+  const stringSimilarity = require("string-similarity");
+
+  let matchingProbability = stringSimilarity.compareTwoStrings(aadhaarName, (firstName + ' ' + lastName));
+
+  return {isAddharVerfied : isAddharVerfied, isPanVerfied : isPanVerfied, matchingProbability : matchingProbability, cibilScore : cibilScore};
 
 }

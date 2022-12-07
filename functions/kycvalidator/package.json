@@ -23,6 +23,7 @@
     "sinon": "^14.0.0"
   },
   "dependencies": {
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "string-similarity": "^4.0.4"
   }
 }
