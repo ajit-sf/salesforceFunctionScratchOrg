@@ -51,7 +51,7 @@ export default async function (event, context, logger) {
   const stringSimilarity = require("string-similarity");
 
   let matchingProbability = stringSimilarity.compareTwoStrings(aadhaarName, (firstName + ' ' + lastName));
-  client.end(); 
+  await client.end(); 
   return {isAddharVerfied : isAddharVerfied, isPanVerfied : isPanVerfied, matchingProbability : matchingProbability, cibilScore : cibilScore};
 
 }

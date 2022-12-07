@@ -50,15 +50,12 @@ export default async function (event, context, logger) {
       body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${token}`
     });
     let responseJSON = await response.json();
-    console.log('Response ' + JSON.stringify(responseJSON));
 
 
 
     let aadhaarCardFrontObj = await imageProcessing(event.data.aadhaarCardFrontUrl, responseJSON.access_token, 'aadhaarFront');
     let aadhaarCardBackObj = await imageProcessing(event.data.aadhaarCardBackUrl, responseJSON.access_token, 'aadhaarBack');
     let panCardObj = await imageProcessing(event.data.panCardUrl, responseJSON.access_token, 'panCard');
-    let res = {...aadhaarCardFrontObj, ...aadhaarCardBackObj, ...panCardObj};
-    console.log('Response ' + JSON.stringify({...aadhaarCardFrontObj, ...aadhaarCardBackObj, ...panCardObj}));
     return {...aadhaarCardFrontObj, ...aadhaarCardBackObj, ...panCardObj};
   }
   catch (e) {
@@ -87,7 +84,6 @@ const imageProcessing = async (downloadableUrl, access_token, type) => {
     body: form
   });
   let imageJSON = await imageResponse.json();
-  console.log(JSON.stringify(imageJSON) + "Hello 1235");
   if(type === 'aadhaarFront'){
     return aadhaarCardFront(imageJSON);
   }
