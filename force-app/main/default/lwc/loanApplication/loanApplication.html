@@ -2,7 +2,7 @@
   @description       : 
   @author            : Indu, Ajitesh
   @group             : 
-  @last modified on  : 11-22-2022
+  @last modified on  : 11-09-2022
   @last modified by  : Ajitesh
 -->
 <template>
@@ -27,7 +27,7 @@
                             <lightning-input type="text" label="First Name" required name="name" value={leadObject.FirstName} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Last Name" required></lightning-input>
+                            <lightning-input type="text" label="Last Name" required name="lastName" value={leadObject.LastName} onchange={handleInputChange}></lightning-input>
                         </lightning-layout-item>
                     </lightning-layout>
                     <lightning-layout multiple-rows="true">
@@ -165,7 +165,8 @@
                     <!-- <lightning-input type="file" 
                                 name="aadharfile"
                                 accept={acceptedFormats}
-                                label="AADHAR Card" onchange={openAddharfileUpload}></lightning-input>
+                                record-id="00Q2D000007S523UAC"
+                                label="AADHAR Card" onchange={openAddharfileUpload}></lightning-input> -->
                             <template if:true={aadharFileData}>
                                 <p><lightning-icon size="x-small" style=" --lwc-colorTextIconDefault: #3989c6;" icon-name="utility:attach" alternative-text="attachment"></lightning-icon> {aadharFileData.filename}</p>
                             </template>
@@ -179,17 +180,16 @@
                                 onuploadfinished={handleUploadFinished}></lightning-file-upload>
                         </lightning-layout-item>
                     </lightning-layout-->
-                    <lightning-layout multiple-rows="true">
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="AADHAR Number" required></lightning-input>
+                            <lightning-input type="text" value={leadObject.aadhaarNum} label="AADHAR Number"></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Full name as on AADHAR card" required></lightning-input>
+                            <lightning-input type="text" value={leadObject.aadhaarCardName} label="Full name as on AADHAR card"></lightning-input>
                         </lightning-layout-item>
                     </lightning-layout>
                     <lightning-layout multiple-rows="true">
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
-                            <lightning-input type="text" label="Address (as per AADHAR card)" required></lightning-input>
+                            <lightning-input type="text" value={leadObject.aadhaarAdd} label="Address (as per AADHAR card)"></lightning-input>
                         </lightning-layout-item>
                         <lightning-layout-item class="slds-p-around_xx-small" size="6">
                             <lightning-input type="tel" label="Phone Number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></lightning-input>

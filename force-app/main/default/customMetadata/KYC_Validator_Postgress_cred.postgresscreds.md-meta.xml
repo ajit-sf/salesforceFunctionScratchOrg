@@ -3,23 +3,7 @@
     <label>postgresscreds</label>
     <protected>false</protected>
     <values>
-        <field>Database__c</field>
-        <value xsi:type="xsd:string">d2ip5p67bmcspn</value>
-    </values>
-    <values>
-        <field>Host__c</field>
-        <value xsi:type="xsd:string">ec2-54-173-77-184.compute-1.amazonaws.com</value>
-    </values>
-    <values>
-        <field>Password__c</field>
-        <value xsi:type="xsd:string">256381ccec702257f70e5d73cfe279a1a82bf8a0d4c68647ab5ba9cd51914511</value>
-    </values>
-    <values>
-        <field>Port__c</field>
-        <value xsi:type="xsd:string">5432</value>
-    </values>
-    <values>
-        <field>User__c</field>
-        <value xsi:type="xsd:string">mfpibdyonqmjlh</value>
+        <field>Creds_URL__c</field>
+        <value xsi:type="xsd:string">postgres://mfpibdyonqmjlh:256381ccec702257f70e5d73cfe279a1a82bf8a0d4c68647ab5ba9cd51914511@ec2-54-173-77-184.compute-1.amazonaws.com:5432/d2ip5p67bmcspn</value>
     </values>
 </CustomMetadata>

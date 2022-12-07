@@ -1,10 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Kyc_Validator</name>
+        <label>Kyc Validator</label>
+        <locationX>182</locationX>
+        <locationY>2054</locationY>
+        <actionName>KYCValidatorFunctionCall</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Update_Lead</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>aadhaarName</name>
+            <value>
+                <elementReference>AadhaarCardName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>aadhaarNo</name>
+            <value>
+                <elementReference>fetchLeadInfo.Aadhaar_Card_No__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>firstName</name>
+            <value>
+                <elementReference>fetchLeadInfo.FirstName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>lastName</name>
+            <value>
+                <elementReference>fetchLeadInfo.LastName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>panCardNo</name>
+            <value>
+                <elementReference>fetchLeadInfo.PAN_Card_No__c</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>cibilScoreVal</assignToReference>
+            <name>cibilScore</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>IsAadharVerified</assignToReference>
+            <name>isAddharVerfied</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>IsPANVerified</assignToReference>
+            <name>isPanVerfied</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>matchingProbability</assignToReference>
+            <name>matchingProbability</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>OCR_Helper_Apex</name>
         <label>OCR Helper Apex</label>
         <locationX>182</locationX>
-        <locationY>1694</locationY>
+        <locationY>1814</locationY>
         <actionName>OCRHelper</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -26,11 +84,11 @@
         <name>OCR_Helper_Function_call</name>
         <label>OCR Helper Function call</label>
         <locationX>182</locationX>
-        <locationY>1814</locationY>
+        <locationY>1934</locationY>
         <actionName>OCRHelperFunctionCall</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Preview_and_Verify</targetReference>
+            <targetReference>Kyc_Validator</targetReference>
         </connector>
         <flowTransactionModel>NewTransaction</flowTransactionModel>
         <inputParameters>
@@ -143,7 +201,7 @@
         <name>Set_variable_blank</name>
         <label>Set variable blank</label>
         <locationX>270</locationX>
-        <locationY>1238</locationY>
+        <locationY>1358</locationY>
         <assignmentItems>
             <assignToReference>NewContentDocumentLinks</assignToReference>
             <operator>Assign</operator>
@@ -156,12 +214,12 @@
         <name>Update_Linked_Record_Id</name>
         <label>Update Linked Record Id</label>
         <locationX>270</locationX>
-        <locationY>998</locationY>
+        <locationY>1118</locationY>
         <assignmentItems>
             <assignToReference>NewContentDocumentLinks.LinkedEntityId</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Create_Lead</elementReference>
+                <elementReference>fetchLeadInfo.Id</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -179,7 +237,7 @@
         <name>Updated_Linked_Documents</name>
         <label>Updated Linked Documents</label>
         <locationX>270</locationX>
-        <locationY>1118</locationY>
+        <locationY>1238</locationY>
         <assignmentItems>
             <assignToReference>CreateLinkedDocumentsList</assignToReference>
             <operator>Add</operator>
@@ -235,9 +293,9 @@
         <name>Validation_message</name>
         <label>Validation message</label>
         <locationX>182</locationX>
-        <locationY>2054</locationY>
+        <locationY>2294</locationY>
         <defaultConnector>
-            <targetReference>Assign_lead_record_to_Verifier_User</targetReference>
+            <targetReference>Preview_and_Verify_Verifier_Officer</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -251,11 +309,16 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assign_Lead_to_loan_Officer</targetReference>
+                <targetReference>Preview_and_Verify_Loan_Officer</targetReference>
             </connector>
             <label>Validation Successful</label>
         </rules>
     </decisions>
+    <formulas>
+        <name>AadharCardNumber</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE({!AadhaarCardNumber},&quot; &quot;,&quot;&quot;)</expression>
+    </formulas>
     <formulas>
         <name>amountInLakh</name>
         <dataType>Number</dataType>
@@ -274,9 +337,30 @@
         <expression>{!First_Name}&amp;&apos; &apos;&amp;{!Last_Name}</expression>
     </formulas>
     <formulas>
+        <name>Is_Aadhar_Manual_OCR_Match</name>
+        <dataType>Boolean</dataType>
+        <expression>IF({!AadharCardNumber} = {!AADHAR_Card_Number}, true, false)</expression>
+    </formulas>
+    <formulas>
+        <name>Is_PAN_Manual_OCR_Match</name>
+        <dataType>Boolean</dataType>
+        <expression>IF({!PanNum} = {!PAN_Card_Number}, true, false)</expression>
+    </formulas>
+    <formulas>
         <name>IsAllTrue</name>
         <dataType>Boolean</dataType>
-        <expression>IF({!IsAadharVerified} &amp;&amp; {!IsPANVerified}, true, false)</expression>
+        <expression>IF({!IsAadharVerified} = true &amp;&amp; {!IsPANVerified} = true &amp;&amp; {!Is_Aadhar_Manual_OCR_Match} = true &amp;&amp; {!Is_PAN_Manual_OCR_Match} = true &amp;&amp; {!MatchingProbabilityInPercentage} &gt; 70, true, false)</expression>
+    </formulas>
+    <formulas>
+        <name>IsMatchingProbability</name>
+        <dataType>Boolean</dataType>
+        <expression>IF({!MatchingProbabilityInPercentage} &gt; 70, true, false)</expression>
+    </formulas>
+    <formulas>
+        <name>MatchingProbabilityInPercentage</name>
+        <dataType>Number</dataType>
+        <expression>{!matchingProbability}*100</expression>
+        <scale>0</scale>
     </formulas>
     <formulas>
         <name>rateCal</name>
@@ -290,18 +374,14 @@
         <expression>VALUE({!ROI_Per_Annum})/12</expression>
         <scale>6</scale>
     </formulas>
-    <formulas>
-        <name>TextInsideRing</name>
-        <dataType>String</dataType>
-        <expression>{!Score} &amp; TEXT({!cibilScore})</expression>
-    </formulas>
     <interviewLabel>SF OCR {!$Flow.CurrentDateTime}</interviewLabel>
+    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>SF OCR</label>
     <loops>
         <name>Loop_content_Document_List_records</name>
         <label>Loop content Document List records</label>
         <locationX>182</locationX>
-        <locationY>878</locationY>
+        <locationY>998</locationY>
         <collectionReference>Get_Content_Document_Linked</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -335,8 +415,9 @@
         <label>Create Lead</label>
         <locationX>182</locationX>
         <locationY>638</locationY>
+        <assignRecordIdToReference>CreatedLead.Id</assignRecordIdToReference>
         <connector>
-            <targetReference>Get_Content_Document_Linked</targetReference>
+            <targetReference>fetchLeadInfo</targetReference>
         </connector>
         <inputAssignments>
             <field>Aadhaar_Card_No__c</field>
@@ -411,13 +492,12 @@
             </value>
         </inputAssignments>
         <object>Lead</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
         <name>Create_List_of_Content_Document_link_records</name>
         <label>Create List of Content Document link records</label>
         <locationX>182</locationX>
-        <locationY>1454</locationY>
+        <locationY>1574</locationY>
         <connector>
             <targetReference>Delete_dummy_linked_records</targetReference>
         </connector>
@@ -427,17 +507,48 @@
         <name>Delete_dummy_linked_records</name>
         <label>Delete dummy linked records</label>
         <locationX>182</locationX>
-        <locationY>1574</locationY>
+        <locationY>1694</locationY>
         <connector>
             <targetReference>OCR_Helper_Apex</targetReference>
         </connector>
         <inputReference>Get_Content_Document_Linked</inputReference>
     </recordDeletes>
     <recordLookups>
+        <name>fetchLeadInfo</name>
+        <label>fetchLeadInfo</label>
+        <locationX>182</locationX>
+        <locationY>758</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Content_Document_Linked</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CreatedLead.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Lead</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Aadhaar_Card_Name__c</queriedFields>
+        <queriedFields>Aadhaar_Card_No__c</queriedFields>
+        <queriedFields>Aadhaar_Card_Number__c</queriedFields>
+        <queriedFields>FirstName</queriedFields>
+        <queriedFields>LastName</queriedFields>
+        <queriedFields>PAN_Card_No__c</queriedFields>
+        <queriedFields>Pan_Name__c</queriedFields>
+        <queriedFields>Pan_Number__c</queriedFields>
+        <queriedFields>Loan_Number__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Content_Document_Linked</name>
         <label>Get Content Document Linked</label>
         <locationX>182</locationX>
-        <locationY>758</locationY>
+        <locationY>878</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_content_Document_List_records</targetReference>
@@ -458,7 +569,7 @@
         <name>Assign_lead_record_to_Verifier_User</name>
         <label>Assign lead record to Verifier User</label>
         <locationX>314</locationX>
-        <locationY>2174</locationY>
+        <locationY>2534</locationY>
         <connector>
             <targetReference>Submit</targetReference>
         </connector>
@@ -467,7 +578,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Create_Lead</elementReference>
+                <elementReference>fetchLeadInfo.Id</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -482,7 +593,7 @@
         <name>Assign_Lead_to_loan_Officer</name>
         <label>Assign Lead to loan Officer</label>
         <locationX>50</locationX>
-        <locationY>2174</locationY>
+        <locationY>2534</locationY>
         <connector>
             <targetReference>Submit</targetReference>
         </connector>
@@ -491,7 +602,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Create_Lead</elementReference>
+                <elementReference>fetchLeadInfo.Id</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -502,6 +613,67 @@
         </inputAssignments>
         <object>Lead</object>
     </recordUpdates>
+    <recordUpdates>
+        <name>Update_Lead</name>
+        <label>Update Lead</label>
+        <locationX>182</locationX>
+        <locationY>2174</locationY>
+        <connector>
+            <targetReference>Validation_message</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>fetchLeadInfo.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Aadhaar_Address__c</field>
+            <value>
+                <elementReference>AadhaarAddress</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Cibil_Score__c</field>
+            <value>
+                <elementReference>cibilScoreVal</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Is_Aadhar_Manual_KYC_Match__c</field>
+            <value>
+                <elementReference>IsAadharVerified</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Is_Aadhar_Manual_OCR_Match__c</field>
+            <value>
+                <elementReference>Is_Aadhar_Manual_OCR_Match</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Is_PAN_Manual_KYC_Match__c</field>
+            <value>
+                <elementReference>IsPANVerified</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Is_PAN_Manual_OCR_Match__c</field>
+            <value>
+                <elementReference>Is_PAN_Manual_OCR_Match</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Matching_Probability__c</field>
+            <value>
+                <elementReference>MatchingProbabilityInPercentage</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Lead</object>
+    </recordUpdates>
+    <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <name>Form_Fill</name>
         <label>Form Fill</label>
@@ -886,15 +1058,15 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>Preview_and_Verify</name>
-        <label>Preview and Verify</label>
-        <locationX>182</locationX>
-        <locationY>1934</locationY>
+        <name>Preview_and_Verify_Loan_Officer</name>
+        <label>Preview and Verify -  Loan Officer</label>
+        <locationX>50</locationX>
+        <locationY>2414</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Validation_message</targetReference>
+            <targetReference>Assign_Lead_to_loan_Officer</targetReference>
         </connector>
         <fields>
             <name>progressBar1</name>
@@ -974,7 +1146,7 @@
                     <inputParameters>
                         <name>value</name>
                         <value>
-                            <elementReference>AadhaarAddress</elementReference>
+                            <elementReference>Gender</elementReference>
                         </value>
                     </inputParameters>
                     <inputParameters>
@@ -996,7 +1168,23 @@
                 <inputParameters>
                     <name>width</name>
                     <value>
-                        <stringValue>12</stringValue>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Personal_Details_Entered_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>DisplayMatchingProbability</name>
+                    <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Matching Probability : {!MatchingProbabilityInPercentage}%&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
                     </value>
                 </inputParameters>
                 <isRequired>false</isRequired>
@@ -1429,13 +1617,18 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>Preview_and_Verify_Section4</name>
+            <name>Preview_and_Verify_Loan_Officer_Section4</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Preview_and_Verify_Section4_Column1</name>
+                <name>Preview_and_Verify_Loan_Officer_Section4_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>AadharVerification</name>
+                    <name>aadhaarVerification</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Aadhaar Verification Result&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>AadharVerificationTrue</name>
                     <extensionName>flowruntime:image</extensionName>
                     <fieldType>ComponentInstance</fieldType>
                     <inputParameters>
@@ -1474,6 +1667,62 @@
                                 <booleanValue>true</booleanValue>
                             </rightValue>
                         </conditions>
+                        <conditions>
+                            <leftValueReference>Is_Aadhar_Manual_OCR_Match</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>true</booleanValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <fields>
+                    <name>AadharVerificationFalse</name>
+                    <extensionName>flowruntime:image</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>imageName</name>
+                        <value>
+                            <stringValue>ErrorVerification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>horizontalAlignment</name>
+                        <value>
+                            <stringValue>center</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageAlt</name>
+                        <value>
+                            <stringValue>Aadhar Verification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageWidth</name>
+                        <value>
+                            <stringValue>50%</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                    <visibilityRule>
+                        <conditionLogic>or</conditionLogic>
+                        <conditions>
+                            <leftValueReference>Is_Aadhar_Manual_OCR_Match</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>false</booleanValue>
+                            </rightValue>
+                        </conditions>
+                        <conditions>
+                            <leftValueReference>IsAadharVerified</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>false</booleanValue>
+                            </rightValue>
+                        </conditions>
                     </visibilityRule>
                 </fields>
                 <inputParameters>
@@ -1485,10 +1734,15 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Preview_and_Verify_Section4_Column2</name>
+                <name>Preview_and_Verify_Loan_Officer_Section4_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>PanVerification</name>
+                    <name>panCardResult</name>
+                    <fieldText>&lt;p&gt;PAN Verification Result&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>PanVerificationTrue</name>
                     <extensionName>flowruntime:image</extensionName>
                     <fieldType>ComponentInstance</fieldType>
                     <inputParameters>
@@ -1527,6 +1781,62 @@
                                 <booleanValue>true</booleanValue>
                             </rightValue>
                         </conditions>
+                        <conditions>
+                            <leftValueReference>Is_PAN_Manual_OCR_Match</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>true</booleanValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <fields>
+                    <name>PanVerificationFalse</name>
+                    <extensionName>flowruntime:image</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>imageName</name>
+                        <value>
+                            <stringValue>ErrorVerification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageAlt</name>
+                        <value>
+                            <stringValue>Pan Verification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>horizontalAlignment</name>
+                        <value>
+                            <stringValue>center</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageWidth</name>
+                        <value>
+                            <stringValue>50%</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                    <visibilityRule>
+                        <conditionLogic>or</conditionLogic>
+                        <conditions>
+                            <leftValueReference>Is_PAN_Manual_OCR_Match</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>false</booleanValue>
+                            </rightValue>
+                        </conditions>
+                        <conditions>
+                            <leftValueReference>IsPANVerified</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>false</booleanValue>
+                            </rightValue>
+                        </conditions>
                     </visibilityRule>
                 </fields>
                 <inputParameters>
@@ -1538,7 +1848,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Preview_and_Verify_Section4_Column3</name>
+                <name>Preview_and_Verify_Loan_Officer_Section4_Column3</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>ProgressRing</name>
@@ -1559,13 +1869,13 @@
                     <inputParameters>
                         <name>textInsideRing</name>
                         <value>
-                            <elementReference>cibilScore</elementReference>
+                            <elementReference>cibilScoreVal</elementReference>
                         </value>
                     </inputParameters>
                     <inputParameters>
                         <name>source</name>
                         <value>
-                            <elementReference>cibilScore</elementReference>
+                            <elementReference>cibilScoreVal</elementReference>
                         </value>
                     </inputParameters>
                     <inputParameters>
@@ -1592,6 +1902,12 @@
                             <stringValue>Footer</stringValue>
                         </value>
                     </inputParameters>
+                    <inputParameters>
+                        <name>percentage</name>
+                        <value>
+                            <elementReference>cibilScoreVal</elementReference>
+                        </value>
+                    </inputParameters>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
                     <isRequired>true</isRequired>
                     <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -1606,6 +1922,866 @@
             </fields>
             <isRequired>false</isRequired>
         </fields>
+        <nextOrFinishButtonLabel>Move to Loan Officer</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Preview_and_Verify_Verifier_Officer</name>
+        <label>Preview and Verify -  Verifier Officer</label>
+        <locationX>314</locationX>
+        <locationY>2414</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_lead_record_to_Verifier_User</targetReference>
+        </connector>
+        <fields>
+            <name>progressBar_Verifier</name>
+            <extensionName>c:progressBar</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>progressIndicator</name>
+                <value>
+                    <stringValue>2</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Personal_Details_Entered_Verifier</name>
+            <fieldText>Personal Details Entered</fieldText>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Personal_Details_Entered_Verifier_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Full_Name_Verifier</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>fieldType</name>
+                        <value>
+                            <stringValue>text</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Full Name</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>FullName</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isInputTypeText</name>
+                        <value>
+                            <booleanValue>true</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>genderRadio_Verifier</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>true</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Gender</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>Gender</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isInputTypeText</name>
+                        <value>
+                            <booleanValue>true</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>fieldType</name>
+                        <value>
+                            <stringValue>text</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Personal_Details_Entered_Verifier_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>DisplayMatchingProbability_Verifier</name>
+                    <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Matching Probability : &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!MatchingProbabilityInPercentage}%&lt;/span&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Files_Preview_Verifier</name>
+            <fieldText>Files Preview</fieldText>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Files_Preview_Verifier_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>panCardPreview_Verifier</name>
+                    <extensionName>c:filePreviewCmp</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>contentDocumentId</name>
+                        <value>
+                            <elementReference>panCardContentDocumentId</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>cardTitle</name>
+                        <value>
+                            <stringValue>Pan Card</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>showFilePreviewer</name>
+                        <value>
+                            <booleanValue>true</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>recordLimit</name>
+                        <value>
+                            <numberValue>1.0</numberValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>textPreviewPan_Verifier</name>
+                    <extensionName>c:previewTextHelper</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>panCardName</name>
+                        <value>
+                            <elementReference>PanName</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>panCardNum</name>
+                        <value>
+                            <elementReference>PanNum</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>type</name>
+                        <value>
+                            <stringValue>PAN</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>4</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Files_Preview_Verifier_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>aadhaarFrontPreview_Verifier</name>
+                    <extensionName>c:filePreviewCmp</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>cardTitle</name>
+                        <value>
+                            <stringValue>Aadhaar Card Front</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>contentDocumentId</name>
+                        <value>
+                            <elementReference>aadhaarFrontContentDocumentId</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>recordLimit</name>
+                        <value>
+                            <numberValue>1.0</numberValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>textPreviewAadhaarFront_Verifier</name>
+                    <extensionName>c:previewTextHelper</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>aadhaarName</name>
+                        <value>
+                            <elementReference>AadhaarCardName</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>aadhaarNum</name>
+                        <value>
+                            <elementReference>AadhaarCardNumber</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>type</name>
+                        <value>
+                            <stringValue>aadhaar</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>4</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Files_Preview_Verifier_Column3</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>aadhaarCardBackPreview_Verifier</name>
+                    <extensionName>c:filePreviewCmp</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>cardTitle</name>
+                        <value>
+                            <stringValue>Aadhaar Card Back</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>contentDocumentId</name>
+                        <value>
+                            <elementReference>aadhaarBackContentDocumentId</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>textPreviewAadhaarBack_Verifier</name>
+                    <extensionName>c:previewTextHelper</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>aadhaarAddress</name>
+                        <value>
+                            <elementReference>AadhaarAddress</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>type</name>
+                        <value>
+                            <stringValue>aadhaarback</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>4</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Copy_1_of_Loan</name>
+            <fieldText>Loan Request Details</fieldText>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Copy_1_of_Loan_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>LoanRequest_Verifier</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>fieldType</name>
+                        <value>
+                            <stringValue>text</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Loan Request Type</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>Type_of_Loan</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isInputTypeText</name>
+                        <value>
+                            <booleanValue>true</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>LoanTenure_Verifier</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>fieldType</name>
+                        <value>
+                            <stringValue>number</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Tenure (in months)</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>Tenure.value</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isInputTypeText</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>EMI_s_Verifier</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>fieldType</name>
+                        <value>
+                            <stringValue>number</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>EMI&apos;s</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>EMI</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isInputTypeText</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>formatter</name>
+                        <value>
+                            <stringValue>currency</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Copy_1_of_Loan_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Loan_Amount_Verifier</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>amountInLakh</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>fieldType</name>
+                        <value>
+                            <stringValue>number</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>formatter</name>
+                        <value>
+                            <stringValue>currency</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isInputTypeText</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>Loan Amount</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
+                    <name>ROI_s_Verifier</name>
+                    <extensionName>c:customFieldDisplay</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>fieldType</name>
+                        <value>
+                            <stringValue>number</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>formatter</name>
+                        <value>
+                            <stringValue>percent</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isInputTypeText</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>isRadio</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>label</name>
+                        <value>
+                            <stringValue>ROI % (Per Annum)</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>value</name>
+                        <value>
+                            <elementReference>ROI_Per_Annum</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Preview_and_Verify_Verifier_Officer_Section4</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Preview_and_Verify_Verifier_Officer_Section4_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>AadharVerificationTrue_Verifier</name>
+                    <extensionName>flowruntime:image</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>imageName</name>
+                        <value>
+                            <stringValue>AadharVerification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>horizontalAlignment</name>
+                        <value>
+                            <stringValue>center</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageAlt</name>
+                        <value>
+                            <stringValue>Aadhar Verification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageWidth</name>
+                        <value>
+                            <stringValue>50%</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                    <visibilityRule>
+                        <conditionLogic>and</conditionLogic>
+                        <conditions>
+                            <leftValueReference>IsAadharVerified</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>true</booleanValue>
+                            </rightValue>
+                        </conditions>
+                        <conditions>
+                            <leftValueReference>Is_Aadhar_Manual_OCR_Match</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>true</booleanValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <fields>
+                    <name>AadharVerificationFalse_Verifier</name>
+                    <extensionName>flowruntime:image</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>imageName</name>
+                        <value>
+                            <stringValue>ErrorVerification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>horizontalAlignment</name>
+                        <value>
+                            <stringValue>center</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageAlt</name>
+                        <value>
+                            <stringValue>Aadhar Verification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageWidth</name>
+                        <value>
+                            <stringValue>50%</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                    <visibilityRule>
+                        <conditionLogic>or</conditionLogic>
+                        <conditions>
+                            <leftValueReference>Is_Aadhar_Manual_OCR_Match</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>false</booleanValue>
+                            </rightValue>
+                        </conditions>
+                        <conditions>
+                            <leftValueReference>IsAadharVerified</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>false</booleanValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>4</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Preview_and_Verify_Verifier_Officer_Section4_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>PanVerificationTrue_Verifier</name>
+                    <extensionName>flowruntime:image</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>imageName</name>
+                        <value>
+                            <stringValue>PanVerification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>horizontalAlignment</name>
+                        <value>
+                            <stringValue>center</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageAlt</name>
+                        <value>
+                            <stringValue>Pan Verification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageWidth</name>
+                        <value>
+                            <stringValue>50%</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                    <visibilityRule>
+                        <conditionLogic>and</conditionLogic>
+                        <conditions>
+                            <leftValueReference>IsPANVerified</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>true</booleanValue>
+                            </rightValue>
+                        </conditions>
+                        <conditions>
+                            <leftValueReference>Is_PAN_Manual_OCR_Match</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>true</booleanValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <fields>
+                    <name>PanVerificationFalse_Verifier</name>
+                    <extensionName>flowruntime:image</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>imageName</name>
+                        <value>
+                            <stringValue>ErrorVerification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageAlt</name>
+                        <value>
+                            <stringValue>Pan Verification</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>horizontalAlignment</name>
+                        <value>
+                            <stringValue>center</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageWidth</name>
+                        <value>
+                            <stringValue>50%</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                    <visibilityRule>
+                        <conditionLogic>or</conditionLogic>
+                        <conditions>
+                            <leftValueReference>Is_PAN_Manual_OCR_Match</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>false</booleanValue>
+                            </rightValue>
+                        </conditions>
+                        <conditions>
+                            <leftValueReference>IsPANVerified</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <booleanValue>false</booleanValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>4</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Preview_and_Verify_Verifier_Officer_Section4_Column3</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>ProgressRing_Verifier</name>
+                    <extensionName>c:progressRing</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>ringColor</name>
+                        <value>
+                            <stringValue>blue</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>showBothTextAndPercentage</name>
+                        <value>
+                            <booleanValue>false</booleanValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>textInsideRing</name>
+                        <value>
+                            <elementReference>cibilScoreVal</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>source</name>
+                        <value>
+                            <elementReference>cibilScoreVal</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>title</name>
+                        <value>
+                            <stringValue>CIBIL Score</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>target</name>
+                        <value>
+                            <stringValue>1000</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>percentageType</name>
+                        <value>
+                            <stringValue>Relational</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>titlePlacement</name>
+                        <value>
+                            <stringValue>Footer</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>percentage</name>
+                        <value>
+                            <elementReference>cibilScoreVal</elementReference>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>4</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Move to Verifier Officer</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -1613,7 +2789,7 @@
         <name>Submit</name>
         <label>Submit</label>
         <locationX>182</locationX>
-        <locationY>2390</locationY>
+        <locationY>2750</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1633,11 +2809,11 @@
         </fields>
         <fields>
             <name>SubmitScreen</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;Loan Number - {!LoanNumber}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;Loan Number: {!fetchLeadInfo.Loan_Number__c}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>loanOfficierMessage</name>
+            <name>LoanOfficierMessage</name>
             <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;Your loan has been submitted and a loan officer is assigned to you. In case of any query, the loan verification officer will reach out to you.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
@@ -1702,7 +2878,7 @@
             <targetReference>assignAadhaarCardNameHelper</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>AadhaarAddress</name>
         <dataType>String</dataType>
@@ -1772,12 +2948,28 @@
         </value>
     </variables>
     <variables>
+        <name>cibilScoreVal</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
         <name>ContentDistributionList</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ContentDistribution</objectType>
+    </variables>
+    <variables>
+        <name>CreatedLead</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Lead</objectType>
     </variables>
     <variables>
         <name>CreateLinkedDocumentsList</name>
@@ -1818,18 +3010,22 @@
         </value>
     </variables>
     <variables>
-        <name>LoanNumber</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
         <name>LoanOfficer</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+        <value>
+            <stringValue>005DK000004kDhJYAU</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>matchingProbability</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
     </variables>
     <variables>
         <name>NewContentDocumentLinks</name>
@@ -1901,5 +3097,8 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+        <value>
+            <stringValue>005DK000004kDhJYAU</stringValue>
+        </value>
     </variables>
 </Flow>

@@ -233,12 +233,6 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentName>progressRing</componentName>
-                <identifier>c_progressRing</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
                 <componentInstanceProperties>
                     <name>tabs</name>
                     <value>sidebartabs</value>
