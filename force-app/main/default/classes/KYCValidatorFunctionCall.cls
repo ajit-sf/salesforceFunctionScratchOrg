@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Ajitesh
  * @group             : 
- * @last modified on  : 12-04-2022
+ * @last modified on  : 12-08-2022
  * @last modified by  : Ajitesh
 **/
 public with sharing class KYCValidatorFunctionCall {
@@ -31,6 +31,7 @@ public with sharing class KYCValidatorFunctionCall {
         public String firstName;
         public String lastName;
         public PostgressCreds creds;
+        public String transactionType;
     }
 
     public class SalesforceFunctionOutputVariable{
@@ -48,6 +49,7 @@ public with sharing class KYCValidatorFunctionCall {
         creds.databaseUri = kycValidatorRec.Creds_URL__c;
         
         SalesforcefunctionInput funcinputs = new SalesforcefunctionInput();
+        funcinputs.transactionType = 'kycvalidator';
         funcinputs.aadhaarNo = flowInput[0].aadhaarNo.replaceAll( '\\s+', '');
         funcinputs.panCardNo = flowInput[0].panCardNo.replaceAll( '\\s+', '');
         funcinputs.aadhaarName = flowInput[0].aadhaarName;
@@ -55,7 +57,7 @@ public with sharing class KYCValidatorFunctionCall {
         funcinputs.lastName = flowInput[0].lastName;
         funcinputs.creds = creds;
 
-        functions.Function fn = functions.Function.get('salesforceFunction.kycvalidator');
+        functions.Function fn = functions.Function.get('salesforceFunction.kycusecase');
         functions.FunctionInvocation invocation = fn.invoke(JSON.serialize(funcinputs));
         if (invocation.getStatus() == functions.FunctionInvocationStatus.ERROR) {
             if(invocation.getError() != null)

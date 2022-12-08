@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Ajitesh
  * @group             : 
- * @last modified on  : 12-01-2022
+ * @last modified on  : 12-08-2022
  * @last modified by  : Ajitesh
 **/
 public with sharing class OCRHelperFunctionCall {
@@ -34,6 +34,7 @@ public with sharing class OCRHelperFunctionCall {
         public String panCardUrl;
         public String username;
         public String privateKey;
+        public String transactionType;
 
     }
 
@@ -42,6 +43,7 @@ public with sharing class OCRHelperFunctionCall {
         List<ContentDistribution> conDistUrlList = inputVariable[0].inputParams;
         
         SalesforceFunctionInputVariable sfunVar = new SalesforceFunctionInputVariable();
+        sfunVar.transactionType = 'ocrhelper';
 
         String panCardName =  inputVariable[0].panCardName[0];
         String aadhaarCardNameHelper = inputVariable[0].aadhaarCardNameHelper[0];
@@ -77,7 +79,7 @@ public with sharing class OCRHelperFunctionCall {
             }
         }
 
-        functions.Function fn = functions.Function.get('salesforceFunction.ocrfunction');
+        functions.Function fn = functions.Function.get('salesforceFunction.kycusecase');
         functions.FunctionInvocation invocation = fn.invoke(JSON.serialize(sfunVar));
 
         if (invocation.getStatus() == functions.FunctionInvocationStatus.ERROR) {
