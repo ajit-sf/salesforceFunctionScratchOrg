@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : Ajitesh
+ * @group             : 
+ * @last modified on  : 12-16-2022
+ * @last modified by  : Ajitesh
+**/
 global class LightningLoginFormController {
 
     public LightningLoginFormController() {
@@ -61,5 +68,6 @@ global class LightningLoginFormController {
         } catch (Exception ex) {
             return ex.getMessage();            
         }
+        
     }   
 }
