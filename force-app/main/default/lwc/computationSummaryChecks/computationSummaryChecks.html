@@ -1,0 +1,18 @@
+<!--
+  @description       : 
+  @author            : Ajitesh
+  @group             : 
+  @last modified on  : 01-02-2023
+  @last modified by  : Ajitesh
+-->
+<template>
+    <lightning-layout horizontal-align="center">
+        <lightning-layout-item padding="around-small" size="4">
+            <lightning-icon icon-name="action:approval" if:true={isQualified} alternative-text="Approved" title="Approved"></lightning-icon>
+            <lightning-icon icon-name="action:close" if:false={isQualified} alternative-text="Approved" title="Reject"></lightning-icon>
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small" size="8">
+            {message}
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

@@ -375,7 +375,6 @@
         <scale>6</scale>
     </formulas>
     <interviewLabel>SF OCR {!$Flow.CurrentDateTime}</interviewLabel>
-    <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>SF OCR</label>
     <loops>
         <name>Loop_content_Document_List_records</name>
@@ -581,6 +580,13 @@
                 <elementReference>fetchLeadInfo.Id</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Submitted to Verifier</stringValue>
+            </value>
+        </filters>
         <inputAssignments>
             <field>OwnerId</field>
             <value>
@@ -603,6 +609,13 @@
             <operator>EqualTo</operator>
             <value>
                 <elementReference>fetchLeadInfo.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Submitted to Loan Officer</stringValue>
             </value>
         </filters>
         <inputAssignments>
@@ -700,11 +713,11 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
-            <name>Personal_Details</name>
-            <fieldText>Personal Details</fieldText>
+            <name>Details</name>
+            <fieldText>Details</fieldText>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Personal_Details_Column1</name>
+                <name>Details_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>First_Name</name>
@@ -738,7 +751,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Personal_Details_Column2</name>
+                <name>Details_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Last_Name</name>
@@ -779,11 +792,11 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>Loan_Details</name>
-            <fieldText>Loan Details</fieldText>
+            <name>Loan_Info</name>
+            <fieldText>Loan Info</fieldText>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Loan_Details_Column1</name>
+                <name>Loan_Info_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Type_of_Loan</name>
@@ -804,7 +817,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Loan_Details_Column2</name>
+                <name>Loan_Info_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Amount</name>
@@ -881,11 +894,11 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>Documents</name>
-            <fieldText>Documents</fieldText>
+            <name>Document_details</name>
+            <fieldText>Document details</fieldText>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Documents_Column1</name>
+                <name>Document_details_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>PAN_Card_Number</name>
@@ -903,7 +916,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Documents_Column2</name>
+                <name>Document_details_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>AADHAR_Card_Number</name>
@@ -1083,11 +1096,10 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
-            <name>Personal_Details_Entered</name>
-            <fieldText>Personal Details Entered</fieldText>
+            <name>Preview_and_Verify_Loan_Officer_Section1</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Personal_Details_Entered_Column1</name>
+                <name>Preview_and_Verify_Loan_Officer_Section1_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Full_Name</name>
@@ -1174,7 +1186,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Personal_Details_Entered_Column2</name>
+                <name>Preview_and_Verify_Loan_Officer_Section1_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>DisplayMatchingProbability</name>
@@ -1192,11 +1204,10 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>Files_Preview</name>
-            <fieldText>Files Preview</fieldText>
+            <name>Preview_and_Verify_Loan_Officer_Section2</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Files_Preview_Column1</name>
+                <name>Preview_and_Verify_Loan_Officer_Section2_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>panCardPreview</name>
@@ -1265,7 +1276,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Files_Preview_Column2</name>
+                <name>Preview_and_Verify_Loan_Officer_Section2_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>aadhaarFrontPreview</name>
@@ -1328,7 +1339,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Files_Preview_Column3</name>
+                <name>Preview_and_Verify_Loan_Officer_Section2_Column3</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>aadhaarCardBackPreview</name>
@@ -1381,11 +1392,10 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>Loan</name>
-            <fieldText>Loan Request Details</fieldText>
+            <name>Preview_and_Verify_Loan_Officer_Section3</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Loan_Column1</name>
+                <name>Preview_and_Verify_Loan_Officer_Section3_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>LoanRequest</name>
@@ -1516,7 +1526,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Loan_Column2</name>
+                <name>Preview_and_Verify_Loan_Officer_Section3_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Loan_Amount</name>
@@ -1952,11 +1962,10 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
-            <name>Personal_Details_Entered_Verifier</name>
-            <fieldText>Personal Details Entered</fieldText>
+            <name>Preview_and_Verify_Verifier_Officer_Section1</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Personal_Details_Entered_Verifier_Column1</name>
+                <name>Preview_and_Verify_Verifier_Officer_Section1_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Full_Name_Verifier</name>
@@ -2043,7 +2052,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Personal_Details_Entered_Verifier_Column2</name>
+                <name>Preview_and_Verify_Verifier_Officer_Section1_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>DisplayMatchingProbability_Verifier</name>
@@ -2061,11 +2070,10 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>Files_Preview_Verifier</name>
-            <fieldText>Files Preview</fieldText>
+            <name>Preview_and_Verify_Verifier_Officer_Section2</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Files_Preview_Verifier_Column1</name>
+                <name>Preview_and_Verify_Verifier_Officer_Section2_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>panCardPreview_Verifier</name>
@@ -2134,7 +2142,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Files_Preview_Verifier_Column2</name>
+                <name>Preview_and_Verify_Verifier_Officer_Section2_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>aadhaarFrontPreview_Verifier</name>
@@ -2197,7 +2205,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Files_Preview_Verifier_Column3</name>
+                <name>Preview_and_Verify_Verifier_Officer_Section2_Column3</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>aadhaarCardBackPreview_Verifier</name>
@@ -2250,11 +2258,10 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>Copy_1_of_Loan</name>
-            <fieldText>Loan Request Details</fieldText>
+            <name>Preview_and_Verify_Verifier_Officer_Section3</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Copy_1_of_Loan_Column1</name>
+                <name>Preview_and_Verify_Verifier_Officer_Section3_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>LoanRequest_Verifier</name>
@@ -2385,7 +2392,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Copy_1_of_Loan_Column2</name>
+                <name>Preview_and_Verify_Verifier_Officer_Section3_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Loan_Amount_Verifier</name>
@@ -2993,11 +3000,8 @@
         <name>DummyLeadRecordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>false</isInput>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
-        <value>
-            <stringValue>00QDK000008Lxk82AC</stringValue>
-        </value>
     </variables>
     <variables>
         <name>IsAadharVerified</name>
