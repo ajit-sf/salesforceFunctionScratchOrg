@@ -10,7 +10,7 @@ echo ""
 
 
 echo "Creating scratch org..." && \
-sfdx force:org:create -s -f config/project-scratch-def.json -a $ORG_ALIAS -d 30 && \
+sfdx force:org:create -s -f config/project-scratch-def.json -a $ORG_ALIAS -d 30 --targetdevhubusername lmohan@functions-demo-pre.w22 && \
 echo "" && \
 
 echo "Pushing source..." && \

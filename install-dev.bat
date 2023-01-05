@@ -8,7 +8,7 @@ echo Installing Functions + S3 demo org (%ORG_ALIAS%)
 
 
 echo Creating scratch org...
-cmd.exe /c sfdx force:org:create -s -f config/project-scratch-def.json -a --targetdevhubusername lmohan@functions-demo-pre.w22 %ORG_ALIAS% -d 30
+cmd.exe /c sfdx force:org:create -s -f config/project-scratch-def.json -a %ORG_ALIAS% --targetdevhubusername lmohan@functions-demo-pre.w22  -d 30
 call :checkForError
 @echo:
 
