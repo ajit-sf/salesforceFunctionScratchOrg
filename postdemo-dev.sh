@@ -13,3 +13,6 @@ sf env delete -e s3env
 
 echo "Deleted sucessfully"
 
+echo "Deleting scratch org ..... "
+ sfdx force:org:delete -u s3
+echo "Deleted sucessfully"
